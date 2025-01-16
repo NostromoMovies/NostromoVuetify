@@ -1,19 +1,24 @@
 <template>
     <div class="taskbar">
       <Searchbar class="taskbar__search" />
-      <FilterButton class="taskbar__filter" />
+      <GenericFiltering class="taskbar__filter"/>
     </div>
   </template>
   
   <script>
   import Searchbar from './Searchbar.vue';
-  import FilterButton from './FilterButton.vue';
+  
+  import GenericFiltering from './GenericFiltering.vue';
+  
+  
+  
   
   export default {
     name: "DashboardTaskBar",
     components: {
       Searchbar,
-      FilterButton,
+      GenericFiltering,
+
     },
   };
   </script>

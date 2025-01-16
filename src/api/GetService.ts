@@ -21,5 +21,9 @@ export const getService = {
   },
    testFolder (){
     return axiosInstance.get('/api/folders/test')  
+  },
+  getMovieID (id: number){
+    return axiosInstance.get('/api/Tmdb/movie/{id}')
   }
+
 }

@@ -41,6 +41,7 @@
   .search-input {
     width: 50%;
     max-width: 400px;
+    border-radius: 5px;
     padding: 0.5rem;
     font-size: 1rem;
     background: var(--color-background-soft);

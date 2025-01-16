@@ -1,11 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import Dashboard from '../views/DashboardVue.vue';
-import Collection from '@/views/CollectionVue.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import Dashboard from '../views/DashboardVue.vue'
+import Collection from '@/views/CollectionVue.vue'
 import { useAuthStore } from '@/stores/authStore'
-import Signup from '@/views/Signup.vue';
-
-
-
+import Signup from '@/views/Signup.vue'
+import MovieDeatilVue from '@/views/MovieDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,24 +16,36 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'dashboard',
-      component: Dashboard, 
+      component: Dashboard,
     },
     {
       path: '/collection',
       name: 'collection',
-      component: Collection, 
+      component: Collection,
     },
     {
       path: '/register',
       name: 'register',
-      component: Signup, 
+      component: Signup,
+    },
+    {
+      path: '/movies/:id',
+      name: 'MovieDetails',
+      component: MovieDeatilVue,
+      props: true,
+    },
+    {
+      path: '/test',
+      name: 'MovieDetailsTest',
+      component: MovieDeatilVue,
+      props: true,
     },
   ],
-});
+})
 
 function isLoggedIn() {
   const authStore = useAuthStore()
-  return authStore.isAuthenticated// Example check
+  return authStore.isAuthenticated // Example check
 }
 
 // Add a global navigation guard
@@ -44,12 +54,8 @@ router.beforeEach((to, from, next) => {
     // Redirect to the login page if not logged in
     next({ path: '/', query: { redirect: to.fullPath } })
   } else {
-    
     next()
   }
 })
 
-
-
-
-export default router;
+export default router
