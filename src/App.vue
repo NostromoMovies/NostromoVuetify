@@ -1,50 +1,58 @@
 <template>
-  <v-app>
-    <v-main>
-      <RouterView />
-    </v-main>
-  </v-app>
+    <v-app>
+        <v-main>
+            <v-container fluid>
+                <Navbar v-if="!isRegisterPage" />
+                <router-view />
+            </v-container>
+        </v-main>
+
+    </v-app>
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+    import { ref, computed, provide } from 'vue';
+    import Navbar from './components/Navbar.vue';
 
+    import { useMovieStore } from './stores/movieStore';
+    import { useRoute } from 'vue-router';
+
+    const movieStore = useMovieStore();
+    provide('movieStore', movieStore);
+
+    const route = useRoute();
+
+    const isRegisterPage = computed(() => {
+        return route.name === 'register';
+    });
 </script>
 
 <style lang="css">
-@import "@/assets/main.css";
+    @import "./src/assets/main.css";
 
-.v-app {
-  font-family: 'C64 Pro', monospace !important;
-  text-align: center;
-  color: #2c3e50;
-  min-height: 100%;
+    body {
+        font-family: 'C64 Pro', monospace;
+        margin: 0;
+    }
 
- 
-  width: 100vw; 
-  height: 100vh;
-  box-sizing: border-box; 
-  margin: 0; 
-  padding: 0; 
-}
 
-.v-main {
-  width: 100%; 
-  height: 100%;
-  margin: 0;
-}
+    #app {
+        font-family: 'C64 Pro', monospace !important;
+        text-align: center;
+        color: #2c3e50;
+    }
 
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
+    header {
+        line-height: 1.5;
+        text-align: center;
+        margin-bottom: 2rem;
+        padding-top: 60px;
+    }
 
-html,
-body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden; /* Prevent horizontal scrolling */
-}
+    html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        overflow-x: hidden;
+    }
 </style>

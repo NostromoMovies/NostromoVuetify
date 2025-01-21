@@ -1,10 +1,10 @@
 <template>
     <v-container class="d-flex justify-center align-center">
       <v-card class="pa-5" outlined>
-        <v-card-title class="text-h4 font-weight-bold text-center">
+        <v-card-title class="text-h4 font-weight-bold text-center logo">
           Nostromo
         </v-card-title>
-  
+        
         <v-alert v-if="message" type="error" dismissible>
           {{ message }}
         </v-alert>
@@ -141,14 +141,20 @@
   width: 100%; /* Stretch inputs to match card width */
 }
 
-
-
-
- 
   .v-text-field {
   margin-bottom: 16px; /* Uniform spacing */
   max-width: 400px; /* Optional: Ensure consistent width */
   width: 400px;
 }
-  </style>
+
+.logo {
+  font-family: "Nostromo3D", sans-serif;
+  font-size: 2.5rem;
+  color:rgb(0, 0, 0); 
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1px;
+  line-height: 1;
+}
+</style>
   

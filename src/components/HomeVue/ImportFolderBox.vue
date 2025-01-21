@@ -1,38 +1,41 @@
 ﻿<template>
-  <div class="container">
-    <!-- Watched Folders List -->
-    <div class="folders-list">
-      <h3>Watched Folders</h3>
-      <div class="folders-container" v-if="folders.length > 0">
-        <div v-for="(folder, index) in folders" 
-             :key="index" 
-             class="folder-item">
-          <span class="folder-icon">📁</span>
-          <span class="folder-path">{{ folder }}</span>
-          <ConfirmDelete>🗑️</ConfirmDelete>
+  <v-container>
+    <v-card class="mb-4">
+      <v-card-title>Watched Folders</v-card-title>
+      <v-card-text>
+        <v-list>
+          <v-list-item
+            v-for="(folder, index) in folders"
+            :key="index"
+          >
+            <v-list-item-icon>
+              <v-icon>mdi-folder</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+              <v-list-item-title>{{ folder }}</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-btn icon color="error" @click="removeFolder(folder)">
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </v-list-item>
+        </v-list>
+        <div v-if="folders.length === 0" class="text-center text-secondary">
+          No watched folders found.
         </div>
-      </div>
-      <div v-else class="no-folders">
-        No watched folders found
-      </div>
-    </div>
-
-    <!-- Existing Button and Popup -->
-    <div class="button-wrapper">
-      <CreateFolderButton @toggle-popup="togglePopup"></CreateFolderButton>
-    </div>
-    <FolderCreationPopup 
-      v-if="showPopup"
+      </v-card-text>
+    </v-card>
+    <v-btn block color="primary" @click="togglePopup(true)">Add Folder</v-btn>
+    <FolderCreationPopup
       :show="showPopup"
       @toggle-visibility="togglePopup"
     />
-  </div>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-import CreateFolderButton from './CreateFolderButton.vue';
 import FolderCreationPopup from './FolderCreationPopup.vue';
-import ConfirmDelete from '../ConfirmDelete.vue';
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
@@ -40,38 +43,30 @@ const showPopup = ref(false);
 const folders = ref<string[]>([]);
 
 const togglePopup = (value: boolean) => {
-  console.log('togglePopup called with value:', value);
-  console.log('Previous showPopup value:', showPopup.value); 
   showPopup.value = value;
-  console.log('New showPopup value:', showPopup.value);
 };
 
 const fetchFolders = async () => {
   try {
-    const response = await axios.get('http://localhost:8112/api/folders/get-all');
+    const response = await axios.get('/api/folders/get-all');
     folders.value = response.data;
   } catch (error) {
     console.error('Error fetching folders:', error);
-    folders.value = [];
   }
 };
 
 const removeFolder = async (path: string) => {
   try {
-    await axios.get('http://localhost:8112/api/folders/remove', {
-      params: { path }
-    });
-    // Refresh the folders list after successful deletion
-    await fetchFolders();
+    await axios.get('/api/folders/remove', { params: { path } });
+    fetchFolders();
   } catch (error) {
     console.error('Error removing folder:', error);
   }
 };
 
-onMounted(() => {
-  fetchFolders();
-});
+onMounted(fetchFolders);
 </script>
+
 
 <style scoped>
 .container {

@@ -18,7 +18,9 @@
           <!-- Login Form -->
           <v-card-text>
             <v-form @submit.prevent="handleLogin">
-              <h2 class="text-center mb-5">Nostromo</h2>
+                      <v-card-title class="text-h4 font-weight-bold text-center logo">
+          Nostromo
+        </v-card-title>
   
               <!-- Username Input -->
               <v-text-field
@@ -96,5 +98,15 @@
   .mb-5 {
     margin-bottom: 1.25rem;
   }
+
+  .logo {
+  font-family: "Nostromo3D", sans-serif;
+  font-size: 2.5rem;
+  color:rgb(0, 0, 0); 
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1px;
+  line-height: 1;
+}
   </style>
   

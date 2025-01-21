@@ -1,54 +1,89 @@
 <template>
   <div>
-    <div class="button" @click="showModal = true">
-      Login
-    </div>
-    <transition name="fade" appear>
-      <div v-if="showModal" class="popup">
-        <div class="popup-content">
-          <button class="close-button" @click="close">x</button>
-          <form @submit.prevent="handleSubmit" class="login-form">
-            <p class="brand-name">Nostromo</p>
-            <label>Username:</label>
-            <input type="text" id="username" required v-model="form.username" />
-            <label>Password:</label>
-            <input type="password" id="password" required v-model="form.password" />
-            <p v-if="passwordError" class="error-message">{{ passwordError }}</p>
-            <button type="submit" class="submit-button">Log In</button>
-          </form>
-          <div class="sign-up">
-            <router-link class="nav-link" :class="{ active: $route.path === '/register' }" to="/register">
+    <!-- Login Button -->
+    <v-btn class="custom-login-button mb-4" @click="showModal = true">Login</v-btn>
+
+    <!-- Login Modal -->
+    <v-dialog v-model="showModal" persistent max-width="400">
+      <v-card>
+        <v-btn icon class="close-button" @click="close">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-card-title class="text-h4 font-weight-bold text-center logo">
+          Nostromo
+        </v-card-title>
+
+        <v-card-text>
+          <v-form @submit.prevent="handleSubmit" class="login-form">
+            <!-- Username Field -->
+            <v-text-field
+              v-model="form.username"
+              label="Username"
+              required
+              outlined
+            ></v-text-field>
+
+            <!-- Password Field -->
+            <v-text-field
+              v-model="form.password"
+              label="Password"
+              type="password"
+              required
+              outlined
+            ></v-text-field>
+
+            <!-- Error Message -->
+            <v-alert v-if="passwordError" type="error" dismissible class="mt-3">
+              {{ passwordError }}
+            </v-alert>
+
+            <!-- Submit Button -->
+            <v-btn
+              type="submit"
+              color="primary"
+              class="submit-button mt-3"
+              block
+            >
+              Log In
+            </v-btn>
+          </v-form>
+          <div class="sign-up mt-4">
+            <router-link
+              class="nav-link"
+              :class="{ active: $route.path === '/register' }"
+              to="/register"
+            >
               Create Profile
             </router-link>
           </div>
-        </div>
-      </div>
-    </transition>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useLoginStore } from '@/stores/authMethod';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useLoginStore } from "@/stores/authMethod";
 
 const emit = defineEmits<{
-    'login-success': [] 
-  }>();
-
+  "login-success": [];
+}>();
 
 const router = useRouter();
 const showModal = ref(false);
-const passwordError = ref('');
+const passwordError = ref("");
 
 const { form, login } = useLoginStore();
 
 const handleSubmit = async () => {
   try {
     await login();
-    emit('login-success')
+    emit("login-success");
+    close();
   } catch (error) {
-    passwordError.value = 'Login failed. Please check your credentials.';
+    passwordError.value = "Login failed. Please check your credentials.";
   }
 };
 
@@ -57,121 +92,46 @@ const close = () => {
 };
 </script>
 
-
 <style scoped>
-/* Styling for the Login Button */
-.button {
-  justify-content: center;
-  align-items: center;
-  outline: none;
-  border: none;
-  background: none;
-  cursor: pointer;
-  display: inline-block;
-  border-radius: 8px;
-  color: #333;
-  font-size: 18px;
-  font-weight: 700;
-  transition: 0.4s ease-out;
-}
-
-.button:hover {
-  box-shadow: 6px 6px rgba(0, 0, 0, 0.6);
-}
-
-/* Styling for the Login Popup */
-.popup {
-  font-family: Arial, Helvetica, sans-serif;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: white;
-  width: 400px;
-  height: 600px;
-  color: #555;
-  z-index: 1000;
-  border-radius: 8px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
 .brand-name {
   font-size: 40px;
   font-weight: bold;
-  margin-bottom: 40px;
   text-align: center;
-}
-
-.popup-content {
-  text-align: center;
-  position: relative;
-  width: 100%;
 }
 
 .close-button {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
-  border: none;
   color: #333;
-  font-size: 1.2rem;
   cursor: pointer;
-}
-
-form {
-  max-width: 400px;
-  max-height: 600px;
-  margin: 0 auto;
-  text-align: left;
-  padding: 30px;
-  border-radius: 10px;
-}
-
-label {
-  color: #aaa;
-  display: inline-block;
-  margin: 25px 0 15px;
-  font-size: 0.6em;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-
-input {
-  display: block;
-  padding: 10px 6px;
-  width: 100%;
-  border-radius: 10px;
-  box-sizing: border-box;
-  border: none;
-  border-bottom: 1px solid #ddd;
-  color: #555;
-}
-
-.submit-button {
-  cursor: pointer;
-  border: none;
-  border-radius: 10px;
-  margin: 20px auto;
-  width: 100%;
-  height: 50px;
-}
-
-.reset-password {
-  font-size: 12px;
-  text-align: center;
 }
 
 .sign-up {
-  margin: 10px;
-  background: none;
-  border: none;
-  color: #555;
+  text-align: center;
   text-decoration: underline;
   cursor: pointer;
-  text-align: center;
-  font: inherit;
+  margin-top: 10px;
+}
+
+.custom-login-button {
+  color: #333 !important; /* Override default text color */
+  background-color: transparent !important; /* Remove background if needed */
+  border: 1px solid #333; /* Optional: Add a border */
+  text-transform: none; /* Optional: Disable uppercase */
+}
+
+.custom-login-button:hover {
+  background-color: rgba(51, 51, 51, 0.1); /* Optional: Add hover effect */
+}
+
+.logo {
+  font-family: "Nostromo3D", sans-serif;
+  font-size: 2.5rem;
+  color:rgb(0, 0, 0); 
+  margin: 0;
+  padding: 0;
+  letter-spacing: 1px;
+  line-height: 1;
 }
 </style>
