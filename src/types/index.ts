@@ -23,11 +23,15 @@ export interface LoginForm {
 export interface SignupForm  {
   username: string;
   password: string;
-  
+  isAdmin: boolean;
 }
 
 export interface FileForm {
   file_name: string;
   file_location: string;
+}
+export interface Genre{
+  id: number;
+  genre: string;
 }
 

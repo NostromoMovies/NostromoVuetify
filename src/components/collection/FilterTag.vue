@@ -2,15 +2,15 @@
     <div class="filter-tag">
       <v-btn
         class="tag-button"
-        :class="{'selected': isSelected}" 
+        :class="{'selected': isSelected}"
         outlined
         @click="toggleSelection"
       >
-        {{ label }} 
+        {{ label }}
       </v-btn>
     </div>
   </template>
-  
+
   <script>
   export default {
     name: "FilterTag",
@@ -33,7 +33,7 @@
     },
   };
   </script>
-  
+
   <style scoped>
   .tag-button {
     border-radius: 20px;
@@ -45,22 +45,21 @@
     padding: 5px 15px;
     font-size: 14px;
   }
-  
+
   .tag-button:hover {
     background-color: #3d3d3d; /* Slightly lighter dark background on hover */
     border-color: #b0e0ff; /* Brighter blue border on hover */
     color: #b0e0ff;
   }
-  
+
   .selected {
     background-color: #87cefa; /* Light blue background when selected */
     color: #2c2c2c; /* Dark text color when selected */
     border-color: #b0e0ff; /* Brighter blue border when selected */
   }
-  
+
   .filter-tag {
     margin-bottom: 10px;
   }
   </style>
   >
-  

@@ -19,33 +19,27 @@
   </div>
 </template>
 
-<script>
-import FilterTag from './FilterTag.vue';
+<script setup lang="ts">
+import FilterTag from "./FilterTag.vue";
+import type { Genre } from "@/types/index"
 
-export default {
-  name: "FilterBox",
-  components: {
-    FilterTag,
-  },
-  data() {
-    return {
-      genres: [
-        "Action",
-        "Comedy",
-        "Drama",
-        "Horror",
-        "Sci-Fi",
-        "Romance",
-        "Thriller",
-        "Fantasy",
-        "Documentary",
-        "Adventure",
-        "Mystery",
-      ],
-    };
-  },
-};
+const genres: string[] = [
+  "Action",
+  "Comedy",
+  "Drama",
+  "Horror",
+  "Sci-Fi",
+  "Romance",
+  "Thriller",
+  "Fantasy",
+  "Documentary",
+  "Adventure",
+  "Mystery",
+];
+
+// const genreSelected: Genre[] = []
 </script>
+
 
 <style scoped>
 .filter-box {

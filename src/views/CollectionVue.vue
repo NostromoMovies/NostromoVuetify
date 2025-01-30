@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import CollectionSectionVue from '../components/CollectionSection.vue'
-import NavBar from '../components/NavBar.vue'
+
 </script>
 
 <template>
   <main class="main-container">
     <!-- NavBar Section -->
     <section class="navbar-section">
-      <NavBar />
+      <!-- <NavBar /> -->
     </section>
 
     <!-- Collection Section -->
@@ -24,7 +24,7 @@ import NavBar from '../components/NavBar.vue'
   justify-content: flex-start; /* Align items to the top of the container */
   align-items: center; /* Center items horizontally */
   height: 100vh; /* Full screen height */
-  width: 200vh;
+  width: 190vh;
   padding: 20px; /* Optional: Add padding for spacing around the container */
 }
 

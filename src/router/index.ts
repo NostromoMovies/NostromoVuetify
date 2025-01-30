@@ -1,9 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '../views/DashboardVue.vue'
-import Collection from '@/views/CollectionVue.vue'
-import { useAuthStore } from '@/stores/authStore'
-import Signup from '@/views/Signup.vue'
-import MovieDeatilVue from '@/views/MovieDetailView.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+const Dashboard = () => import('@/views/DashboardVue.vue');
+const Collection = () => import('@/views/CollectionVue.vue');
+const Signup = () => import('@/views/Signup.vue');
+const MovieDetail = () => import('@/views/MovieDetailView.vue');
+const NotFound = () => import('@/views/NotFound.vue');
+const Home = () => import('@/views/Homepage.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,51 +13,67 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Dashboard,
+      component: Home,
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: Dashboard,
+      meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
       path: '/collection',
       name: 'collection',
       component: Collection,
+      meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
       path: '/register',
       name: 'register',
       component: Signup,
+      meta: { guestOnly: true }, // Only guests can access
     },
     {
       path: '/movies/:id',
       name: 'MovieDetails',
-      component: MovieDeatilVue,
+      component: MovieDetail,
       props: true,
+      meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
       path: '/test',
       name: 'MovieDetailsTest',
-      component: MovieDeatilVue,
+      component: MovieDetail,
       props: true,
+      meta: { requiresAuth: true }, // Only logged-in users can access
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound,
     },
   ],
-})
+});
 
+// Helper function to check if the user is logged in
 function isLoggedIn() {
-  const authStore = useAuthStore()
-  return authStore.isAuthenticated // Example check
+  const authStore = useAuthStore();
+  return authStore.isAuthenticated; // Example check
 }
 
 // Add a global navigation guard
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !isLoggedIn()) {
-    // Redirect to the login page if not logged in
-    next({ path: '/', query: { redirect: to.fullPath } })
-  } else {
-    next()
-  }
-})
+  // const authStore = useAuthStore();
 
-export default router
+  if (to.meta.requiresAuth && !isLoggedIn()) {
+    // Redirect to Not Found if guest tries to access protected routes
+    next({ name: 'NotFound' });
+  } else if (to.meta.guestOnly && isLoggedIn()) {
+    // Redirect to Not Found if logged-in user tries to access guest-only routes
+    next({ name: 'NotFound' });
+  } else {
+    next(); // Proceed to the route
+  }
+});
+
+export default router;

@@ -64,15 +64,22 @@ const loadDrives = async () => {
   try {
     const response = await fetch('/api/folders/Drives');
     if (!response.ok) throw new Error('Failed to load drives');
-    const drives: DriveInfo[] = await response.json();
-    
-    folderStructure.value = drives.map(drive => ({
-      path: drive.path,
-      isExpanded: false,
-      isLoading: false
-    }));
+
+    const result = await response.json();
+
+    if (result && result.data && Array.isArray(result.data.items)) {
+      folderStructure.value = result.data.items.map((drive: any) => ({
+        path: drive.path,
+        isExpanded: false,
+        isLoading: false,
+      }));
+    } else {
+      console.error('Unexpected response format:', result);
+      folderStructure.value = [];
+    }
   } catch (error) {
     console.error('Error loading drives:', error);
+    folderStructure.value = [];
   }
 };
 

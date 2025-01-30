@@ -1,0 +1,21 @@
+
+> nostromovite@0.0.0 dev
+> concurrently "npm run start-backend" "vite"
+
+[0] 
+[0] > nostromovite@0.0.0 start-backend
+[0] > dotnet run --project backend/Nostromo.CLI/Nostromo.CLI.csproj
+[0] 
+[0] C:\Users\domin\OneDrive\Desktop\NostromoVuetify-initial_changes\backend\Nostromo.Server\Nostromo.Server.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Quartz.Extensions.DependencyInjection 3.13.1, Quartz.Extensions.DependencyInjection 3.13.1; Quartz 3.13.1, Quartz 3.13.1.
+[1] 
+[1]   [32m[1mVITE[22m v6.0.7[39m  [2mready in [0m[1m522[22m[2m[0m ms[22m
+[1] 
+[1]   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/webui/[39m
+[1] [2m  [32m➜[39m  [1mNetwork[22m[2m: use [22m[1m--host[22m[2m to expose[22m
+[1]   ➜  Vue DevTools: Open http://localhost:5173/webui/__devtools__/ as a separate window
+[1]   ➜  Vue DevTools: Press Alt(⌥)+Shift(⇧)+D in App to toggle the Vue DevTools
+[1] 
+[0] C:\Users\domin\OneDrive\Desktop\NostromoVuetify-initial_changes\backend\Nostromo.Server\Nostromo.Server.csproj : warning NU1504: Duplicate 'PackageReference' items found. Remove the duplicate items or use the Update functionality to ensure a consistent restore behavior. The duplicate 'PackageReference' items are: Quartz.Extensions.DependencyInjection 3.13.1, Quartz.Extensions.DependencyInjection 3.13.1; Quartz 3.13.1, Quartz 3.13.1.
+[0] Critical error occurred. Check logs for details.
+[0] npm run start-backend exited with code 0
+[1] ^Cvite exited with code 3221225786

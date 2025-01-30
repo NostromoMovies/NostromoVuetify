@@ -2,9 +2,9 @@
     <main class="main-container">
       <!-- NavBar Section -->
       <header class="navbar-section">
-        <NavBar />
+
       </header>
-  
+
       <!-- Metadata Section -->
       <section class="movie-data">
         <MetadataLayout />
@@ -20,7 +20,7 @@
 
 <script setup lang="ts">
 import MetadataLayout from '@/components/MovieDetailComponent/MetadataLayout.vue';
-import NavBar from '@/components/NavBar.vue';
+
 
 // import { ref } from 'vue';
 // import { useRoute } from 'vue-router';
