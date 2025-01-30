@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\NostromoVite",
+    "\\public",
+    "\\src",
+    "\\src\\assets",
+    "\\src\\components",
+    "\\src\\components\\HomeVue",
+    "\\src\\components\\MovieDetailComponent",
+    "\\src\\router",
+    "\\src\\stores"
+  ],
+  "SelectedNode": "\\src\\router\\index.ts",
+  "PreviewInSolutionExplorer": false
+}

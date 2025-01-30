@@ -34,11 +34,11 @@ const router = createRouter({
       meta: { guestOnly: true }, // Only guests can access
     },
     {
-      path: '/movies/:id',
-      name: 'MovieDetails',
-      component: MovieDetail,
+      path: "/movies/:id",
+      name: "MovieDetails",
+      component: () => import("@/components/MovieDetailComponent/MetadataLayout.vue"),
       props: true,
-      meta: { requiresAuth: true }, // Only logged-in users can access
+      meta: { requiresAuth: true },
     },
     {
       path: '/test',

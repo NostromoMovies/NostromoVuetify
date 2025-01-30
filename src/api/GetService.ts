@@ -11,8 +11,9 @@ export const getService = {
     return axiosInstance .get(`/api/MediaDisplay/searchMedia`)  
   },
   getPoster(id: number){
-    return axiosInstance .get(`/api/Movies/${id}/poster`)  
+    return axiosInstance.get(`/api/File/download/tmdb/${id}/poster`)  
   },
+  ///api/File/download/tmdb/{id}/poster
   fileJob(group: string,name:string ){
     return axiosInstance.get('/api/File/job/${group}/${name}/status')  
   },

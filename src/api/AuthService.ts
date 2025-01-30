@@ -8,7 +8,7 @@ export const authService = {
     return axiosInstance.post('/api/Auth/register',form)
   },
   login(form: Types.LoginForm) {
-    return axiosInstance.post(`/api/Auth/login`,form)
+    return axiosInstance.post(`/api/Auth/login`, form)
 
   }
 

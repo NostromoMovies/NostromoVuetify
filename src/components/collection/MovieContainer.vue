@@ -1,7 +1,7 @@
 <template>
   <router-link :to="to" class="movie-card">
     <div class="poster-container">
-      <img :src="image" alt="Poster" class="poster-image" @error="handleImageError" />
+      <img :src="posterImage" alt="Poster" class="poster-image" @error="handleImageError" />
       <div class="overlay">
         <div class="movie-title">{{ title }}</div>
       </div>
@@ -10,77 +10,53 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
+  import { defineProps, ref, onMounted } from 'vue';
+  import { getService } from '@/api/getService';
 
-const props = defineProps({
-  to: { type: String, required: true },
-  image: { type: String, required: true },
-  title: { type: String, required: true }
-});
+  const props = defineProps({
+    to: { type: String, required: true },
+    movieId: { type: Number, required: true },
+    title: { type: String, required: true }
+  });
 
-const handleImageError = (e: Event) => {
-  const target = e.target as HTMLImageElement
-  target.src = 'https://placehold.co/300x450?text=No+Poster'
-}
+  const posterImage = ref(`/api/movies/${props.movieId}/poster`);
+
+  const fetchPoster = async () => {
+    try {
+      const response = await fetch(posterImage.value, { method: 'HEAD' });
+
+      if (!response.ok) {
+        await getService.getPoster(props.movieId);
+        setTimeout(() => {
+          posterImage.value = `/api/movies/${props.movieId}/poster?reload=${Date.now()}`;
+        }, 2000);
+      }
+    } catch {
+      posterImage.value = 'https://placehold.co/300x450?text=No+Poster';
+    }
+  };
+
+  const handleImageError = (e: Event) => {
+    (e.target as HTMLImageElement).src = 'https://placehold.co/300x450?text=No+Poster';
+  };
+
+  onMounted(fetchPoster);
 </script>
 
 <style scoped>
-.movie-card {
-  cursor: pointer;
-  transition: transform 0.2s;
-  width: 100%;
-  /* max-width: 250px; */
-  margin: 20;
-}
+  .poster-container {
+    position: relative;
+    width: 100%;
+    padding-top: 150%;
+    overflow: hidden;
+  }
 
-.movie-card:hover {
-  transform: scale(1.05);
-}
-
-.poster-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 2/3;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.poster-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
-
-.movie-card:hover .overlay {
-  background: rgba(0, 0, 0, 0.6);
-}
-
-.movie-title {
-  color: white;
-  text-align: center;
-  padding: 1rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-  font-size: 1rem;
-  margin: 0;
-  word-break: break-word;
-}
-
-.movie-card:hover .movie-title {
-  opacity: 1;
-}
+  .poster-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 </style>
