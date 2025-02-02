@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
     import { ref, computed, provide } from 'vue';
-    import Navbar from './components/Navbar.vue';
+    import Navbar from './components/NavBar.vue';
 
     import { useMovieStore } from './stores/movieStore';
     import { useRoute } from 'vue-router';

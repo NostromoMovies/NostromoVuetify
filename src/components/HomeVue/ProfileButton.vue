@@ -5,17 +5,16 @@
         offset-y
         close-on-content-click
       >
-        <template #activator="{ on, attrs }">
-          <v-btn
-            icon
-            v-bind="attrs"
-            v-on="on"
-            color="accent-tertiary"
-            class="dropdown-button"
-          >
-            <v-icon>mdi-account-circle</v-icon>
-          </v-btn>
-        </template>
+      <template #activator="{ props }">
+      <v-btn
+        icon
+        v-bind="props"
+        color="accent-tertiary"
+        class="dropdown-button"
+      >
+    <v-icon>mdi-account-circle</v-icon>
+  </v-btn>
+</template>
   
         <v-list>
           <v-list-item @click="goToSettings">

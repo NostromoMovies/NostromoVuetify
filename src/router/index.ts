@@ -1,11 +1,14 @@
+// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
+
+// Your dynamic imports
 const Dashboard = () => import('@/views/DashboardVue.vue');
 const Collection = () => import('@/views/CollectionVue.vue');
 const Signup = () => import('@/views/Signup.vue');
 const MovieDetail = () => import('@/views/MovieDetailView.vue');
 const NotFound = () => import('@/views/NotFound.vue');
-const Home = () => import('@/views/Homepage.vue')
+const Home = () => import('@/views/Homepage.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

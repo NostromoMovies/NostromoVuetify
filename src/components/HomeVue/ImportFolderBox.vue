@@ -33,16 +33,17 @@
    />
 
     <!-- Confirmation Dialog -->
+<!-- Confirmation Dialog -->
     <v-dialog v-model="dialog" max-width="400px">
       <v-card>
         <v-card-title class="headline">
-         Confirm Delete
+          Confirm Delete
         </v-card-title>
         <v-card-text>{{ selectedFolder }}</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn text @click="dialog = false">Cancel</v-btn>
-          <v-btn color="red" text @click="deleteFolder">Delete</v-btn>
+          <v-btn variant="text" @click="dialog = false">Cancel</v-btn>
+          <v-btn color="red" variant="text" @click="deleteFolder">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
