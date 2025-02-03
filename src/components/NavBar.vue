@@ -4,10 +4,11 @@
     <v-toolbar-title class="logo">Nostromo</v-toolbar-title>
 
     <!-- Navigation Links -->
+
     <v-btn
       v-if="isAuthenticated"
-      text
-      :class="{ 'v-btn--active': $route.path === '/dashboard' }"
+      variant="text"
+      :active="$route.path === '/dashboard'"
       to="/dashboard"
     >
       Dashboard
@@ -15,8 +16,8 @@
 
     <v-btn
       v-if="isAuthenticated"
-      text
-      :class="{ 'v-btn--active': $route.path === '/collection' }"
+      variant="text"
+      :active="$route.path === '/collection'"
       to="/collection"
     >
       Collection

@@ -38,7 +38,7 @@
 
 <script>
   import { ref, onMounted, computed, watch } from "vue";
-  import { useMovieStore } from "@/stores/moviestore";
+  import { useMovieStore } from "@/stores/movieStore";
 
   export default {
     setup() {

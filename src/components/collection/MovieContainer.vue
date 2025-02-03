@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
   import { defineProps, ref, onMounted } from 'vue';
-  import { getService } from '@/api/getService';
+  import { getService } from '@/api/GetService';
 
   const props = defineProps({
     to: { type: String, required: true },

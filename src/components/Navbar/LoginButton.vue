@@ -57,9 +57,14 @@
 
           <!-- Register Link -->
           <v-card-actions class="justify-center">
-            <router-link :to="'/register'" class="text-decoration-none">
-              <v-btn text color="primary">Create Profile</v-btn>
-            </router-link>
+            <v-btn
+              to="/register"
+              variant="text"
+              color="primary"
+              class="text-decoration-none"
+            >
+              Create Profile
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

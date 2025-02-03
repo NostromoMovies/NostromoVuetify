@@ -1,13 +1,26 @@
 import { ref } from "vue";
 import type { Movie, MovieStore } from "../types";
 
+// Define the structure of the API response
+interface ApiMovie {
+  movieID?: string | number;
+  tmdbid?: string | number;
+  title: string;
+  posterPath?: string | null;
+}
+
 export const useMovieStore = (): MovieStore => {
   const movies = ref<Movie[]>([]);
   const lastFetched = ref<number | null>(null);
   const CACHE_DURATION = 60 * 1000;
 
   const fetchMovies = async (force = false): Promise<Movie[]> => {
-    if (!force && movies.value.length && lastFetched.value && (Date.now() - lastFetched.value) < CACHE_DURATION) {
+    if (
+      !force &&
+      movies.value.length &&
+      lastFetched.value &&
+      Date.now() - lastFetched.value < CACHE_DURATION
+    ) {
       console.log("Using cached movie data");
       return movies.value;
     }
@@ -23,7 +36,8 @@ export const useMovieStore = (): MovieStore => {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
 
-      movies.value = jsonResponse.data.items.map(movie => ({
+      // Explicitly type the `movie` parameter
+      movies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
         movieID: movie.movieID || movie.tmdbid || null,
         title: movie.title,
         posterPath: movie.posterPath ?? null,
