@@ -8,7 +8,8 @@ const Collection = () => import('@/views/CollectionVue.vue');
 const Signup = () => import('@/views/Signup.vue');
 const MovieDetail = () => import('@/views/MovieDetailView.vue');
 const NotFound = () => import('@/views/NotFound.vue');
-const Home = () => import('@/views/Homepage.vue');
+// const Home = () => import('@/views/Homepage.vue');
+const AboutUs = () => import('@/views/AboutUsVue.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -16,7 +17,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home,
+      component: AboutUs,
     },
     {
       path: '/dashboard',

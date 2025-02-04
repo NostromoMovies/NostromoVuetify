@@ -1,10 +1,9 @@
 <template>
   <v-app-bar color="primary" dark app>
-    <!-- Logo -->
+
     <v-toolbar-title class="logo">Nostromo</v-toolbar-title>
 
     <!-- Navigation Links -->
-
     <v-btn
       v-if="isAuthenticated"
       variant="text"
@@ -23,7 +22,19 @@
       Collection
     </v-btn>
 
-    <!-- Spacer to push login/profile buttons to the right -->
+    <!-- Home & GitHub Buttons (Only for Unauthenticated Users) -->
+    <template v-if="!isAuthenticated">
+      <v-btn variant="text" :active="$route.path === '/'" to="/">
+        Home
+      </v-btn>
+
+      <!-- GitHub Icon Button -->
+      <v-btn icon href="https://github.com/NostromoMovies" target="_blank">
+        <v-icon>mdi-github</v-icon>
+      </v-btn>
+    </template>
+
+
     <v-spacer />
 
     <!-- Login and Profile Buttons -->
@@ -32,14 +43,9 @@
       class="right-cushion"
       @login-success="handleLogin"
     />
-    <ProfileButton
-      v-else
-      class="right-cushion"
-
-    />
+    <ProfileButton v-else class="right-cushion" />
   </v-app-bar>
 </template>
-
 
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -59,15 +65,7 @@ export default defineComponent({
     const handleLogin = () => {
       console.log("User has logged in");
       window.location.reload();
-
     };
-
-    // const handleLogout = () => {
-    //   authStore.logout();
-    //   window.location.reload();
-
-    //   console.log("User has logged out");
-    // };
 
     return { isAuthenticated, handleLogin };
   },
@@ -78,7 +76,7 @@ export default defineComponent({
 .logo {
   font-family: "Nostromo3D", sans-serif;
   font-size: 2.5rem;
-  color:rgb(65, 240, 11);
+  color: rgb(65, 240, 11);
   margin: 0;
   padding: 0;
   letter-spacing: 1px;

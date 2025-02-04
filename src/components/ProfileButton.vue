@@ -39,7 +39,7 @@ export default {
       console.log("Logging out...");
       window.location.reload();
       authStore.logout(); // Call the logout method from the auth store
-      router.push("/register"); // Redirect to the login or home page
+      router.push("/"); // Redirect to the login or home page
     };
 
     return {
