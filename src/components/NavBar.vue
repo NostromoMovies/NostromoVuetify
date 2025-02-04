@@ -22,17 +22,21 @@
       Collection
     </v-btn>
 
-    <!-- Home & GitHub Buttons (Only for Unauthenticated Users) -->
-    <template v-if="!isAuthenticated">
-      <v-btn variant="text" :active="$route.path === '/'" to="/">
-        Home
-      </v-btn>
+ <!-- Home Blog GitHub Buttons  -->
+<template v-if="!isAuthenticated">
+  <v-btn variant="text" :active="$route.path === '/'" to="/" class="nav-btn">
+    Home
+  </v-btn>
 
-      <!-- GitHub Icon Button -->
-      <v-btn icon href="https://github.com/NostromoMovies" target="_blank">
-        <v-icon>mdi-github</v-icon>
-      </v-btn>
-    </template>
+  <v-btn variant="text" :active="$route.path === '/'" to="/" class="nav-btn">
+    Blog 
+  </v-btn>
+
+  <!-- GitHub Icon Button -->
+  <v-btn icon href="https://github.com/NostromoMovies" target="_blank" class="nav-btn">
+    <v-icon>mdi-github</v-icon>
+  </v-btn>
+</template>
 
 
     <v-spacer />
@@ -93,6 +97,10 @@ export default defineComponent({
   font-weight: bold;
   color: var(--accent-primary);
 }
+.nav-btn{
+  padding-right: 15px;
+  margin: 5px;
+}
 
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
@@ -100,4 +108,5 @@ export default defineComponent({
     font-size: 1.5rem;
   }
 }
+
 </style>
