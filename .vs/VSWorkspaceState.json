@@ -1,16 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\NostromoVite",
-    "\\public",
     "\\src",
     "\\src\\assets",
     "\\src\\components",
+    "\\src\\components\\collection",
     "\\src\\components\\HomeVue",
     "\\src\\components\\MovieDetailComponent",
     "\\src\\router",
+    "\\src\\services",
     "\\src\\stores"
   ],
-  "SelectedNode": "\\src\\router\\index.ts",
+  "SelectedNode": "\\src\\components\\HomeVue\\ImportFolderBox.vue",
   "PreviewInSolutionExplorer": false
 }

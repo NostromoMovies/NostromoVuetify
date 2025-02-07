@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <!-- Movie Title and Redirect Link -->
+  <div class="background-container" :style="backgroundStyle">
+    <div class="overlay"></div>
     <div class="header-section">
-      <v-btn class="redirect-btn" color="primary" outlined @click="redirectToDashboard">
-        Collection >
-      </v-btn>
-      <h1 class="movie-title">{{ selectedMovie?.title || "Loading..." }}</h1>
+      <h1 class="movie-title-box">
+        {{ selectedMovie?.title || "Loading..." }}
+      </h1>
     </div>
 
     <v-container class="custom-container" fluid>
@@ -24,7 +23,7 @@
         <v-col cols="12" lg="8">
           <v-row>
             <v-col cols="12" md="6" v-for="(metadata, index) in metadataBoxes" :key="index">
-              <v-card outlined>
+              <v-card outlined class="metadata-card">
                 <v-card-title>{{ metadata.title }}</v-card-title>
                 <v-card-text>{{ metadata.content }}</v-card-text>
               </v-card>
@@ -61,29 +60,64 @@
         if (!selectedMovie.value) return [];
         return [
           { title: "Overview", content: selectedMovie.value?.overview ?? "N/A" },
-          { title: "Release Year", content: selectedMovie.value?.releaseDate ? selectedMovie.value.releaseDate.split("-")[0] : "Unknown" },
-          { title: "Runtime", content: selectedMovie.value?.runtime ? `${selectedMovie.value.runtime} minutes` : "Unknown" },
+          {
+            title: "Release Date",
+            content: selectedMovie.value?.releaseDate
+              ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+              })
+              : "Unknown"
+          },
+          {
+            title: "Runtime",
+            content: selectedMovie.value?.runtime
+              ? `${Math.floor(selectedMovie.value.runtime / 60)}h ${selectedMovie.value.runtime % 60}m`
+              : "Unknown"
+          }
         ];
       });
+
+      const backgroundStyle = computed(() => ({
+        backgroundImage: selectedMovie.value?.backdropPath
+          ? `url(https://image.tmdb.org/t/p/w1280${selectedMovie.value.backdropPath})`
+          : "none"
+      }));
 
       return {
         selectedMovie,
         metadataBoxes,
-        redirectToDashboard: () => {
-          window.location.href = "/dashboard";
-        }
+        backgroundStyle
       };
     },
   };
 </script>
 
 <style scoped>
-  .movie-title {
-    padding-top: 20px;
+  .background-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  .redirect-btn {
-    font-size: 10px;
+  .custom-container {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7); 
+    padding: 50px;
+    border-radius: 10px;
+  }
+
+  .movie-title {
+    padding-top: 20px;
   }
 
   .header-section {
@@ -91,14 +125,40 @@
     text-align: center;
   }
 
-  .custom-container {
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    padding: 100px;
+  .metadata-card {
+    background-color: rgb(34, 34, 34);
+    color: #fff;
   }
 
   .movie-poster {
     background-color: red;
+    max-width: 300px;
+    max-height: 450px;
+    margin: auto;
+  }
+
+  .movie-poster img {
+    width: 100%;
+    height: auto;
+  }
+
+  .movie-title-box {
+    position: relative;
+    z-index: 2;
+    background-color: rgb(34, 34, 34);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    margin: 20px auto;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
   }
 </style>

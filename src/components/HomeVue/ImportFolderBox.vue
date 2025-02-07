@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <v-container>
     <v-card class="mb-4">
       <v-card-title>Watched Folders</v-card-title>
@@ -100,16 +100,19 @@
  onMounted(fetchFolders);
  </script>
 
+<style scoped>
+  .v-card {
+    background-color: rgb(34, 34, 34);
+    color: white !important;
+    box-shadow: none !important;
+    border-radius: 10px;
+  }
 
+  .v-list {
+    background-color: rgb(34, 34, 34);
+    color: white !important;
+  }
 
-
-
-
-
-
-
-
- <style scoped>
  .container {
   height: 100%;
   position: relative;
@@ -200,4 +203,3 @@
   justify-content: flex-end;
  }
  </style>
-

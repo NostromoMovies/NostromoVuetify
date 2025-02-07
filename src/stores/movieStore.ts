@@ -7,6 +7,11 @@ interface ApiMovie {
   tmdbid?: string | number;
   title: string;
   posterPath?: string | null;
+  overview?: string | null; /* added */
+  releaseDate?: string | null; /* added */
+  runtime?: string | null; /* added */
+  backdropPath?: string | null;
+
 }
 
 export const useMovieStore = (): MovieStore => {
@@ -41,6 +46,10 @@ export const useMovieStore = (): MovieStore => {
         movieID: movie.movieID || movie.tmdbid || null,
         title: movie.title,
         posterPath: movie.posterPath ?? null,
+        overview: movie.overview ?? null, /* added */
+        releaseDate: movie.releaseDate ?? null, /* added */
+        runtime: movie.runtime ?? null, /* added, needs to be included on metadata layout */
+        backdropPath: movie.backdropPath ?? null, /* added */
       }));
 
       lastFetched.value = Date.now();
