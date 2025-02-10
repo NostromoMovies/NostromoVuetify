@@ -10,7 +10,7 @@
       
       <!-- Right Rectangle -->
       <div class="rectangle">
-        <UnrecognizedFiles></UnrecognizedFiles>
+        <UnrecognizedMovies></UnrecognizedMovies>
       </div>
       <div class="rectangle">
       <DownloadProgress></DownloadProgress>
@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import UnrecognizedFileBox from './HomeVue/ImportFolderBox.vue';
-import UnrecognizedFiles from './HomeVue/UnrecognizedFiles.vue';
+import UnrecognizedMovies from './HomeVue/UnrecognizedMovies.vue';
 import DownloadProgress from './HomeVue/DownloadProgress.vue';
 </script>
 

@@ -2,15 +2,15 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\assets",
     "\\src\\components",
     "\\src\\components\\collection",
     "\\src\\components\\HomeVue",
     "\\src\\components\\MovieDetailComponent",
     "\\src\\router",
     "\\src\\services",
-    "\\src\\stores"
+    "\\src\\stores",
+    "\\src\\views"
   ],
-  "SelectedNode": "\\src\\components\\HomeVue\\ImportFolderBox.vue",
+  "SelectedNode": "\\src\\components\\DashboardSection.vue",
   "PreviewInSolutionExplorer": false
 }
