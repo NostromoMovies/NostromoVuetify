@@ -9,6 +9,9 @@
       <section class="movie-data">
         <MetadataLayout />
       </section>
+      <section class="cast-data">
+        <CastLayout/>
+      </section>
     </main>
   </template>
 
@@ -20,8 +23,7 @@
 
 <script setup lang="ts">
 import MetadataLayout from '@/components/MovieDetailComponent/MetadataLayout.vue';
-
-
+import CastLayout from '@/components/MovieDetailComponent/CastLayout.vue';
 // import { ref } from 'vue';
 // import { useRoute } from 'vue-router';
 // import axios from 'axios';
@@ -55,17 +57,25 @@ import MetadataLayout from '@/components/MovieDetailComponent/MetadataLayout.vue
   height: 100vh; /* Full screen height */
   padding: 20px; /* Optional: Add padding for spacing around the container */
   width: 200vh;
+  position: relative;
 }
 
 .navbar-section {
   padding: 20px;
-  width: 100%; /* Ensure NavBar takes the full width */
-  margin-bottom: 20px; /* Space between NavBar and DashboardSection */
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 10; /* Ensures the navbar stays above */
+  background-color: rgba(0, 0, 0, 0.8); /* Optional: make it stand out */
 }
-.movie-data{
-    padding-top: 30px;
-    width: 80%;
+.movie-data {
+  padding-top: 80px; /* Adjust this value based on your navbar height */
+  width: 80%;
 }
+.cast-data{
+  width: 100%;
+}
+
 
 
 </style>
