@@ -1,15 +1,29 @@
 <template>
   <div>
     <h1>File Hashing Progress</h1>
+
     <div v-if="progresses.length > 0" class="progress-container">
       <div v-for="(progress, index) in progresses"
            :key="index"
            class="progress-box">
-        <strong class="filename">{{ progress.filename }} ({{ progress.hashType }})</strong>
-        <span class="progress"
-              :class="getProgressColor(progress.progress)">
-          {{ progress.progress }}%
-        </span>
+        
+       
+        <strong class="filename">{{ progress.filename }}</strong>
+
+        
+        <span class="hash-type">{{ progress.hashType }}</span>
+
+       
+        <div class="progress-wrapper">
+          <v-progress-linear
+            :model-value="progress.progress"
+            color="green"
+            height="10"
+            rounded
+            class="progress-bar"
+          ></v-progress-linear>
+          <span class="progress-value">{{ progress.progress }}%</span>
+        </div>
       </div>
     </div>
     <p v-else>No active jobs found.</p>
@@ -181,41 +195,49 @@
   .progress-container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
     padding: 10px;
   }
 
   .progress-box {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1e1e1e; /* Dark background */
+    flex-direction: column;
+    background-color: #1e1e1e;
     color: #ffffff;
     padding: 10px 15px;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 8px;
     font-size: 12px;
     width: 100%;
   }
 
   .filename {
-    flex: 1;
     font-weight: bold;
+    display: block; 
+    margin-bottom: 3px;
   }
 
-  .progress {
+  .hash-type {
+    display: block;
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 5px;
+  }
+
+  .progress-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+  }
+
+  .progress-bar {
+    flex-grow: 1; 
+  }
+
+  .progress-value {
     font-size: 12px;
-  }
-
-  /* Dynamic Font Colors */
-  .low-progress {
-    color: #ff4d4d; /* Red for <50% */
-  }
-
-  .medium-progress {
-    color: #ffa500; /* Orange for 50-79% */
-  }
-
-  .high-progress {
-    color: #4caf50; /* Green for 80-100% */
+    font-weight: bold;
+    color: #ffffff;
+    min-width: 40px; 
+    text-align: left;
   }
 </style>
