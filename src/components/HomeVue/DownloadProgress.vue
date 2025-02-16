@@ -1,108 +1,221 @@
 <template>
-  <v-container>
-    <!-- Display the 5 most recent jobs -->
-    <h3>Recent Jobs</h3>
-    <div class="recent-jobs">
-      
-      <div v-for="job in recentJobs" :key="job.jobId" class="job-item">
-        <span>Job ID: {{ job.jobId }}</span>
-        <span>Status: {{ job.message }}</span>
-        <span>Progress: {{ job.progress }}%</span>
-        
-        <!-- Progress Bar inside Recent Jobs -->
-        <v-progress-linear
-          v-model="job.progress"
-          color="green"
-          height="25"
-        >
-          <template v-slot:default="{ value }">
-            <strong>{{ Math.ceil(value) }}%</strong>
-          </template>
-        </v-progress-linear>
+  <div>
+    <h1>File Hashing Progress</h1>
+    <div v-if="progresses.length > 0" class="progress-container">
+      <div v-for="(progress, index) in progresses"
+           :key="index"
+           class="progress-box">
+        <strong class="filename">{{ progress.filename }} ({{ progress.hashType }})</strong>
+        <span class="progress"
+              :class="getProgressColor(progress.progress)">
+          {{ progress.progress }}%
+        </span>
       </div>
     </div>
-    
-    
-  </v-container>
+    <p v-else>No active jobs found.</p>
+  </div>
 </template>
 
-<script setup lang="ts">
-import { ref, onMounted, onUnmounted } from "vue";
-import signalRService from "@/services/signalRService";
+<script>
+  import { ref, onMounted, onUnmounted } from "vue";
 
-// Track the 5 most recent jobs
-// const recentJobs = ref<{ jobId: string; message: string; progress: number }[]>([]);
-const recentJobs = ref<{ jobId: string; message: string; progress: number }[]>([
-  { jobId: "001", message: "Processing", progress: 20 },
-  { jobId: "002", message: "Queued", progress: 10 },
-  { jobId: "003", message: "In Progress", progress: 50 },
-  { jobId: "004", message: "Completed", progress: 100 },
-  { jobId: "005", message: "Failed", progress: 75 }
-]);
+  export default {
+    setup() {
+      const jobIds = ref([]);
+      const progresses = ref([]);
+      // We'll store extra job state (activeIndex, lastProgress) here:
+      const jobStateMap = {};
 
-// Function to increase progress (for testing)
-const increaseProgress = () => {
-  if (recentJobs.value.length > 0 && recentJobs.value[0].progress < 100) {
-    recentJobs.value[0].progress += 10;
-  }
-};
+      // The order of the bars
+      const hashTypes = ["MD5", "SHA1", "CRC32", "ED2K"];
+      let intervalId = null;
 
-onMounted(() => {
-  signalRService.startConnection();
+      const fetchActiveJobs = async () => {
+        try {
+          const response = await fetch("/api/progress/jobs");
+          if (!response.ok) return;
 
-  signalRService.listenForProgressUpdates((receivedJobId: string, receivedMessage: string, receivedProgress: number) => {
-    // Add the new job to the recent jobs list
-    recentJobs.value.unshift({
-      jobId: receivedJobId,
-      message: receivedMessage,
-      progress: receivedProgress
-    });
-    
-    if (recentJobs.value.length > 5) {
-      recentJobs.value.pop();  // Remove the oldest job
-    }
-  });
-});
+          const data = await response.json();
+          if (data.jobIds.length > 0) {
+            jobIds.value = data.jobIds;
+            initializeProgressEntries();
+            startPolling();
+          }
+        } catch (error) {
+          console.error("Error fetching active jobs:", error);
+        }
+      };
 
-onUnmounted(() => {
-  signalRService.stopConnection();
-});
+      const initializeProgressEntries = async () => {
+        for (let jobId of jobIds.value) {
+          try {
+            const response = await fetch(`/api/progress/${jobId}`);
+            if (!response.ok) continue;
+
+            const data = await response.json();
+            const filename = data.filename || "Unknown File";
+
+            // Create 4 entries for this job if they don't exist
+            hashTypes.forEach((hashType) => {
+              if (!progresses.value.some((p) => p.jobId === jobId && p.hashType === hashType)) {
+                progresses.value.push({
+                  jobId: jobId,
+                  filename,
+                  hashType,
+                  progress: 0, // Start at 0%
+                });
+              }
+            });
+
+            // Also initialize a little "job state" object for this job
+            if (!jobStateMap[jobId]) {
+              jobStateMap[jobId] = {
+                lastProgress: 0,   // last polled progress from server
+                activeIndex: 0,    // which bar (0..3) we are currently updating
+              };
+            }
+          } catch (error) {
+            console.error(`Error initializing progress for ${jobId}:`, error);
+          }
+        }
+      };
+
+      const startPolling = () => {
+        if (jobIds.value.length === 0) return;
+
+        intervalId = setInterval(async () => {
+          try {
+            let completedJobs = [];
+
+            for (let jobId of jobIds.value) {
+              const response = await fetch(`/api/progress/${jobId}`);
+              if (!response.ok) continue;
+
+              const data = await response.json();
+              const { progress } = data; // single progress value, 0→100 repeated
+              const jobEntries = progresses.value.filter((p) => p.jobId === jobId);
+              const state = jobStateMap[jobId];
+
+              if (!state) {
+                // If for some reason we don't have state, skip
+                continue;
+              }
+
+              // Check if we've "reset" from near 100 back to a smaller value
+              if (progress < state.lastProgress) {
+                // Means the server started the next hashing pass
+                state.activeIndex++;
+              }
+
+              // Make sure we don't go out of range (there are 4 bars)
+              if (state.activeIndex > 3) {
+                state.activeIndex = 3;
+              }
+
+              // 1) Set all previous bars to 100
+              for (let i = 0; i < state.activeIndex; i++) {
+                jobEntries[i].progress = 100;
+              }
+
+              // 2) Update the "current" bar with the new progress
+              jobEntries[state.activeIndex].progress = progress;
+              state.lastProgress = progress;
+
+              // If we're on the last bar (activeIndex=3) and it's at 100, job is complete
+              if (state.activeIndex === 3 && progress === 100) {
+                completedJobs.push(jobId);
+                await removeCompletedJob(jobId);
+              }
+            }
+
+            // Remove any completed jobs
+            jobIds.value = jobIds.value.filter((id) => !completedJobs.includes(id));
+            progresses.value = progresses.value.filter((p) => !completedJobs.includes(p.jobId));
+
+            // Also remove them from jobStateMap
+            completedJobs.forEach((id) => {
+              delete jobStateMap[id];
+            });
+
+            // Stop polling if there are no more jobs
+            if (jobIds.value.length === 0) {
+              clearInterval(intervalId);
+            }
+          } catch (error) {
+            console.error("Error fetching progress:", error);
+          }
+        }, 1000);
+      };
+
+      const removeCompletedJob = async (jobId) => {
+        try {
+          await fetch(`/api/progress/remove/${jobId}`, { method: "DELETE" });
+        } catch (error) {
+          console.error(`Error removing completed job ${jobId}:`, error);
+        }
+      };
+
+      const getProgressColor = (progress) => {
+        if (progress < 50) return "low-progress";
+        if (progress < 80) return "medium-progress";
+        return "high-progress";
+      };
+
+      onMounted(() => {
+        fetchActiveJobs();
+      });
+
+      onUnmounted(() => {
+        if (intervalId) clearInterval(intervalId);
+      });
+
+      return {
+        progresses,
+        getProgressColor,
+      };
+    },
+  };
 </script>
 
 <style scoped>
-.h3{
-  padding-bottom: 10px;
-}
-.v-container {
-  height: 100%; /* Full viewport height */
-  display: flex;
-  flex-direction: column;
-}
+  .progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
 
-.recent-jobs {
-  padding-top: 10px;
-  flex: 1; /* Take up remaining space */
-  background-color: #f4f4f4;
-  padding: 10px;
-  border-radius: 8px;
-  overflow-y: auto;
-  height: 100%;
-}
+  .progress-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1e1e1e; /* Dark background */
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 8px; /* Rounded corners */
+    font-size: 12px;
+    width: 100%;
+  }
 
-.job-item {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 8px 0;
-  border-bottom: 1px solid #ccc;
-}
+  .filename {
+    flex: 1;
+    font-weight: bold;
+  }
 
-.job-item span {
-  font-size: 14px;
-  color: #333;
-}
+  .progress {
+    font-size: 12px;
+  }
 
-.job-item:last-child {
-  border-bottom: none;
-}
+  /* Dynamic Font Colors */
+  .low-progress {
+    color: #ff4d4d; /* Red for <50% */
+  }
+
+  .medium-progress {
+    color: #ffa500; /* Orange for 50-79% */
+  }
+
+  .high-progress {
+    color: #4caf50; /* Green for 80-100% */
+  }
 </style>

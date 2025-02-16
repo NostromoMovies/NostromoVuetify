@@ -7,6 +7,30 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\DashboardSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\DownloadProgress.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\Searchbar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\ImportFolderBox.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\ImportFolderBox.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\FolderTree.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\FolderTree.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\services\\signalRService.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\services\\signalRService.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:vite.config.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\UnrecognizedMovies.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\UnrecognizedMovies.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -30,11 +54,85 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ImportFolderBox.vue",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\ImportFolderBox.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\ImportFolderBox.vue",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\ImportFolderBox.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\ImportFolderBox.vue",
+              "ViewState": "AgIAAIoAAAAAAAAAAAAAAJUAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-16T09:00:50.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "FolderTree.vue",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\FolderTree.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\FolderTree.vue",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\FolderTree.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\FolderTree.vue",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-16T09:00:43.651Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Searchbar.vue",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\Searchbar.vue",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
+              "RelativeToolTip": "src\\components\\collection\\Searchbar.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-16T09:00:32.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "signalRService.ts",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\services\\signalRService.ts",
+              "RelativeDocumentMoniker": "src\\services\\signalRService.ts",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\services\\signalRService.ts",
+              "RelativeToolTip": "src\\services\\signalRService.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-02-16T06:29:29.374Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "vite.config.ts",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\vite.config.ts",
+              "RelativeDocumentMoniker": "vite.config.ts",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\vite.config.ts",
+              "RelativeToolTip": "vite.config.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-02-16T06:28:38.48Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DownloadProgress.vue",
+              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\DownloadProgress.vue",
+              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\DownloadProgress.vue",
+              "ViewState": "AgIAAIgAAAAAAAAAAAAIwMMAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-02-16T06:25:47.169Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -44,14 +142,14 @@
               "RelativeDocumentMoniker": "src\\components\\DashboardSection.vue",
               "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\DashboardSection.vue",
               "RelativeToolTip": "src\\components\\DashboardSection.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAARAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAADcAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
               "WhenOpened": "2025-02-10T22:30:46.762Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
               "Title": "UnrecognizedMovies.vue",
               "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\UnrecognizedMovies.vue",
               "RelativeDocumentMoniker": "src\\components\\HomeVue\\UnrecognizedMovies.vue",
@@ -59,12 +157,11 @@
               "RelativeToolTip": "src\\components\\HomeVue\\UnrecognizedMovies.vue",
               "ViewState": "AgIAAAQAAAAAAAAAAAAiwEoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-02-10T22:30:09.125Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T22:30:09.125Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 8,
               "Title": "index.ts",
               "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\router\\index.ts",
               "RelativeDocumentMoniker": "src\\router\\index.ts",
@@ -72,12 +169,11 @@
               "RelativeToolTip": "src\\router\\index.ts",
               "ViewState": "AgIAABYAAAAAAAAAAAAIwFoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-02-10T22:29:46.502Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T22:29:46.502Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "useNavigationStore.ts",
               "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\useNavigationStore.ts",
               "RelativeDocumentMoniker": "src\\stores\\useNavigationStore.ts",
@@ -85,12 +181,11 @@
               "RelativeToolTip": "src\\stores\\useNavigationStore.ts",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-02-10T22:29:41.486Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T22:29:41.486Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "MatchUnrecognizedMovies.vue",
               "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\MatchUnrecognizedMovies.vue",
               "RelativeDocumentMoniker": "src\\views\\MatchUnrecognizedMovies.vue",
@@ -98,8 +193,7 @@
               "RelativeToolTip": "src\\views\\MatchUnrecognizedMovies.vue",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAOEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-02-10T22:29:22.557Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T22:29:22.557Z"
             }
           ]
         }
