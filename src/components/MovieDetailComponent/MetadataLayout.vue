@@ -11,10 +11,12 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-card outlined class="movie-poster">
-            <v-img v-if="selectedMovie?.posterPath"
-                   :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
-                   alt="Movie Poster"
-                   aspect-ratio="2/3"></v-img>
+            <v-img
+              v-if="selectedMovie?.posterPath"
+              :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
+              alt="Movie Poster"
+              aspect-ratio="2/3"
+            />
             <p v-else>No Poster Available</p>
           </v-card>
         </v-col>
@@ -22,7 +24,12 @@
         <!-- Metadata Section -->
         <v-col cols="12" lg="8">
           <v-row>
-            <v-col cols="12" md="6" v-for="(metadata, index) in metadataBoxes" :key="index">
+            <v-col
+              cols="12"
+              md="6"
+              v-for="(metadata, index) in metadataBoxes"
+              :key="index"
+            >
               <v-card outlined class="metadata-card">
                 <v-card-title>{{ metadata.title }}</v-card-title>
                 <v-card-text>{{ metadata.content }}</v-card-text>
@@ -37,10 +44,20 @@
       <v-row class="actor-container">
         <v-col cols="12">
           <div class="actor-row">
-            <div class="actor-col" v-for="actor in actors" :key="actor.id">
+            <div
+              class="actor-col"
+              v-for="actor in actors"
+              :key="actor.id"
+            >
               <v-card outlined class="actor-card">
-                <v-img :src="actor.image" alt="Actor Image" aspect-ratio="1"></v-img>
-                <v-card-title class="text-center">{{ actor.name }}</v-card-title>
+                <v-img
+                  :src="actor.image"
+                  alt="Actor Image"
+                  aspect-ratio="1"
+                />
+                <v-card-title class="text-center">
+                  {{ actor.name }}
+                </v-card-title>
               </v-card>
             </div>
           </div>
@@ -52,6 +69,7 @@
 
 <script lang="ts">
 import { ref, onMounted, computed } from "vue";
+import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 
 interface Actor {
@@ -62,46 +80,62 @@ interface Actor {
 
 export default {
   setup() {
+    const route = useRoute();
     const movieStore = useMovieStore();
     const selectedMovie = ref(null);
 
+    // Fetch the correct movie on mount
     onMounted(async () => {
+      // 1. Fetch the full list (so the store is populated)
       await movieStore.fetchMovies();
-      if (movieStore.movies.value.length > 0) {
-        selectedMovie.value = { ...movieStore.movies.value[0] };
-        console.log("Selected Movie Data:", selectedMovie.value);
+
+      // 2. Get the :id from the route (make sure your router is /movies/:id)
+      const movieId = route.params.id as string; // or route.params.id?.toString();
+
+      // 3. Use getMovieById in the store (assuming it exists)
+      selectedMovie.value = movieStore.getMovieById?.(movieId) || null;
+
+      if (!selectedMovie.value) {
+        console.warn("No movie found for ID:", movieId);
       }
     });
 
+    // Build metadata for display
     const metadataBoxes = computed(() => {
       if (!selectedMovie.value) return [];
       return [
-        { title: "Overview", content: selectedMovie.value?.overview ?? "N/A" },
+        {
+          title: "Overview",
+          content: selectedMovie.value.overview ?? "N/A",
+        },
         {
           title: "Release Date",
-          content: selectedMovie.value?.releaseDate
-            ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric"
-              })
-            : "Unknown"
+          content: selectedMovie.value.releaseDate
+            ? new Date(selectedMovie.value.releaseDate).toLocaleDateString(
+                "en-US",
+                { year: "numeric", month: "long", day: "numeric" }
+              )
+            : "Unknown",
         },
         {
           title: "Runtime",
-          content: selectedMovie.value?.runtime
-            ? `${Math.floor(selectedMovie.value.runtime / 60)}h ${selectedMovie.value.runtime % 60}m`
-            : "Unknown"
-        }
+          content: selectedMovie.value.runtime
+            ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${
+                Number(selectedMovie.value.runtime) % 60
+              }m`
+            : "Unknown",
+        },
       ];
     });
 
+    // Dynamically set background style
     const backgroundStyle = computed(() => ({
       backgroundImage: selectedMovie.value?.backdropPath
         ? `url(https://image.tmdb.org/t/p/w1280${selectedMovie.value.backdropPath})`
-        : "none"
+        : "none",
     }));
 
+    // Example actors array
     const actors: Actor[] = [
       { id: 1, name: "Actor 1", image: "https://via.placeholder.com/100" },
       { id: 2, name: "Actor 2", image: "https://via.placeholder.com/100" },
@@ -117,13 +151,14 @@ export default {
       selectedMovie,
       metadataBoxes,
       backgroundStyle,
-      actors
+      actors,
     };
   },
 };
 </script>
 
 <style scoped>
+/* Same styles you already have */
 .background-container {
   position: relative;
   width: 100vw;
@@ -141,37 +176,11 @@ export default {
 .custom-container {
   position: relative;
   z-index: 2;
-  background: rgba(0, 0, 0, 0.7); 
+  background: rgba(0, 0, 0, 0.7);
   padding: 50px;
   border-radius: 10px;
   width: 100%;
-  max-width: 1400px; /* Adjust as needed */
-}
-
-.movie-title {
-  padding-top: 20px;
-}
-
-.header-section {
-  padding-top: 40px;
-  text-align: center;
-}
-
-.metadata-card {
-  background-color: rgb(34, 34, 34);
-  color: #fff;
-}
-
-.movie-poster {
-  background-color: red;
-  max-width: 300px;
-  max-height: 450px;
-  margin: auto;
-}
-
-.movie-poster img {
-  width: 100%;
-  height: auto;
+  max-width: 1400px; 
 }
 
 .movie-title-box {

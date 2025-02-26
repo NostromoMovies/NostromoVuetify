@@ -1,24 +1,20 @@
 <template>
   <div class="parent">
     <div class="grid-container">
-      <!-- Left Rectangle -->
       <div class="rectangle">
         <div class="content-wrapper">
-          <UnrecognizedFileBox></UnrecognizedFileBox>
+          <UnrecognizedFileBox />
         </div>
       </div>
-      
-      <!-- Right Rectangle -->
+
       <div class="rectangle">
-        <UnrecognizedMovies></UnrecognizedMovies>
+        <UnrecognizedMovies />
       </div>
+
       <div class="rectangle">
-      <DownloadProgress></DownloadProgress>
+        <DownloadProgress />
+      </div>
     </div>
-    </div>
-    <!-- <div class="rectangle">
-      <DownloadProgress></DownloadProgress>
-    </div> -->
   </div>
 </template>
 
@@ -29,7 +25,6 @@ import DownloadProgress from './HomeVue/DownloadProgress.vue';
 </script>
 
 <style scoped>
-/* Global Fix for Box Model */
 * {
   box-sizing: border-box;
 }
@@ -43,27 +38,25 @@ import DownloadProgress from './HomeVue/DownloadProgress.vue';
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  grid-auto-rows: 600px; /* All rows have the same height */
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 600px;
   padding-top: 15px;
   padding-bottom: 15px;
-  gap: 20px; /* Space between rectangles */
-  max-width: 1600px; /* Maximum width of the container */
-  margin: 0 auto; /* Center the container */
+  gap: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
 }
+
 .rectangle {
   background-color: var(--color-background-soft);
   color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 600px;  /* Fixed height, adjust as needed */
-  position: relative;  /* For positioning the button */
-}
-
-.content-wrapper {
-  height: 100%;
+  height: 600px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
-
 </style>
