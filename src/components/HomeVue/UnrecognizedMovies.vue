@@ -1,74 +1,68 @@
 <template>
-  <div class="unrecognized-movies" @click="navigateToMovieMatching">
-    <h3>Unrecognized Movies</h3>
-    <div class="movies-container" v-if="movies.length > 0">
-      <p>{{ movies.length }} unrecognized movies found.</p>
-    </div>
-    <div v-else class="no-movies">No unrecognized movies found</div>
-  </div>
+  <v-container>
+    <v-card class="unrecognized-card" @click="navigateToMovieMatching">
+      <v-card-title>Unrecognized Movies</v-card-title>
+      <v-card-text>
+        <div v-if="movies.length > 0" class="movies-container">
+          <p>{{ movies.length }} unrecognized movies found.</p>
+        </div>
+        <div v-else class="no-movies">No unrecognized movies found</div>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue';
-  import axios from 'axios';
-  import { useNavigationStore } from '@/stores/useNavigationStore';
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import { useNavigationStore } from "@/stores/useNavigationStore";
 
-  const navigationStore = useNavigationStore();
-  const movies = ref([]);
+const navigationStore = useNavigationStore();
+const movies = ref([]);
 
-  const fetchUnrecognizedMovies = async () => {
-    try {
-      const response = await axios.get('http://localhost:8112/api/MediaDisplay/unrecognized-movies');
-
-      // Ensure the response data is an array
-      if (Array.isArray(response.data)) {
-        movies.value = response.data;
-      } else {
-        console.error('Unexpected response structure:', response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching unrecognized movies:', error);
+const fetchUnrecognizedMovies = async () => {
+  try {
+    const response = await axios.get("http://localhost:8112/api/MediaDisplay/unrecognized-movies");
+    if (Array.isArray(response.data)) {
+      movies.value = response.data;
+    } else {
+      console.error("Unexpected response structure:", response.data);
     }
-  };
+  } catch (error) {
+    console.error("Error fetching unrecognized movies:", error);
+  }
+};
 
-  // Navigate to the movie matching page
-  const navigateToMovieMatching = () => {
-    navigationStore.navigateToUnrecognizedMovies();
-  };
+const navigateToMovieMatching = () => {
+  navigationStore.navigateToUnrecognizedMovies();
+};
 
-  onMounted(fetchUnrecognizedMovies);
+onMounted(fetchUnrecognizedMovies);
 </script>
 
 <style scoped>
-  .unrecognized-movies {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    background: rgb(24, 24, 24);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+.unrecognized-card {
+  background-color: rgb(34, 34, 34);
+  color: white !important;
+  box-shadow: none !important;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-    .unrecognized-movies:hover {
-      background-color: #3a3a3a;
-    }
+.unrecognized-card:hover {
+  background-color: rgb(24, 24, 24);
+}
 
-    .unrecognized-movies h3 {
-      margin-top: 0;
-      margin-bottom: 20px;
-      color: var(--color-text);
-    }
+.movies-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-  .movies-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .no-movies {
-    text-align: center;
-    padding: 20px;
-    color: #666;
-  }
+.no-movies {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
 </style>
