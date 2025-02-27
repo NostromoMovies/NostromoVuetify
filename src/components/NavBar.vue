@@ -13,14 +13,21 @@
       Dashboard
     </v-btn>
 
-    <v-btn
-      v-if="isAuthenticated"
-      variant="text"
-      :active="$route.path === '/collection'"
-      to="/collection"
-    >
+    <v-menu>
+  <template v-slot:activator="{ props }">
+    <v-btn v-if="isAuthenticated" variant="text" v-bind="props">
       Collection
     </v-btn>
+  </template>
+  <v-list>
+    <v-list-item to="/collection/movies">
+      <v-list-item-title>Movies</v-list-item-title>
+    </v-list-item>
+    <v-list-item to="/collection/tv">
+      <v-list-item-title>TV Shows</v-list-item-title>
+    </v-list-item>
+  </v-list>
+</v-menu>
 
  <!-- Home Blog GitHub Buttons  -->
 <template v-if="!isAuthenticated">

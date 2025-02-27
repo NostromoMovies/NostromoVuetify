@@ -33,8 +33,8 @@
     width: 100%;
     height: 80px; /* Reduced height for a more compact look */
     padding: 0 20px; /* Horizontal padding for content spacing */
-    background-color: #f9f9f9; /* Subtle background color */
-    border: 1px solid #e0e0e0; /* Softer border color */
+    background-color: rgb(34, 34, 34) !important; /* Darker background */
+    border: 1px solid rgb(24, 24, 24) !important; /* Even darker border */
     border-radius: 10px; /* Slightly more rounded corners */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
   }
