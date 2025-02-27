@@ -1,10 +1,9 @@
 <template>
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
-    <div class="header-section">
-      <h1 class="movie-title-box">
-        {{ selectedMovie?.title || "Loading..." }}
-      </h1>
+
+    <div class="movie-title-box">
+      <h1>{{ selectedMovie?.title || "Loading..." }}</h1>
     </div>
 
     <v-container class="custom-container" fluid>
@@ -21,7 +20,6 @@
           </v-card>
         </v-col>
 
-        <!-- Metadata Section -->
         <v-col cols="12" lg="8">
           <v-row>
             <v-col
@@ -39,18 +37,38 @@
         </v-col>
       </v-row>
 
-      <!-- Actor Section -->
-      <h2 class="text-white">Top Cast</h2>
+      <v-row class="crew-container">
+        <v-col cols="12">
+          <div class="crew-row">
+            <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
+              <v-card outlined class="crew-card">
+                <v-img
+                  width="120"
+                  height="120"
+                  :src="crew.image"
+                  alt="Crew Image"
+                  aspect-ratio="1"
+                />
+                <v-card-title class="text-center">
+                  {{ crew.name }}
+                </v-card-title>
+                <v-card-subtitle class="text-center" v-if="crew.job">
+                  {{ crew.job }}
+                </v-card-subtitle>
+              </v-card>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+
       <v-row class="actor-container">
         <v-col cols="12">
           <div class="actor-row">
-            <div
-              class="actor-col"
-              v-for="actor in actors"
-              :key="actor.id"
-            >
+            <div class="actor-col" v-for="actor in actors" :key="actor.id">
               <v-card outlined class="actor-card">
                 <v-img
+                  width="120"
+                  height="120"
                   :src="actor.image"
                   alt="Actor Image"
                   aspect-ratio="1"
@@ -58,6 +76,9 @@
                 <v-card-title class="text-center">
                   {{ actor.name }}
                 </v-card-title>
+                <v-card-subtitle class="text-center" v-if="actor.character">
+                  {{ actor.character }}
+                </v-card-subtitle>
               </v-card>
             </div>
           </div>
@@ -71,94 +92,103 @@
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
-
-interface Actor {
-  id: number;
-  name: string;
-  image: string;
-}
+import { useCastStore } from "@/stores/castStore";
+import { useCrewStore } from "@/stores/crewStore";
 
 export default {
   setup() {
     const route = useRoute();
     const movieStore = useMovieStore();
+    const castStore = useCastStore();
+    const crewStore = useCrewStore();
+
     const selectedMovie = ref(null);
+    const selectedCast = ref([]);
+    const selectedCrew = ref([]);
 
-    // Fetch the correct movie on mount
+    const jobPriority = {
+      "Director": 1,
+      "Screenplay": 2,
+      "Executive Producer": 3,
+      "Producer": 4,
+      "Director of Photography": 5,
+      "Editor": 6,
+      "Production Designer": 7,
+      "Original Music Composer": 8,
+      "Visual Effects Supervisor": 9,
+      "Sound Designer": 10
+    };
+
     onMounted(async () => {
-      // 1. Fetch the full list (so the store is populated)
       await movieStore.fetchMovies();
-
-      // 2. Get the :id from the route (make sure your router is /movies/:id)
-      const movieId = route.params.id as string; // or route.params.id?.toString();
-
-      // 3. Use getMovieById in the store (assuming it exists)
+      const movieId = route.params.id as string;
       selectedMovie.value = movieStore.getMovieById?.(movieId) || null;
 
-      if (!selectedMovie.value) {
-        console.warn("No movie found for ID:", movieId);
+      try {
+        selectedCast.value = await castStore.fetchCastByMovieId(movieId);
+      } catch (error) {
+        console.error("Could not fetch cast for ID:", movieId, error);
+      }
+
+      try {
+        selectedCrew.value = await crewStore.fetchCrewByMovieId(movieId);
+      } catch (error) {
+        console.error("Could not fetch crew for ID:", movieId, error);
       }
     });
 
-    // Build metadata for display
-    const metadataBoxes = computed(() => {
-      if (!selectedMovie.value) return [];
-      return [
-        {
-          title: "Overview",
-          content: selectedMovie.value.overview ?? "N/A",
-        },
-        {
-          title: "Release Date",
-          content: selectedMovie.value.releaseDate
-            ? new Date(selectedMovie.value.releaseDate).toLocaleDateString(
-                "en-US",
-                { year: "numeric", month: "long", day: "numeric" }
-              )
-            : "Unknown",
-        },
-        {
-          title: "Runtime",
-          content: selectedMovie.value.runtime
-            ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${
-                Number(selectedMovie.value.runtime) % 60
-              }m`
-            : "Unknown",
-        },
-      ];
-    });
+    const metadataBoxes = computed(() => selectedMovie.value ? [
+      { title: "Overview", content: selectedMovie.value.overview ?? "N/A" },
+      { 
+        title: "Release Date", 
+        content: selectedMovie.value.releaseDate
+          ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+          : "Unknown"
+      },
+      { 
+        title: "Runtime", 
+        content: selectedMovie.value.runtime
+          ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${Number(selectedMovie.value.runtime) % 60}m`
+          : "Unknown"
+      }
+    ] : []);
 
-    // Dynamically set background style
     const backgroundStyle = computed(() => ({
       backgroundImage: selectedMovie.value?.backdropPath
         ? `url(https://image.tmdb.org/t/p/w1280${selectedMovie.value.backdropPath})`
-        : "none",
+        : "none"
     }));
 
-    // Example actors array
-    const actors: Actor[] = [
-      { id: 1, name: "Actor 1", image: "https://via.placeholder.com/100" },
-      { id: 2, name: "Actor 2", image: "https://via.placeholder.com/100" },
-      { id: 3, name: "Actor 3", image: "https://via.placeholder.com/100" },
-      { id: 4, name: "Actor 4", image: "https://via.placeholder.com/100" },
-      { id: 5, name: "Actor 5", image: "https://via.placeholder.com/100" },
-      { id: 6, name: "Actor 6", image: "https://via.placeholder.com/100" },
-      { id: 7, name: "Actor 7", image: "https://via.placeholder.com/100" },
-      { id: 8, name: "Actor 8", image: "https://via.placeholder.com/100" },
-    ];
+    const actors = computed(() => selectedCast.value.map(c => ({
+      id: c.id,
+      name: c.name || "Unknown Actor",
+      image: c.profilePath ? `https://image.tmdb.org/t/p/w200${c.profilePath}` : "https://via.placeholder.com/100",
+      character: c.character || ""
+    })));
+
+    const crewMembers = computed(() => selectedCrew.value
+      .filter(c => c.profilePath && jobPriority.hasOwnProperty(c.job))
+      .sort((a, b) => (jobPriority[a.job] || 999) - (jobPriority[b.job] || 999))
+      .map(c => ({
+        id: c.id,
+        name: c.name || "Unknown Crew Member",
+        image: `https://image.tmdb.org/t/p/w200${c.profilePath}`,
+        job: c.job || ""
+      }))
+    );
 
     return {
       selectedMovie,
       metadataBoxes,
       backgroundStyle,
       actors,
+      crewMembers,
     };
-  },
+  }
 };
 </script>
 
 <style scoped>
-/* Same styles you already have */
 .background-container {
   position: relative;
   width: 100vw;
@@ -180,7 +210,7 @@ export default {
   padding: 50px;
   border-radius: 10px;
   width: 100%;
-  max-width: 1400px; 
+  max-width: 1400px;
 }
 
 .movie-title-box {
@@ -191,53 +221,32 @@ export default {
   padding: 15px 20px;
   border-radius: 8px;
   text-align: center;
+  width: fit-content;
   margin: 20px auto;
 }
 
-.overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
+.crew-container, .actor-container {
+  display: flex;
+  justify-content: center;
   width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  overflow-x: auto;
+  white-space: nowrap;
+  padding-top: 10px;
 }
 
-.actor-container {
+.crew-row, .actor-row {
   display: flex;
-  justify-content: left; /* Center horizontally */
-  /* align-items: ; Center vertically */
-  width: 60%; /* Set width to 60% of the parent */
-  overflow-x: auto; /* Enable horizontal scrolling */
-  white-space: nowrap; /* Prevent wrapping of actor cards */
-  padding-top: 20px; /* Add some padding */
-  /* padding-left: 100px; */
-  left: 100px;
-  
-  /* margin: 0 auto; Center the container */
-
+  flex-wrap: nowrap;
+  gap: 15px;
 }
 
-.text-white {
-  text-align: left; /* Center the text */
-  width: 100%; /* Ensure it takes full width */
-  padding-left: 55px;
-}
-
-.actor-row {
+.crew-card, .actor-card {
   display: flex;
-  flex-wrap: nowrap; /* Ensure actors stay in a single row */
-  gap: 25px; /* Add spacing between actor cards */
-}
-
-.actor-col {
-  flex: 0 0 auto; /* Prevent resizing of actor cards */
-  min-width: 120px; /* Set a minimum width for each actor card */
-}
-
-.actor-card {
-  background-color: rgb(34, 34, 34);
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(44, 44, 44);
   color: #fff;
   text-align: center;
+  padding: 10px;
 }
 </style>

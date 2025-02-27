@@ -40,3 +40,31 @@ export interface Genre {
   id: number;
   genre: string;
 }
+
+export interface CastMember {
+  id: number | string;
+  name: string;
+  originalName?: string | null;
+  character?: string | null;
+  creditId?: string | null;
+  gender?: number | null;
+  knownForDepartment?: string | null;
+  order?: number | null;
+  popularity?: number | null;
+  profilePath?: string | null;
+  adult?: boolean | null;
+}
+
+export interface CrewMember {
+  id: number | null;
+  name: string | null;
+  originalName: string | null;
+  creditId: string | null;
+  gender: number | null;
+  knownForDepartment: string | null;
+  popularity: number | null;
+  profilePath: string | null;
+  adult: boolean | null;
+  department: string | null;
+  job: string | null;
+}
