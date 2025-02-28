@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CollectionSectionVue from '../components/CollectionSectionMovies.vue'
+import CollectionSectionVue from '../components/CollectionSection.vue'
 
 </script>
 

@@ -25,19 +25,19 @@
   
   <style scoped>
   /* General container styles */
-  .taskbar {
-    display: flex;
-    flex-direction: row; /* Ensure horizontal alignment */
-    justify-content: space-between; /* Space out children */
-    align-items: center;
-    width: 100%;
-    height: 80px; /* Reduced height for a more compact look */
-    padding: 0 20px; /* Horizontal padding for content spacing */
-    background-color: rgb(34, 34, 34) !important; /* Darker background */
-    border: 1px solid rgb(24, 24, 24) !important; /* Even darker border */
-    border-radius: 10px; /* Slightly more rounded corners */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); 
-  }
+    .taskbar {
+      display: flex;
+      flex-direction: row; /* Ensure horizontal alignment */
+      justify-content: space-between; /* Space out children */
+      align-items: center;
+      width: 100%;
+      height: 80px; /* Reduced height for a more compact look */
+      padding: 0 20px; /* Horizontal padding for content spacing */
+      background-color: rgb(34, 34, 34) !important; /* Darker background */
+      border: 1px solid rgb(24, 24, 24) !important; /* Even darker border */
+      border-radius: 10px; /* Slightly more rounded corners */
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
   
   
   .taskbar__search {
@@ -61,4 +61,3 @@
     }
   }
   </style>
-  
