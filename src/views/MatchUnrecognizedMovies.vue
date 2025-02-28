@@ -36,7 +36,8 @@
   </div>
 </template>
 
-<script setup lang="ts">import { ref, onMounted } from 'vue';
+<script setup lang="ts">
+  import { ref, onMounted } from 'vue';
   import axios from 'axios';
 
   const movies = ref([]);
@@ -44,7 +45,6 @@
   const fetchUnrecognizedMovies = async () => {
     try {
       const response = await axios.get('http://localhost:8112/api/MediaDisplay/unrecognized-movies');
-
       if (Array.isArray(response.data)) {
         movies.value = response.data.map(movie => {
           const extractedYear = extractYear(movie.fileName);
@@ -56,7 +56,6 @@
             manualTmdbId: ''
           };
         });
-
         await fetchRecommendedMatches();
       }
     } catch (error) {
@@ -64,68 +63,51 @@
     }
   };
 
-  // Extract the year and remove everything after it
   const extractYear = (fileName: string) => {
     const match = fileName.match(/\b(19|20)\d{2}\b/);
     return match ? match[0] : null;
   };
 
-  // Extract the title, stopping at the year if found
   const extractTitle = (fileName: string, extractedYear: string | null) => {
-    let cleanTitle = fileName.replace(/\.(mkv|mp4|avi|mov|flv|wmv|webm)$/i, ''); // Remove extensions
-    cleanTitle = cleanTitle.replace(/[\._-]/g, ' '); // Replace underscores/dashes with spaces
-    cleanTitle = cleanTitle.replace(/\[.*?\]|\(.*?\)/g, ''); // Remove bracketed content
-
+    let cleanTitle = fileName.replace(/\.(mkv|mp4|avi|mov|flv|wmv|webm)$/i, '');
+    cleanTitle = cleanTitle.replace(/[\._-]/g, ' ');
+    cleanTitle = cleanTitle.replace(/\[.*?\]|\(.*?\)/g, '');
     if (extractedYear) {
-      cleanTitle = cleanTitle.split(extractedYear)[0].trim(); // Remove everything after the year
+      cleanTitle = cleanTitle.split(extractedYear)[0].trim();
     }
-
     return cleanTitle.trim();
   };
 
-  // Fetch recommendations for each movie
   const fetchRecommendedMatches = async () => {
     for (const movie of movies.value) {
       if (!movie.extractedTitle) continue;
-
       try {
         const response = await axios.get('http://localhost:8112/api/Tmdb/search', {
           params: { query: movie.extractedTitle }
         });
-
         const tmdbResults = response.data?.data?.items || [];
-
         if (Array.isArray(tmdbResults) && tmdbResults.length > 0) {
-          // Normalize extracted title & year
           const normalizedTitle = movie.extractedTitle.toLowerCase().trim();
           const extractedYear = movie.extractedYear;
-
-          // Step 1: Find exact title & year match
-          let bestMatch = tmdbResults.find((tmdbMovie) => {
+          let bestMatch = tmdbResults.find(tmdbMovie => {
             const tmdbTitle = tmdbMovie.title.toLowerCase().trim();
             const tmdbYear = tmdbMovie.release_date ? tmdbMovie.release_date.split('-')[0] : null;
-
             return tmdbTitle === normalizedTitle && extractedYear === tmdbYear;
           });
-
-          // Step 2: If no exact title & year match, find exact title match (ignoring year)
           if (!bestMatch) {
-            bestMatch = tmdbResults.find((tmdbMovie) => {
+            bestMatch = tmdbResults.find(tmdbMovie => {
               const tmdbTitle = tmdbMovie.title.toLowerCase().trim();
               return tmdbTitle === normalizedTitle;
             });
           }
-
-          // Step 3: If no title match, find the most popular movie with the same year
           if (!bestMatch && extractedYear) {
             bestMatch = tmdbResults
-              .filter((tmdbMovie) => {
+              .filter(tmdbMovie => {
                 const tmdbYear = tmdbMovie.release_date ? tmdbMovie.release_date.split('-')[0] : null;
                 return extractedYear === tmdbYear;
               })
-              .sort((a, b) => b.popularity - a.popularity)[0]; // Pick the most popular match
+              .sort((a, b) => b.popularity - a.popularity)[0];
           }
-
           if (bestMatch) {
             movie.recommendedMatch = {
               id: bestMatch.id,
@@ -140,43 +122,34 @@
     }
   };
 
-
-
-const confirmMatch = async (movie) => {
-  const tmdbId = movie.manualTmdbId || (movie.recommendedMatch ? movie.recommendedMatch.id : null);
-
-  if (!tmdbId) {
-    alert('Please provide a TMDB ID.');
-    return;
-  }
-
-  const payload = {
-    VideoID: movie.videoID,   // ✅ Matches backend DTO
-    TMDBMovieID: tmdbId       // ✅ Matches backend DTO
+  const confirmMatch = async (movie) => {
+    let tmdbId = movie.manualTmdbId || (movie.recommendedMatch ? movie.recommendedMatch.id : null);
+    if (!tmdbId) {
+      alert('Please provide a TMDB ID.');
+      return;
+    }
+    tmdbId = parseInt(tmdbId, 10);
+    const payload = {
+      VideoID: movie.videoID,
+      TMDBMovieID: tmdbId
+    };
+    console.log("Sending payload:", JSON.stringify(payload));
+    try {
+      const response = await axios.post('http://localhost:8112/api/MediaDisplay/linkMovie', payload, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      movie.linked = true;
+      alert(`Movie "${movie.fileName}" successfully linked to TMDB ID ${tmdbId}!`);
+    } catch (error) {
+      console.error('Error linking movie:', error);
+      alert(`Failed to link movie. ${error.response?.data?.message || ''}`);
+    }
   };
 
-  console.log("Sending payload:", JSON.stringify(payload));  // Debug log
-
-  try {
-    const response = await axios.post('http://localhost:8112/api/MediaDisplay/linkMovie', payload, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
-    // Update UI to show that this movie is linked
-    movie.linked = true;
-
-    alert(`Movie "${movie.fileName}" successfully linked to TMDB ID ${tmdbId}!`);
-  } catch (error) {
-    console.error('Error linking movie:', error);
-    alert(`Failed to link movie. ${error.response?.data?.message || ''}`);
-  }
-};
-
-
-
-  onMounted(fetchUnrecognizedMovies);</script>
+  onMounted(fetchUnrecognizedMovies);
+</script>
 
 <style scoped>
   .match-movies {
@@ -205,11 +178,10 @@ const confirmMatch = async (movie) => {
 
   input {
     padding: 5px;
-    width: 120px; /* Increase the width */
-    min-width: 100px; /* Ensure it doesn’t get too small */
-    box-sizing: border-box; /* Ensures padding doesn’t add extra width */
+    width: 120px;
+    min-width: 100px;
+    box-sizing: border-box;
   }
-
 
   button {
     padding: 6px;
