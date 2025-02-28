@@ -4,8 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 
 // Your dynamic imports
 const Dashboard = () => import('@/views/DashboardVue.vue');
-const CollectionMovies = () => import('@/views/CollectionMovies.vue');
-const CollectionTV = () => import('@/views/CollectionTV.vue');
+const Collection = () => import('@/views/CollectionVue.vue');
 const Signup = () => import('@/views/Signup.vue');
 const MovieDetail = () => import('@/views/MovieDetailView.vue');
 const NotFound = () => import('@/views/NotFound.vue');
@@ -28,15 +27,9 @@ const router = createRouter({
       meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
-      path: '/collection/movies',
-      name: 'collectionMovies',
-      component: CollectionMovies,
-      meta: { requiresAuth: true }, // Only logged-in users can access
-    },
-    {
-      path: '/collection/tv',
-      name: 'collectionTV',
-      component: CollectionTV,
+      path: '/collection',
+      name: 'collection',
+      component: Collection,
       meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
