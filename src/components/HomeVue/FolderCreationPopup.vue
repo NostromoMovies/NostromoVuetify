@@ -99,6 +99,7 @@ const submitSelectedFolder = async () => {
     
     console.log('Folder set successfully:', selectedFolder.value);
     close();
+    window.location.reload();
   } catch (error) {
     console.error('Error setting folder:', error);
   }

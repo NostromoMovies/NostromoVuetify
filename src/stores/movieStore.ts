@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import type { Movie, MovieStore } from "../types";
+import { getService } from "@/api/GetService";
 
 interface ApiMovie {
   movieID?: string | number;
@@ -16,6 +17,7 @@ export const useMovieStore = (): MovieStore => {
   const movies = ref<Movie[]>([]);
   const lastFetched = ref<number | null>(null);
   const CACHE_DURATION = 60 * 1000;
+  const moviesReccomendation = ref<Movie[]>([]);
 
   const fetchMovies = async (force = false): Promise<Movie[]> => {
     if (
@@ -64,10 +66,46 @@ export const useMovieStore = (): MovieStore => {
     return movies.value.find((movie) => movie.movieID == id) || null;
   };
 
+  const getMovieRecommendation = async (id: string | number) => {
+    try {
+      const response = await fetch(`/api/Tmdb/getMoviesReccomendation/${id}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const jsonResponse = await response.json();
+      console.log("Raw API Response:", jsonResponse);
+  
+      if (!jsonResponse?.data?.items || !Array.isArray(jsonResponse.data.items)) {
+        throw new Error("Invalid API response format: Missing `data.items`");
+      }
+  
+      movies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
+        movieID: movie.movieID || movie.tmdbid || null,
+        title: movie.title ?? "Unknown Title",
+        posterPath: movie.posterPath ?? null,
+        overview: movie.overview ?? "No overview available.",
+        releaseDate: movie.releaseDate ?? "Unknown release date",
+        runtime: movie.runtime ?? "Unknown runtime",
+        backdropPath: movie.backdropPath ?? null,
+      }));
+  
+      console.log("Movies successfully fetched:", movies.value);
+      
+      return movies.value;
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      throw error;
+    }
+  };
+
   return { 
     movies, 
     fetchMovies, 
     lastFetched,
-    getMovieById
+    getMovieById,
+    moviesReccomendation,
+    getMovieRecommendation
   };
 };

@@ -1,7 +1,10 @@
 <template>
+
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
-
+    <v-btn class="back-btn" @click="$router.push('/collection')">
+      Collection
+        </v-btn>
     <div class="movie-title-box">
       <h1>{{ selectedMovie?.title || "Loading..." }}</h1>
     </div>
@@ -36,8 +39,38 @@
           </v-row>
         </v-col>
       </v-row>
+      
+      <div class="title-row">
+        <v-card-title>Actors</v-card-title>
+        <v-btn class="see-more-btn" @click="showCrews = !showCrews">
+          {{ showCrews ? "See Less" : "See More" }}
+        </v-btn>
+      </div>
+      <v-row class="actor-container">
+        <v-col cols="12">
+          <div class="actor-row">
+            <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
+              <v-card outlined class="actor-card">
+                <v-img
+                  width="120"
+                  height="120"
+                  :src="actor.image"
+                  alt="Actor Image"
+                  aspect-ratio="1"
+                />
+                <v-card-title class="text-center">
+                  {{ actor.name }}
+                </v-card-title>
+                <v-card-subtitle class="text-center" v-if="actor.character">
+                  {{ actor.character }}
+                </v-card-subtitle>
+              </v-card>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
 
-      <v-row class="crew-container">
+      <v-row class="crew-container " v-if="showCrews">
         <v-col cols="12">
           <div class="crew-row">
             <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
@@ -61,10 +94,14 @@
         </v-col>
       </v-row>
 
-      <v-row class="actor-container">
+      
+    <div class="title-row">
+        <v-card-title>More Like</v-card-title>
+      </div>
+      <!-- <v-row class="actor-container">
         <v-col cols="12">
           <div class="actor-row">
-            <div class="actor-col" v-for="actor in actors" :key="actor.id">
+            <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
               <v-card outlined class="actor-card">
                 <v-img
                   width="120"
@@ -83,9 +120,15 @@
             </div>
           </div>
         </v-col>
-      </v-row>
+      </v-row> -->
     </v-container>
+    
+
+
   </div>
+
+
+
 </template>
 
 <script lang="ts">
@@ -101,6 +144,7 @@ export default {
     const movieStore = useMovieStore();
     const castStore = useCastStore();
     const crewStore = useCrewStore();
+    const showCrews = ref(false);
 
     const selectedMovie = ref(null);
     const selectedCast = ref([]);
@@ -135,6 +179,7 @@ export default {
       } catch (error) {
         console.error("Could not fetch crew for ID:", movieId, error);
       }
+     
     });
 
     const metadataBoxes = computed(() => selectedMovie.value ? [
@@ -183,12 +228,16 @@ export default {
       backgroundStyle,
       actors,
       crewMembers,
+      showCrews
     };
   }
 };
 </script>
 
 <style scoped>
+.back-btn{
+  padding-top: 40px;
+}
 .background-container {
   position: relative;
   width: 100vw;
@@ -202,6 +251,14 @@ export default {
   align-items: center;
   padding: 20px;
 }
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px; 
+}
+
 
 .custom-container {
   position: relative;
@@ -232,6 +289,7 @@ export default {
   overflow-x: auto;
   white-space: nowrap;
   padding-top: 10px;
+  word-wrap: break-word;
 }
 
 .crew-row, .actor-row {
@@ -244,9 +302,22 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   background-color: rgb(44, 44, 44);
   color: #fff;
   text-align: center;
   padding: 10px;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  min-height: 270px; 
+  width: 200px; 
+  word-wrap: break-word;
+  overflow: hidden;
+}
+.text-center{
+  word-wrap: break-word;
+}
+.title-row{
+  padding: 20px;
 }
 </style>

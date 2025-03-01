@@ -6,14 +6,29 @@
       justify="start"
       no-gutters
     >
-      <!-- Loop through genres -->
       <v-col
         v-for="(genre, index) in genres"
-        :key="index"
+        :key="`genre-${index}`"
         cols="auto"
         class="genre-item"
       >
         <FilterTag :label="genre" />
+      </v-col>
+    </v-row>
+
+    <h3>Media</h3>
+    <v-row
+      class="media-box"
+      justify="start"
+      no-gutters
+    >
+      <v-col
+        v-for="(media, index) in medias"
+        :key="`media-${index}`"
+        cols="auto"
+        class="genre-item"
+      >
+        <FilterTag :label="media" />
       </v-col>
     </v-row>
   </div>
@@ -37,6 +52,10 @@ const genres: string[] = [
   "Mystery",
 ];
 
+const medias: string[] =[
+  "Tv",
+  "Movie"
+];
 // const genreSelected: Genre[] = []
 </script>
 
