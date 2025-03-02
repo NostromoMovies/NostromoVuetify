@@ -31,6 +31,43 @@
         <FilterTag :label="media" />
       </v-col>
     </v-row>
+    <h3>Years</h3>
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model.number="startYear"
+          label="Start Year"
+          type="number"
+          :min="minYear"
+          :max="maxYear"
+          @input="validateRange"
+        ></v-text-field>
+      </v-col>
+      <v-col cols="12" md="6">
+        <v-text-field
+          v-model.number="endYear"
+          label="End Year"
+          type="number"
+          :min="startYear"
+          :max="maxYear"
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <h3>Runtimes</h3>
+    <v-row>
+      <v-col>
+        <v-slider
+          v-model="runtime"
+          :min="60"
+          :max="180"
+          step="1"
+          label=""
+          thumb-label
+          ticks
+          tick-size="4"
+        ></v-slider>
+      </v-col>
+    </v-row>
   </div>
 </template>
 

@@ -30,7 +30,7 @@ const router = createRouter({
       path: '/collection',
       name: 'collection',
       component: Collection,
-      meta: { requiresAuth: true }, // Only logged-in users can access
+      meta: { guestOnly: true }, // Only logged-in users can access
     },
     {
       path: '/register',
