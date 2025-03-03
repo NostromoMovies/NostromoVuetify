@@ -1,5 +1,3 @@
-<!-- does not compile-->
-
 <template>
   <div class="search-bar">
     <input
@@ -13,22 +11,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getService } from '@/api/GetService';
+import { ref, defineEmits } from 'vue';
 
-const searchQuery = ref(''); // Reactive variable for the search input
-const results = ref([]); // Store search results
+const searchQuery = ref(''); // Reactive variable 
 
-const searchFilter = async () => {
-  // try {
-  //   results.value = await getService.searchMedia(searchQuery.value); // Call the API
-  // } catch (error) {
-  //   console.error('Search Error', error);
-  // }
-};
+
+const emit = defineEmits(['search-selected']);
 
 const onSearch = () => {
-  searchFilter(); // Trigger the search
+  emit('search-selected', searchQuery.value); 
 };
 </script>
 

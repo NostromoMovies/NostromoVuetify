@@ -10,9 +10,9 @@
       <v-list>
         <v-list-item
           class="custom-list"
-          v-for="(item, index) in items"
-          :key="index"
-          @click="handleItemClick(item.title)"
+          v-for="item in items"
+          :key="item.id"
+          @click="handleItemClick(item)"
         >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
@@ -22,22 +22,29 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref } from "vue";
+
+// ✅ Move the interface outside of setup
+export interface FilterItem {
+  id: number;
+  title: string;
+}
 
 export default defineComponent({
-  setup() {
-    const items = ref([
-      { title: 'Most Popular' },
-      { title: 'Highest Rated' },
-      { title: 'Recently Added' },
-      { title: 'Release Date' },
+  emits: ["filter-selected"],
+  setup(_, { emit }) {
+    const items = ref<FilterItem[]>([
+      { id: 1, title: "Most Popular" },
+      { id: 2, title: "Highest Rated" },
+      { id: 3, title: "Recently Added" },
+      { id: 4, title: "Alphabetical" },
     ]);
 
-    const selectedButtonLabel = ref('Most Popular');
+    const selectedButtonLabel = ref<string>("Most Popular");
 
-    const handleItemClick = (title: string) => {
-      selectedButtonLabel.value = title;
-      // Add your sorting logic here based on the selected title
+    const handleItemClick = (item: FilterItem) => {
+      selectedButtonLabel.value = item.title;
+      emit("filter-selected", item.id); // Emit filter ID
     };
 
     return {
