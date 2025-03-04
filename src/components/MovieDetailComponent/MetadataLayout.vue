@@ -122,6 +122,11 @@ export default {
       } catch (error) {
         console.error("Could not fetch crew for ID:", movieId, error);
       }
+      try{
+                        await movieStore.getMovieRecommendation(movieId);
+      }catch (error) {
+        console.error("Could not fetch crew for ID:", movieId, error);
+      }
      
     });
 

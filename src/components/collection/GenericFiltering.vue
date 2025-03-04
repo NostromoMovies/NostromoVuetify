@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from "vue";
+  import { defineComponent, onMounted, ref } from "vue";
 
   // ✅ Move the interface outside of setup
   export interface FilterItem {
@@ -42,8 +42,13 @@
 
       const handleItemClick = (item: FilterItem) => {
         selectedButtonLabel.value = item.title;
-        emit("filter-selected", item.id); // Emit filter ID
+        emit("filter-selected", item.id); 
       };
+
+      
+      onMounted(() => {
+        emit("filter-selected", 0);
+      });
 
       return {
         items,
