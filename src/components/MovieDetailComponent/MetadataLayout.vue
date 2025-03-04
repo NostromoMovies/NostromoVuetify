@@ -1,10 +1,6 @@
 <template>
-
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
-    <v-btn class="back-btn" @click="$router.push('/collection')">
-      Collection
-        </v-btn>
     <div class="movie-title-box">
       <h1>{{ selectedMovie?.title || "Loading..." }}</h1>
     </div>
@@ -13,51 +9,31 @@
       <v-row>
         <v-col cols="12" md="4">
           <v-card outlined class="movie-poster">
-            <v-img
-              v-if="selectedMovie?.posterPath"
-              :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
-              alt="Movie Poster"
-              aspect-ratio="2/3"
-            />
+            <v-img v-if="selectedMovie?.posterPath"
+                   :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
+                   alt="Movie Poster"
+                   aspect-ratio="2/3" />
             <p v-else>No Poster Available</p>
           </v-card>
         </v-col>
 
-        <v-col cols="12" lg="8">
-          <v-row>
-            <v-col
-              cols="12"
-              md="6"
-              v-for="(metadata, index) in metadataBoxes"
-              :key="index"
-            >
-              <v-card outlined class="metadata-card">
-                <v-card-title>{{ metadata.title }}</v-card-title>
-                <v-card-text>{{ metadata.content }}</v-card-text>
-              </v-card>
-            </v-col>
-          </v-row>
+        <v-col cols="12" md="6">
+          <v-card outlined class="metadata-card">
+            <v-card-text v-html="metadataBoxes"></v-card-text>
+          </v-card>
         </v-col>
       </v-row>
-      
-      <div class="title-row">
-        <v-card-title>Actors</v-card-title>
-        <v-btn class="see-more-btn" @click="showCrews = !showCrews">
-          {{ showCrews ? "See Less" : "See More" }}
-        </v-btn>
-      </div>
+
       <v-row class="actor-container">
         <v-col cols="12">
           <div class="actor-row">
             <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
               <v-card outlined class="actor-card">
-                <v-img
-                  width="120"
-                  height="120"
-                  :src="actor.image"
-                  alt="Actor Image"
-                  aspect-ratio="1"
-                />
+                <v-img width="120"
+                       height="120"
+                       :src="actor.image"
+                       alt="Actor Image"
+                       aspect-ratio="1" />
                 <v-card-title class="text-center">
                   {{ actor.name }}
                 </v-card-title>
@@ -69,19 +45,20 @@
           </div>
         </v-col>
       </v-row>
+      <v-btn class="see-more-btn" @click="showCrews = !showCrews">
+        {{ showCrews ? "See Less" : "See More" }}
+      </v-btn>
 
       <v-row class="crew-container " v-if="showCrews">
         <v-col cols="12">
           <div class="crew-row">
             <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
               <v-card outlined class="crew-card">
-                <v-img
-                  width="120"
-                  height="120"
-                  :src="crew.image"
-                  alt="Crew Image"
-                  aspect-ratio="1"
-                />
+                <v-img width="120"
+                       height="120"
+                       :src="crew.image"
+                       alt="Crew Image"
+                       aspect-ratio="1" />
                 <v-card-title class="text-center">
                   {{ crew.name }}
                 </v-card-title>
@@ -93,42 +70,8 @@
           </div>
         </v-col>
       </v-row>
-
-      
-    <div class="title-row">
-        <v-card-title>More Like</v-card-title>
-      </div>
-      <!-- <v-row class="actor-container">
-        <v-col cols="12">
-          <div class="actor-row">
-            <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
-              <v-card outlined class="actor-card">
-                <v-img
-                  width="120"
-                  height="120"
-                  :src="actor.image"
-                  alt="Actor Image"
-                  aspect-ratio="1"
-                />
-                <v-card-title class="text-center">
-                  {{ actor.name }}
-                </v-card-title>
-                <v-card-subtitle class="text-center" v-if="actor.character">
-                  {{ actor.character }}
-                </v-card-subtitle>
-              </v-card>
-            </div>
-          </div>
-        </v-col>
-      </v-row> -->
     </v-container>
-    
-
-
   </div>
-
-
-
 </template>
 
 <script lang="ts">
@@ -182,21 +125,23 @@ export default {
      
     });
 
-    const metadataBoxes = computed(() => selectedMovie.value ? [
-      { title: "Overview", content: selectedMovie.value.overview ?? "N/A" },
-      { 
-        title: "Release Date", 
-        content: selectedMovie.value.releaseDate
+    const metadataBoxes = computed(() => {
+      if (!selectedMovie.value) return "Loading movie details...";
+
+      return `
+         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
+
+        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMovie.value.releaseDate
           ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
           : "Unknown"
-      },
-      { 
-        title: "Runtime", 
-        content: selectedMovie.value.runtime
+        } <br><br>
+
+        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMovie.value.runtime
           ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${Number(selectedMovie.value.runtime) % 60}m`
           : "Unknown"
-      }
-    ] : []);
+        }
+      `;
+    });
 
     const backgroundStyle = computed(() => ({
       backgroundImage: selectedMovie.value?.backdropPath
@@ -235,9 +180,6 @@ export default {
 </script>
 
 <style scoped>
-.back-btn{
-  padding-top: 40px;
-}
 .background-container {
   position: relative;
   width: 100vw;
@@ -259,13 +201,14 @@ export default {
   padding: 20px; 
 }
 
-
 .custom-container {
   position: relative;
   z-index: 2;
   background: rgba(0, 0, 0, 0.7);
   padding: 50px;
+  padding-bottom: 80px;
   border-radius: 10px;
+  height: 100%;
   width: 100%;
   max-width: 1400px;
 }
@@ -279,7 +222,7 @@ export default {
   border-radius: 8px;
   text-align: center;
   width: fit-content;
-  margin: 20px auto;
+  margin: 40px auto 20px;
 }
 
 .crew-container, .actor-container {
@@ -314,10 +257,29 @@ export default {
   word-wrap: break-word;
   overflow: hidden;
 }
+
 .text-center{
   word-wrap: break-word;
 }
+
 .title-row{
   padding: 20px;
+}
+
+.see-more-btn {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 3;
+  background-color: rgb(34,34,34);
+  color: white;
+}
+
+.metadata-card {
+  background-color: rgb(34,34,34);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 </style>

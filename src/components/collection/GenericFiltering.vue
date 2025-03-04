@@ -8,12 +8,10 @@
       </template>
 
       <v-list>
-        <v-list-item
-          class="custom-list"
-          v-for="item in items"
-          :key="item.id"
-          @click="handleItemClick(item)"
-        >
+        <v-list-item class="custom-list"
+                     v-for="item in items"
+                     :key="item.id"
+                     @click="handleItemClick(item)">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -22,46 +20,47 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+  import { defineComponent, ref } from "vue";
 
-// ✅ Move the interface outside of setup
-export interface FilterItem {
-  id: number;
-  title: string;
-}
+  // ✅ Move the interface outside of setup
+  export interface FilterItem {
+    id: number;
+    title: string;
+  }
 
-export default defineComponent({
-  emits: ["filter-selected"],
-  setup(_, { emit }) {
-    const items = ref<FilterItem[]>([
-      { id: 1, title: "Most Popular" },
-      { id: 2, title: "Highest Rated" },
-      { id: 3, title: "Recently Added" },
-      { id: 4, title: "Alphabetical" },
-    ]);
+  export default defineComponent({
+    emits: ["filter-selected"],
+    setup(_, { emit }) {
+      const items = ref<FilterItem[]>([
+        { id: 1, title: "Most Popular" },
+        { id: 2, title: "Highest Rated" },
+        { id: 3, title: "Recently Added" },
+        { id: 4, title: "Alphabetical" },
+      ]);
 
-    const selectedButtonLabel = ref<string>("Most Popular");
+      const selectedButtonLabel = ref<string>("Most Popular");
 
-    const handleItemClick = (item: FilterItem) => {
-      selectedButtonLabel.value = item.title;
-      emit("filter-selected", item.id); // Emit filter ID
-    };
+      const handleItemClick = (item: FilterItem) => {
+        selectedButtonLabel.value = item.title;
+        emit("filter-selected", item.id); // Emit filter ID
+      };
 
-    return {
-      items,
-      selectedButtonLabel,
-      handleItemClick,
-    };
-  },
-});
+      return {
+        items,
+        selectedButtonLabel,
+        handleItemClick,
+      };
+    },
+  });
 </script>
 
 <style scoped>
-.text-center {
-  text-align: center;
-}
-.custom-list {
-  background-color: #2d2d2d;
-  color: white;
-}
+  .text-center {
+    text-align: center;
+  }
+
+  .custom-list {
+    background-color: #2d2d2d;
+    color: white;
+  }
 </style>

@@ -39,7 +39,7 @@
 
 <style scoped>
   .container {
-    background-color: var(--color-background-soft);
+    background-color: rgb(34,34,34);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     flex: 1;
     width: 100%;

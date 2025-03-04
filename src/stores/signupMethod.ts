@@ -28,7 +28,6 @@ export const useSignupStore = (router: Router) => {
 
 
        message.value = 'Registration successful!';
-       router.push('/dashboard');
      } else {
        throw new Error('Registration failed');
      }

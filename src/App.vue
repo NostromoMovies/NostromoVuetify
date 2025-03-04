@@ -2,13 +2,13 @@
     <v-app>
         <v-main>
             <v-container fluid>
-                <Navbar v-if="!isRegisterPage" />
+                <Navbar /> <!-- Always show Navbar -->
                 <router-view />
             </v-container>
         </v-main>
-
     </v-app>
 </template>
+
 
 <script setup lang="ts">
     import { ref, computed, provide } from 'vue';
@@ -22,9 +22,6 @@
 
     const route = useRoute();
 
-    const isRegisterPage = computed(() => {
-        return route.name === 'register';
-    });
 </script>
 
 <style lang="css">
@@ -40,6 +37,7 @@
         font-family: 'C64 Pro', monospace !important;
         text-align: center;
         color: #2c3e50;
+        background-color: rgb(24, 24, 24) !important;
     }
 
     header {

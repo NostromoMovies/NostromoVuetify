@@ -22,14 +22,10 @@
       Collection
     </v-btn>
 
- <!-- Home Blog GitHub Buttons  -->
+ <!-- Home GitHub Button  -->
 <template v-if="!isAuthenticated">
-  <v-btn variant="text" :active="$route.path === '/'" to="/" class="nav-btn">
+  <v-btn variant="filled" color="grey" to="/" class="nav-btn">
     Home
-  </v-btn>
-
-  <v-btn variant="text" :active="$route.path === '/'" to="/" class="nav-btn">
-    Blog 
   </v-btn>
 
   <!-- GitHub Icon Button -->
