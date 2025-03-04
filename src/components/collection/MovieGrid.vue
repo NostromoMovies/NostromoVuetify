@@ -5,7 +5,7 @@
     <div v-else class="movie-grid">
       <MovieContainer 
         v-for="movie in filteredMovies" 
-        :key="movie.movieID"
+        :key="movie.order" 
         :to="`/movies/${movie.movieID}`"
         :movieId="movie.movieID"
         :title="movie.title" 
@@ -23,7 +23,9 @@
   const movieStore = inject<MovieStore | null>('movieStore', null);
 
   // Ensure movieStore is defined before accessing properties
-  const filteredMovies = computed(() => movieStore?.filterMovies?.value ?? []);
+  const filteredMovies = computed(() => {
+    return [...(movieStore?.filterMovies?.value ?? [])].sort((a, b) => a.order - b.order);
+  });
 
   // Props passed from parent component
   const props = defineProps({

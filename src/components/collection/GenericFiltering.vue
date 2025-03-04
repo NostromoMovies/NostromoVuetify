@@ -32,10 +32,10 @@
     emits: ["filter-selected"],
     setup(_, { emit }) {
       const items = ref<FilterItem[]>([
-        { id: 1, title: "Most Popular" },
+        { id: 0, title: "Most Popular" },
         { id: 2, title: "Highest Rated" },
         { id: 3, title: "Recently Added" },
-        { id: 4, title: "Alphabetical" },
+        { id: 1, title: "Alphabetical" },
       ]);
 
       const selectedButtonLabel = ref<string>("Most Popular");

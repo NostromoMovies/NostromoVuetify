@@ -26,18 +26,8 @@ export const useMovieStore = (): MovieStore => {
     minYear: number | null = null, 
     maxYear: number | null = null
   ): Promise<Movie[]> => {
-    // if (
-    //   !force &&
-    //   filterMovies.value.length &&
-    //   lastFetched.value &&
-    //   Date.now() - lastFetched.value < CACHE_DURATION
-    // ) {
-    //   console.log("Using cached movie data");
-    //   return filterMovies.value;  // Returning cached data
-    // }
-
     console.log(query, runtime, searchTerm, minYear, maxYear);
-
+  
     // Construct query parameters
     const params = new URLSearchParams();
     if (query) params.append('query', query);
@@ -45,19 +35,20 @@ export const useMovieStore = (): MovieStore => {
     if (searchTerm) params.append('searchTerm', String(searchTerm));
     if (minYear !== null) params.append('minYear', String(minYear));
     if (maxYear !== null) params.append('maxYear', String(maxYear));
-
+  
     try {
       const response = await fetch(`/api/MediaDisplay/getMovies?${params.toString()}`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-
+  
       const jsonResponse = await response.json();
       console.log("Raw API Response:", jsonResponse);
-
+  
       if (!jsonResponse.data?.items || !Array.isArray(jsonResponse.data.items)) {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
-
-      filterMovies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
+  
+      filterMovies.value = [...jsonResponse.data.items.map((movie: ApiMovie, index: number) => ({
+        order: index, // Preserve original order
         movieID: movie.movieID || movie.tmdbid || null,
         title: movie.title,
         posterPath: movie.posterPath ?? null,
@@ -65,16 +56,17 @@ export const useMovieStore = (): MovieStore => {
         releaseDate: movie.releaseDate ?? null,
         runtime: movie.runtime ?? null,
         backdropPath: movie.backdropPath ?? null,
-      }));
-
+      }))]; // Ensure order is explicitly preserved in a new array
+  
       lastFetched.value = Date.now();
       console.log("Filtered Movies successfully fetched:", filterMovies.value);
-      return filterMovies.value;  // Return the filtered movies now
+      return filterMovies.value;
     } catch (error) {
       console.error("Error fetching movies:", error);
       throw error;
     }
   };
+  
 
   const fetchMovies = async (force = false): Promise<Movie[]> => {
     if (

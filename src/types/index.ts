@@ -10,6 +10,7 @@ export interface Movie {
   releaseDate?: string | null;
   runtime?: number | string | null;
   backdropPath?: string | null;
+  order: number; 
 }
 
 
