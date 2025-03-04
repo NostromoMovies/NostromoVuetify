@@ -23,6 +23,7 @@
 
   const fetchPoster = async () => {
     try {
+      console.log("Ran")
       const response = await fetch(posterImage.value, { method: 'HEAD' });
 
       if (!response.ok) {

@@ -3,36 +3,75 @@
     <div v-if="loading" class="loading">Loading movies...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="movie-grid">
-      <MovieContainer v-for="movie in movies"
-                      :key="movie.movieID"
-                      :to="`/movies/${movie.movieID}`"
-                      :movieId="movie.movieID"
-                      :title="movie.title" />
+      <MovieContainer 
+        v-for="movie in filteredMovies" 
+        :key="movie.movieID"
+        :to="`/movies/${movie.movieID}`"
+        :movieId="movie.movieID"
+        :title="movie.title" 
+      />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+  import { ref, computed, onMounted, watch ,inject} from 'vue';
+  import type { PropType } from 'vue';
   import MovieContainer from './MovieContainer.vue';
-  import { inject, ref, computed, onMounted } from 'vue';
   import type { MovieStore } from '@/types';
 
-  const movieStore = inject('movieStore') as MovieStore;
+  const movieStore = inject<MovieStore | null>('movieStore', null);
+
+  // Ensure movieStore is defined before accessing properties
+  const filteredMovies = computed(() => movieStore?.filterMovies?.value ?? []);
+
+  // Props passed from parent component
+  const props = defineProps({
+    selectedGenres: Array as PropType<string[]>,
+    selectedMedia: Array as PropType<string[]>,
+    yearRange: Array as PropType<number[]>,  
+    runtime: Number,
+    search: String,
+    filterOrder: Number
+  });
+
   const loading = ref(true);
   const error = ref<string | null>(null);
 
-  const movies = computed(() => movieStore.movies.value);
-
+  // Watch for changes in the individual props and refetch movies accordingly
   const loadMovies = async () => {
+    if (!movieStore) {
+      console.error("MovieStore is not provided.");
+      return;
+    }
+
     try {
+      console.log(props.search,props.runtime,props.filterOrder,props.yearRange)
       loading.value = true;
-      await movieStore.fetchMovies();
+      await movieStore.fetchFilterMovies(
+        false,
+        props.search ?? "", 
+        props.runtime ?? null,
+        props.filterOrder ?? null, 
+        props.yearRange?.length ? Number(props.yearRange[0]) : 1900, 
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100  
+      );
     } catch (e) {
       error.value = `Failed to load movies: ${(e as Error).message}`;
     } finally {
       loading.value = false;
     }
   };
+
+  // Watch individual props
+  watch(() => [
+  props.selectedGenres,
+  props.selectedMedia,
+  props.yearRange,
+  props.runtime,
+  props.search,
+  props.filterOrder
+], loadMovies, { deep: true });
 
   onMounted(loadMovies);
 </script>
@@ -53,5 +92,11 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
     gap: 2rem;
+  }
+
+  .loading,
+  .error {
+    text-align: center;
+    font-size: 1.5rem;
   }
 </style>

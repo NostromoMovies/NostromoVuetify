@@ -10,20 +10,20 @@
   import Searchbar from "./Searchbar.vue";
   import GenericFiltering from "./GenericFiltering.vue";
 
-  export default defineComponent({
-    name: "DashboardTaskBar",
-    components: {
-      Searchbar,
-      GenericFiltering,
-    },
-    emits: ["filter-updated", "search-updated"],
-    setup(_, { emit }) {
-      const handleFilterSelected = (filterId: number) => {
-        emit("filter-updated", filterId);
-      };
-      const handleSearchSelected = (query: string) => {
-        emit("search-updated", query);
-      };
+export default defineComponent({
+  name: "DashboardTaskBar",
+  components: {
+    Searchbar,
+    GenericFiltering,
+  },
+  emits: ["filter-updated", "search-updated"], // Event names that will be emitted
+  setup(_, { emit }) {
+    const handleFilterSelected = (filterId: number) => {
+      emit("filter-updated", filterId); // Emit updated filter ID to parent
+    };
+    const handleSearchSelected = (query: number) => {
+      emit("search-updated", query); // Emit updated search query to parent
+    };
 
       return {
         handleFilterSelected,
@@ -32,6 +32,7 @@
     },
   });
 </script>
+
 
 <style scoped>
   .taskbar {

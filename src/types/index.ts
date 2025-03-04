@@ -3,7 +3,7 @@
 import type { Ref } from "vue";
 
 export interface Movie {
-  movieID: number | string;
+  movieID: number;
   title: string;
   posterPath?: string | null;
   overview?: string | null;
@@ -12,12 +12,7 @@ export interface Movie {
   backdropPath?: string | null;
 }
 
-export interface MovieStore {
-  movies: Ref<Movie[]>;
-  lastFetched: Ref<number | null>;
-  fetchMovies: (force?: boolean) => Promise<Movie[]>;
-  getMovieById?: (id: string | number) => Movie | null;
-}
+
 
 export interface LoginForm {
   username: string;
@@ -67,4 +62,22 @@ export interface CrewMember {
   adult: boolean | null;
   department: string | null;
   job: string | null;
+}
+
+
+export interface MovieStore {
+  filterMovies: Ref<Movie[]>;
+  movies: Ref<Movie[]>;
+  lastFetched: Ref<number | null>;
+  fetchMovies: (force?: boolean) => Promise<Movie[]>;
+  getMovieById: (id: string | number) => Movie | null;
+  getMovieRecommendation: (id: string | number) => Promise<Movie[]>;
+  fetchFilterMovies: (
+    force?: boolean,
+    query?: string,
+    runtime?: number | null,
+    searchTermTerm?: number | null,
+    minYear?: number | null,
+    maxYear?: number | null
+  ) => Promise<Movie[]>;
 }

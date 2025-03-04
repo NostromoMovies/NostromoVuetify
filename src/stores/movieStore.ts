@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import type { Movie, MovieStore } from "../types";
-import { getService } from "@/api/GetService";
 
 interface ApiMovie {
   movieID?: string | number;
@@ -14,10 +13,68 @@ interface ApiMovie {
 }
 
 export const useMovieStore = (): MovieStore => {
+  const filterMovies = ref<Movie[]>([]);
   const movies = ref<Movie[]>([]);
   const lastFetched = ref<number | null>(null);
   const CACHE_DURATION = 60 * 1000;
-  const moviesReccomendation = ref<Movie[]>([]);
+
+  const fetchFilterMovies = async (
+    force = false, 
+    query = '', 
+    runtime: number | null = null, 
+    searchTerm: number | null = null, 
+    minYear: number | null = null, 
+    maxYear: number | null = null
+  ): Promise<Movie[]> => {
+    // if (
+    //   !force &&
+    //   filterMovies.value.length &&
+    //   lastFetched.value &&
+    //   Date.now() - lastFetched.value < CACHE_DURATION
+    // ) {
+    //   console.log("Using cached movie data");
+    //   return filterMovies.value;  // Returning cached data
+    // }
+
+    console.log(query, runtime, searchTerm, minYear, maxYear);
+
+    // Construct query parameters
+    const params = new URLSearchParams();
+    if (query) params.append('query', query);
+    if (runtime !== null) params.append('runtime', String(runtime));
+    if (searchTerm) params.append('searchTerm', String(searchTerm));
+    if (minYear !== null) params.append('minYear', String(minYear));
+    if (maxYear !== null) params.append('maxYear', String(maxYear));
+
+    try {
+      const response = await fetch(`/api/MediaDisplay/getMovies?${params.toString()}`);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
+      const jsonResponse = await response.json();
+      console.log("Raw API Response:", jsonResponse);
+
+      if (!jsonResponse.data?.items || !Array.isArray(jsonResponse.data.items)) {
+        throw new Error("Invalid API response format: Missing `data.items`");
+      }
+
+      filterMovies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
+        movieID: movie.movieID || movie.tmdbid || null,
+        title: movie.title,
+        posterPath: movie.posterPath ?? null,
+        overview: movie.overview ?? null,
+        releaseDate: movie.releaseDate ?? null,
+        runtime: movie.runtime ?? null,
+        backdropPath: movie.backdropPath ?? null,
+      }));
+
+      lastFetched.value = Date.now();
+      console.log("Filtered Movies successfully fetched:", filterMovies.value);
+      return filterMovies.value;  // Return the filtered movies now
+    } catch (error) {
+      console.error("Error fetching movies:", error);
+      throw error;
+    }
+  };
 
   const fetchMovies = async (force = false): Promise<Movie[]> => {
     if (
@@ -32,9 +89,7 @@ export const useMovieStore = (): MovieStore => {
 
     try {
       const response = await fetch("/api/movies");
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const jsonResponse = await response.json();
       console.log("Raw API Response:", jsonResponse);
@@ -68,19 +123,16 @@ export const useMovieStore = (): MovieStore => {
 
   const getMovieRecommendation = async (id: string | number) => {
     try {
-      const response = await fetch(`/api/Tmdb/getMoviesReccomendation/${id}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
+      const response = await fetch(`/api/Tmdb/getMovieRecommendation/${id}`);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+
       const jsonResponse = await response.json();
       console.log("Raw API Response:", jsonResponse);
-  
+
       if (!jsonResponse?.data?.items || !Array.isArray(jsonResponse.data.items)) {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
-  
+
       movies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
         movieID: movie.movieID || movie.tmdbid || null,
         title: movie.title ?? "Unknown Title",
@@ -90,22 +142,22 @@ export const useMovieStore = (): MovieStore => {
         runtime: movie.runtime ?? "Unknown runtime",
         backdropPath: movie.backdropPath ?? null,
       }));
-  
+
       console.log("Movies successfully fetched:", movies.value);
-      
       return movies.value;
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.error("Error fetching movie recommendations:", error);
       throw error;
     }
   };
 
   return { 
-    movies, 
-    fetchMovies, 
+    movies,
+    filterMovies,  
     lastFetched,
     getMovieById,
-    moviesReccomendation,
+    fetchMovies,  
+    fetchFilterMovies,
     getMovieRecommendation
   };
 };
