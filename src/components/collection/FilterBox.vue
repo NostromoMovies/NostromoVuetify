@@ -55,20 +55,24 @@
           v-model="runtime"
           :min="60"
           :max="180"
-          step="1"
+          step="30"
           thumb-label
-          ticks
+          :ticks="[60, 90, 120, 150, 180]"  
           tick-size="4"
           @update:modelValue="emitRuntime"
-        ></v-slider>
+        />
+
+
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import { ref, defineEmits } from "vue";
 import FilterTag from "./FilterTag.vue";
+import { getService } from "@/api/GetService";
 
 // Emits setup
 const emit = defineEmits(["genre-selected", "media-selected", "year-changed", "runtime-changed"]);
@@ -85,9 +89,32 @@ const selectedGenres = ref<string[]>([]);
 const selectedMedia = ref<string | null>(null);
 const startYear = ref<number | null>(null);
 const endYear = ref<number | null>(null);
-const minYear = 1900;
+const minYear = ref<number | null>(null); 
 const maxYear = new Date().getFullYear();
-const runtime = ref<number>(90);
+const runtime = ref<number>(180);
+
+// Fetching years and setting the default values
+const getYears = async (): Promise<number | null> => {
+  try {
+    const response = await getService.getYears();
+
+    
+    const year = response.data;
+
+    
+    minYear.value = year;
+    startYear.value = minYear.value;
+    endYear.value = maxYear;
+
+    console.log(startYear);
+    console.log(endYear);
+
+    return minYear.value;  
+  } catch (error) {
+    console.error('Error fetching years:', error);
+    return null;  
+  }
+}
 
 // Emit selected genres
 const toggleGenre = (genre: string) => {
@@ -107,14 +134,21 @@ const selectMedia = (media: string) => {
 
 // Emit year range
 const emitYears = () => {
-  emit("year-changed", { startYear: startYear.value, endYear: endYear.value });
+  emit("year-changed", [startYear.value, endYear.value]);
 };
 
 // Emit runtime changes
 const emitRuntime = () => {
   emit("runtime-changed", runtime.value);
 };
+
+
+onMounted(async () => {
+  await getYears();
+  await emitRuntime();  
+});
 </script>
+
 
 <style scoped>
 .filter-box {

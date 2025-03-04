@@ -12,15 +12,16 @@
 
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
+import { debounce } from 'lodash'
 
 const searchQuery = ref(''); // Reactive variable 
 
-
 const emit = defineEmits(['search-selected']);
 
-const onSearch = () => {
-  emit('search-selected', searchQuery.value); 
-};
+// Debounced search function
+const onSearch = debounce(() => {
+  emit('search-selected', searchQuery.value);
+}, 300); // Adjust the debounce delay (in ms) to your needs
 </script>
 
 <style scoped>

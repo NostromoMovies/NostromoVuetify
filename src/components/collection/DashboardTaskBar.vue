@@ -16,13 +16,13 @@ export default defineComponent({
     Searchbar,
     GenericFiltering,
   },
-  emits: ["filter-updated","search-updated"],
+  emits: ["filter-updated", "search-updated"], // Event names that will be emitted
   setup(_, { emit }) {
     const handleFilterSelected = (filterId: number) => {
-      emit("filter-updated", filterId);
+      emit("filter-updated", filterId); // Emit updated filter ID to parent
     };
-    const handleSearchSelected = (query: string) => {
-      emit("search-updated", query);
+    const handleSearchSelected = (query: number) => {
+      emit("search-updated", query); // Emit updated search query to parent
     };
 
     return {
@@ -32,6 +32,7 @@ export default defineComponent({
   },
 });
 </script>
+
 
 <style scoped>
 .taskbar {
