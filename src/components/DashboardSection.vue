@@ -48,7 +48,7 @@ import DownloadProgress from './HomeVue/DownloadProgress.vue';
 }
 
 .rectangle {
-  background-color: var(--color-background-soft);
+  background-color: rgb(34,34,34);
   color: #fff;
   padding: 20px;
   border-radius: 8px;

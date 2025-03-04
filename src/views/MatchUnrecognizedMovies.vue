@@ -1,38 +1,39 @@
 <template>
-  <div class="match-movies">
-    <h3>Unrecognized Movies</h3>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Filename</th>
-          <th>Extracted Title</th>
-          <th>Extracted Year</th>
-          <th>Recommended Match</th>
-          <th>Manual TMDB ID</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="movie in movies" :key="movie.videoID">
-          <td>{{ movie.fileName }}</td>
-          <td>{{ movie.extractedTitle }}</td>
-          <td>{{ movie.extractedYear || 'N/A' }}</td>
-          <td>
-            <span v-if="movie.recommendedMatch">
-              {{ movie.recommendedMatch.title }} ({{ movie.recommendedMatch.year }})
-            </span>
-            <span v-else>No match found</span>
-          </td>
-          <td>
-            <input v-model="movie.manualTmdbId" type="text" placeholder="Enter TMDB ID" />
-          </td>
-          <td>
-            <button @click="confirmMatch(movie)">Confirm</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="page-background">
+    <div class="match-movies">
+      <h3>Unrecognized Movies</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Extracted Title</th>
+            <th>Extracted Year</th>
+            <th>Recommended Match</th>
+            <th>Manual TMDB ID</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="movie in movies" :key="movie.videoID">
+            <td>{{ movie.fileName }}</td>
+            <td>{{ movie.extractedTitle }}</td>
+            <td>{{ movie.extractedYear || 'N/A' }}</td>
+            <td>
+              <span v-if="movie.recommendedMatch">
+                {{ movie.recommendedMatch.title }} ({{ movie.recommendedMatch.year }})
+              </span>
+              <span v-else>No match found</span>
+            </td>
+            <td>
+              <input v-model="movie.manualTmdbId" type="text" placeholder="Enter TMDB ID" />
+            </td>
+            <td>
+              <button @click="confirmMatch(movie)">Confirm</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -64,8 +65,8 @@
   };
 
   const extractYear = (fileName: string) => {
-    const match = fileName.match(/\b(19|20)\d{2}\b/);
-    return match ? match[0] : null;
+    const matches = fileName.match(/\b(18[89]\d|19\d{2}|20\d{2})\b/g);
+    return matches ? matches[matches.length - 1] : null;
   };
 
   const extractTitle = (fileName: string, extractedYear: string | null) => {
@@ -158,6 +159,7 @@
     color: white;
     border-radius: 8px;
     margin-top: 80px;
+    width: 50vw;
   }
 
   table {
@@ -191,7 +193,13 @@
     cursor: pointer;
   }
 
-    button:hover {
-      background: #41f00b;
-    }
+  button:hover {
+    background: #41f00b;
+  }
+
+  .page-background {
+    background: rgb(24,24,24);
+    min-height: 100vh;
+    width: 100vw;
+  }
 </style>

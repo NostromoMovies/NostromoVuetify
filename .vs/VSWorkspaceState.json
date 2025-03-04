@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\components",
-    "\\src\\components\\collection",
     "\\src\\components\\HomeVue",
     "\\src\\components\\MovieDetailComponent",
+    "\\src\\components\\Navbar",
     "\\src\\router",
     "\\src\\services",
     "\\src\\stores",
     "\\src\\views"
   ],
-  "SelectedNode": "\\src\\components\\collection\\DashboardTaskBar.vue",
+  "SelectedNode": "\\index.html",
   "PreviewInSolutionExplorer": false
 }

@@ -24,14 +24,13 @@ import CollectionSectionVue from '../components/CollectionSection.vue'
   justify-content: flex-start; /* Align items to the top of the container */
   align-items: center; /* Center items horizontally */
   height: 100vh; /* Full screen height */
-  width: 190vh;
+  width: 100vw;
+
   padding: 20px; /* Optional: Add padding for spacing around the container */
 }
 
 .navbar-section {
-  padding: 40px;
   width: 100%; /* Ensure NavBar takes the full width */
-  margin-bottom: 20px; /* Space between NavBar and DashboardSection */
 }
 
 .collection-section {

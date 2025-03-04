@@ -17,9 +17,9 @@ import Dashboard from '@/components/DashboardSection.vue';
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  height: 100vh;
+  height: 120vh;
   padding: 20px;
-  width: 200vh;
+  width: 100vw;
 }
 
 .dashboard-section {
