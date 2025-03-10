@@ -10,7 +10,7 @@
       </v-col>
     </v-row>
 
-    <h3>Media</h3>
+    <!-- <h3>Media</h3>
     <v-row class="media-box" justify="start" no-gutters>
       <v-col v-for="(media, index) in medias"
              :key="`media-${index}`"
@@ -18,7 +18,7 @@
              class="genre-item">
         <FilterTag :label="media" @click="selectMedia(media)" />
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <h3>Years</h3>
     <v-row>
@@ -49,7 +49,7 @@
           :max="180"
           step="30"
           thumb-label
-          :ticks="[60, 90, 120, 150, 180]"  
+          :ticks="[60, 90, 120, 150, 180]"
           tick-size="4"
           @update:modelValue="emitRuntime"
         />
@@ -81,7 +81,7 @@ const selectedGenres = ref<string[]>([]);
 const selectedMedia = ref<string | null>(null);
 const startYear = ref<number | null>(null);
 const endYear = ref<number | null>(null);
-const minYear = ref<number | null>(null); 
+const minYear = ref<number | null>(null);
 const maxYear = new Date().getFullYear();
 const runtime = ref<number>(180);
 
@@ -90,10 +90,10 @@ const getYears = async (): Promise<number | null> => {
   try {
     const response = await getService.getYears();
 
-    
+
     const year = response.data;
 
-    
+
     minYear.value = year;
     startYear.value = minYear.value;
     endYear.value = maxYear;
@@ -101,10 +101,10 @@ const getYears = async (): Promise<number | null> => {
     console.log(startYear);
     console.log(endYear);
 
-    return minYear.value;  
+    return minYear.value;
   } catch (error) {
     console.error('Error fetching years:', error);
-    return null;  
+    return null;
   }
 }
 
@@ -137,7 +137,7 @@ const emitRuntime = () => {
 
 onMounted(async () => {
   await getYears();
-  await emitRuntime();  
+  await emitRuntime();
 });
 </script>
 

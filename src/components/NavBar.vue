@@ -16,8 +16,8 @@
     <v-btn
       v-if="isAuthenticated"
       variant="text"
-      :active="$route.path === '/collection'"
-      to="/collection"
+      :active="$route.path === '/collection/movies'"
+      to="/collection/movies"
     >
       Collection
     </v-btn>

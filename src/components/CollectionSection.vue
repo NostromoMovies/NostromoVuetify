@@ -4,9 +4,30 @@
       @search-updated="updateSearch"
       @filter-updated="updateFilter"
     />
+    <!-- Sub Navigation Links -->
+    <div class = "sub-navbar">
+      <v-btn
+
+        variant="text"
+        :active="$route.path === '/collection/movies'"
+        to="/collection/movies"
+      >
+        Movies
+      </v-btn>
+
+      <v-btn
+
+        variant="text"
+        :active="$route.path === '/collection/tvshows'"
+        to="/collection/tvshows"
+      >
+        TV Shows
+      </v-btn>
+    </div>
+
     <div class="main-content">
       <!-- Pass filter data as props to MovieGrid -->
-      <MovieGrid 
+      <MovieGrid
         :selectedGenres="selectedGenres"
         :selectedMedia="selectedMedia"
         :yearRange="yearRange"
@@ -14,7 +35,7 @@
         :search = "search"
         :filterOrder="filterOrder"
       />
-      <FilterBox 
+      <FilterBox
         @genre-selected="updateGenres"
         @media-selected="updateMedia"
         @year-changed="updateYearRange"
@@ -51,6 +72,7 @@ export default defineComponent({
     const yearRange = ref<YearRange>({ startYear: null, endYear: null });
     const runtime = ref<number>(90);
     const search = ref<string>("");
+
     const filterOrder = ref<number>(1);
 
     // Methods to update the state
@@ -107,6 +129,12 @@ export default defineComponent({
     padding: 40px;
   }
 
+  .sub-navbar{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin: 20px 0;
+  }
   .main-content {
     display: flex;
     gap: 20px;

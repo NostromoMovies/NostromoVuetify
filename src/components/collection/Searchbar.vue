@@ -12,7 +12,7 @@
 import { ref, defineEmits } from 'vue';
 import { debounce } from 'lodash'
 
-const searchQuery = ref(''); // Reactive variable 
+const searchQuery = ref(''); // Reactive variable
 
   const emit = defineEmits(['search-selected']);
 
