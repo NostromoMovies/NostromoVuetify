@@ -37,6 +37,8 @@
         font-family: 'C64 Pro', monospace !important;
         text-align: center;
         color: #2c3e50;
+        width: 100vw;
+        height: 100vh;
         background-color: rgb(24, 24, 24) !important;
     }
 

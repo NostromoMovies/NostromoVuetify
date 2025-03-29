@@ -1,3 +1,5 @@
+
+
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-dialog v-model="showModal" persistent max-width="400">
@@ -42,6 +44,57 @@
                           :append-inner-icon="confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye'"
                           @click:append-inner="toggleConfirmPasswordVisibility"
                           required></v-text-field>
+
+            <!-- Content Rating Checkboxes -->
+            <div class="mt-4">
+              <div class="d-flex justify-space-between align-center mb-2">
+                <span class="entry-font">Content Ratings</span>
+                <v-btn 
+                  size="x-small" 
+                  variant="text" 
+                  @click="toggleAllRatings"
+                  class="entry-font"
+                  color="grey lighten-1">
+                  {{ allRatingsSelected ? 'Deselect All' : 'Select All' }}
+                </v-btn>
+              </div>
+              
+              <v-checkbox
+                v-model="form.contentRatings"
+                label="G - General Audience"
+                value="G"
+                color="green"
+                hide-details
+                density="compact"
+              ></v-checkbox>
+              
+              <v-checkbox
+                v-model="form.contentRatings"
+                label="PG - Parental Guidance"
+                value="PG"
+                color="blue"
+                hide-details
+                density="compact"
+              ></v-checkbox>
+              
+              <v-checkbox
+                v-model="form.contentRatings"
+                label="PG-13 - Teens and Above"
+                value="PG13"
+                color="orange"
+                hide-details
+                density="compact"
+              ></v-checkbox>
+              
+              <v-checkbox
+                v-model="form.contentRatings"
+                label="R - Restricted (Adults Only)"
+                value="R"
+                color="red"
+                hide-details
+                density="compact"
+              ></v-checkbox>
+            </div>
 
             <v-alert v-if="passwordError" type="error" dense>
               {{ passwordError }}

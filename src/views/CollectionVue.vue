@@ -20,13 +20,16 @@ import CollectionSectionVue from '../components/CollectionSection.vue'
 <style scoped>
 .main-container {
   display: flex;
-  flex-direction: column; /* Arrange sections vertically */
-  justify-content: flex-start; /* Align items to the top of the container */
-  align-items: center; /* Center items horizontally */
-  height: 100vh; /* Full screen height */
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100vh;
   width: 100vw;
-
-  padding: 20px; /* Optional: Add padding for spacing around the container */
+  
+  margin: 0;
+  padding: 20px;
+  position: fixed;
+  top: 50;
+  left: 0;
 }
 
 .navbar-section {

@@ -12,15 +12,22 @@ import Dashboard from '@/components/DashboardSection.vue';
 </template>
 
 <style scoped>
+
+
 .main-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  height: 120vh;
-  padding: 20px;
+  height: 100vh;
   width: 100vw;
+  
+  margin: 0;
+  padding: 20px;
+  position: fixed;
+  top: 50;
+  left: 0;
 }
+
 
 .dashboard-section {
   width: 100%;

@@ -32,8 +32,8 @@ import DownloadProgress from './HomeVue/DownloadProgress.vue';
 .parent {
   margin-top: 50px;
   padding: 20px;
-  width: 100%;
-  max-width: 200vh;
+  height: 100vh;
+  width: 100vw;
 }
 
 .grid-container {
