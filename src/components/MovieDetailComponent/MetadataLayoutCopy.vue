@@ -1,17 +1,17 @@
-<!-- <template>
+<template>
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
-    <div class="media-title-box">
-      <h1>{{ selectedMedia?.title || selectedMedia?.name || "Loading..." }}</h1>
+    <div class="movie-title-box">
+      <h1>{{ selectedMovie?.title || "Loading..." }}</h1>
     </div>
 
     <v-container class="custom-container" fluid>
       <v-row>
         <v-col cols="12" md="4">
           <v-card outlined class="movie-poster">
-            <v-img v-if="selectedMedia?.posterPath"
-                   :src="`https://image.tmdb.org/t/p/w500${selectedMedia.posterPath}`"
-                   alt="Media Poster"
+            <v-img v-if="selectedMovie?.posterPath"
+                   :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
+                   alt="Movie Poster"
                    aspect-ratio="2/3" />
             <p v-else>No Poster Available</p>
           </v-card>
@@ -78,28 +78,18 @@
 import { ref, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
-import { useTvShowStore } from "@/stores/TvShowStore";
 import { useCastStore } from "@/stores/castStore";
 import { useCrewStore } from "@/stores/crewStore";
 
 export default {
-  props: {
-    type: {
-      type: String,
-      required: true,
-      validator: (value: string) => ["movie", "tv"].includes(value)
-    }
-  },
-
   setup() {
     const route = useRoute();
     const movieStore = useMovieStore();
-    const tvStore = useTvShowStore();
     const castStore = useCastStore();
     const crewStore = useCrewStore();
     const showCrews = ref(false);
 
-    const selectedMedia = ref(null);
+    const selectedMovie = ref(null);
     const selectedCast = ref([]);
     const selectedCrew = ref([]);
 
@@ -297,4 +287,5 @@ export default {
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
-</style> -->
+</style>
+ 

@@ -16,7 +16,8 @@
   const props = defineProps({
     to: { type: String, required: true },
     movieId: { type: Number, required: true },
-    title: { type: String, required: true }
+    title: { type: String, required: true },
+    mediaType: { type: String, required: true}
   });
 
   const posterImage = ref(`/api/movies/${props.movieId}/poster`);
@@ -27,7 +28,7 @@
       const response = await fetch(posterImage.value, { method: 'HEAD' });
 
       if (!response.ok) {
-        await getService.getPoster(props.movieId);
+        await getService.getPoster(props.movieId, props.mediaType);
         setTimeout(() => {
           posterImage.value = `/api/movies/${props.movieId}/poster?reload=${Date.now()}`;
         }, 2000);

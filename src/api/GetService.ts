@@ -5,20 +5,20 @@ export const getService = {
     return axiosInstance .get('/posts');
   },
   login(id: number) {
-    return axiosInstance .get(`/posts/${id}`);  
+    return axiosInstance .get(`/posts/${id}`);
   },
   searchMedia(){
-    return axiosInstance .get(`/api/MediaDisplay/searchMedia`);  
+    return axiosInstance .get(`/api/MediaDisplay/searchMedia`);
   },
-  getPoster(id: number){
-    return axiosInstance.get(`/api/File/download/tmdb/${id}/poster`);  
+  getPoster(id: number, mediaType: string){
+    return axiosInstance.get(`/api/File/download/tmdb/${mediaType}/${id}/poster`);
   },
   ///api/File/download/tmdb/{id}/poster
   fileJob(group: string,name:string ){
-    return axiosInstance.get('/api/File/job/${group}/${name}/status');  
+    return axiosInstance.get('/api/File/job/${group}/${name}/status');
   },
   setFolder (){
-    return axiosInstance.get('/api/folders/sets');  
+    return axiosInstance.get('/api/folders/sets');
   },
    testFolder (){
     return axiosInstance.get('/api/folders/test');

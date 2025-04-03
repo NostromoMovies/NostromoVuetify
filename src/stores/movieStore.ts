@@ -19,15 +19,15 @@ export const useMovieStore = (): MovieStore => {
   const CACHE_DURATION = 60 * 1000;
 
   const fetchFilterMovies = async (
-    force = false, 
-    query = '', 
-    runtime: number | null = null, 
-    searchTerm: number | null = null, 
-    minYear: number | null = null, 
+    force = false,
+    query = '',
+    runtime: number | null = null,
+    searchTerm: number | null = null,
+    minYear: number | null = null,
     maxYear: number | null = null
   ): Promise<Movie[]> => {
     console.log(query, runtime, searchTerm, minYear, maxYear);
-  
+
     // Construct query parameters
     const params = new URLSearchParams();
     if (query) params.append('query', query);
@@ -35,18 +35,18 @@ export const useMovieStore = (): MovieStore => {
     if (searchTerm) params.append('searchTerm', String(searchTerm));
     if (minYear !== null) params.append('minYear', String(minYear));
     if (maxYear !== null) params.append('maxYear', String(maxYear));
-  
+
     try {
       const response = await fetch(`/api/MediaDisplay/getMovies?${params.toString()}`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-  
+
       const jsonResponse = await response.json();
       console.log("Raw API Response:", jsonResponse);
-  
+
       if (!jsonResponse.data?.items || !Array.isArray(jsonResponse.data.items)) {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
-  
+
       filterMovies.value = [...jsonResponse.data.items.map((movie: ApiMovie, index: number) => ({
         order: index, // Preserve original order
         movieID: movie.movieID || movie.tmdbid || null,
@@ -57,7 +57,7 @@ export const useMovieStore = (): MovieStore => {
         runtime: movie.runtime ?? null,
         backdropPath: movie.backdropPath ?? null,
       }))]; // Ensure order is explicitly preserved in a new array
-  
+
       lastFetched.value = Date.now();
       console.log("Filtered Movies successfully fetched:", filterMovies.value);
       return filterMovies.value;
@@ -66,7 +66,7 @@ export const useMovieStore = (): MovieStore => {
       throw error;
     }
   };
-  
+
 
   const fetchMovies = async (force = false): Promise<Movie[]> => {
     if (
@@ -143,12 +143,12 @@ export const useMovieStore = (): MovieStore => {
     }
   };
 
-  return { 
+  return {
     movies,
-    filterMovies,  
+    filterMovies,
     lastFetched,
     getMovieById,
-    fetchMovies,  
+    fetchMovies,
     fetchFilterMovies,
     getMovieRecommendation
   };

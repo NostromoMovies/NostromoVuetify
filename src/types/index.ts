@@ -10,10 +10,43 @@ export interface Movie {
   releaseDate?: string | null;
   runtime?: number | string | null;
   backdropPath?: string | null;
-  order: number; 
+  order: number;
 }
 
+export interface TvShow{
+  showID: number;
+  name: string;
+  posterPath?: string | null;
+  overview?: string | null;
+  backdropPath?: string | null;
+  order: number;
+  voteAverage: number;
+  voteCount: number
+}
 
+export interface Season{
+  seasonID: number;
+  showID: number;
+  episodeCount: number;
+  Overview?: string | null;
+  posterPath?: string | null;
+  voteAverage: number;
+  seasonNumber: number;
+  seasonName: string
+}
+
+export interface Episode{
+  episodeID: number;
+  seasonID: number;
+  seasonNumber: number;
+  episodeName: string;
+  episodeNumber: string;
+  overview?: string | null;
+  runtime: number;
+  voteAverage: number;
+  voteCount: number;
+  stillPath?: string | null;
+}
 
 export interface LoginForm {
   username: string;
@@ -81,4 +114,11 @@ export interface MovieStore {
     minYear?: number | null,
     maxYear?: number | null
   ) => Promise<Movie[]>;
+}
+
+export interface TvShowStore{
+  shows: Ref<TvShow[]>;
+  fetchTvShows: (force?: boolean) => Promise<Movie[]>;
+  getTvShowById: (id: number) => TvShow | null;
+  lastFetched: Ref<number | null>;
 }
