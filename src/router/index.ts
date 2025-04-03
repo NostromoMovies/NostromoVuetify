@@ -10,6 +10,7 @@ const NotFound = () => import('@/views/NotFound.vue');
 // const Home = () => import('@/views/Homepage.vue');
 const AboutUs = () => import('@/views/AboutUsVue.vue');
 const MatchUnrecognizedMovies = () => import('@/views/MatchUnrecognizedMovies.vue');
+const ComprehensiveDashboard = () => import('@/views/ComprehensiveDashboard.vue');
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,13 @@ const router = createRouter({
       component: MatchUnrecognizedMovies,
       meta: { requiresAuth: true }, // Adjust if needed
     },
+    {
+      path: '/comp',
+      name: 'CompDashboard',
+      component: ComprehensiveDashboard,
+      meta: { requiresAuth: true }, // Adjust if needed
+    },
+ 
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',

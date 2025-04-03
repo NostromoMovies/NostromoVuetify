@@ -2,13 +2,13 @@
   <div class="filter-box">
     <h3>Genre</h3>
     <v-row class="genre-box" justify="start" no-gutters>
-      <v-col v-for="(genre, index) in genres"
-             :key="`genre-${index}`"
-             cols="auto"
-             class="genre-item">
-        <FilterTag :label="genre" @click="toggleGenre(genre)" />
-      </v-col>
-    </v-row>
+  <v-col v-for="(genre, index) in genres"
+         :key="`genre-${index}`"
+         cols="auto"
+         class="genre-item">
+    <FilterTag :label="genre.name" @click="toggleGenre(genre)" />
+  </v-col>
+</v-row>
 
     <h3>Media</h3>
     <v-row class="media-box" justify="start" no-gutters>
@@ -69,11 +69,13 @@ import { getService } from "@/api/GetService";
   // Emits setup
   const emit = defineEmits(["genre-selected", "media-selected", "year-changed", "runtime-changed"]);
 
-  const genres = ref<string[]>([
-    "Action", "Comedy", "Drama", "Horror", "Sci-Fi",
-    "Romance", "Thriller", "Fantasy", "Documentary",
-    "Adventure", "Mystery"
-  ]);
+  // const genres = ref<string[]>([
+  //   "Action", "Comedy", "Drama", "Horror", "Sci-Fi",
+  //   "Romance", "Thriller", "Fantasy", "Documentary",
+  //   "Adventure", "Mystery"
+  // ]);
+
+  const genres = ref<{ genreID: number; name: string }[]>([]);
 
   const medias = ref<string[]>(["Tv", "Movie"]);
 
@@ -107,6 +109,28 @@ const getYears = async (): Promise<number | null> => {
     return null;  
   }
 }
+const getGenre = async () => {
+    try {
+        const response = await getService.getGenre();
+        console.log("Genre API Response:", response.data);
+
+        if (Array.isArray(response.data)) {
+            // Store both genreID and name in the genres array
+            genres.value = response.data.map(genre => ({
+                genreID: genre.genreID,
+                name: genre.name
+            }));
+        } else {
+            console.error("Unexpected response format:", response.data);
+            genres.value = [];
+        }
+
+        console.log("Updated Genres:", genres.value);
+    } catch (error) {
+        console.error("Error fetching genres:", error);
+        genres.value = [];
+    }
+};
 
   // Emit selected genres
   const toggleGenre = (genre: string) => {
@@ -138,6 +162,7 @@ const emitRuntime = () => {
 onMounted(async () => {
   await getYears();
   await emitRuntime();  
+  getGenre();
 });
 </script>
 

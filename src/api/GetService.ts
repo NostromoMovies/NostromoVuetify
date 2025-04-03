@@ -28,6 +28,9 @@ export const getService = {
   },
   getYears (){
     return axiosInstance.get('api/MediaDisplay/getYears');
+  },
+  getGenre(){
+    return axiosInstance.get('api/MediaDisplay/getGenres')
   }
 
 }
