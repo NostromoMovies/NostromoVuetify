@@ -15,11 +15,12 @@
 
   const props = defineProps({
     to: { type: String, required: true },
-    movieId: { type: Number, required: true },
-    title: { type: String, required: true }
+    mediaId: { type: Number, required: true },
+    title: { type: String, required: true },
+    //mediaType: { type: String, required: true}
   });
 
-  const posterImage = ref(`/api/movies/${props.movieId}/poster`);
+  const posterImage = ref(`/api/movies/${props.mediaId}/poster`);
 
   const fetchPoster = async () => {
     try {
@@ -27,9 +28,9 @@
       const response = await fetch(posterImage.value, { method: 'HEAD' });
 
       if (!response.ok) {
-        await getService.getPoster(props.movieId);
+        await getService.getPoster('movie', props.mediaId);
         setTimeout(() => {
-          posterImage.value = `/api/movies/${props.movieId}/poster?reload=${Date.now()}`;
+          posterImage.value = `/api/movies/${props.mediaId}/poster?reload=${Date.now()}`;
         }, 2000);
       }
     } catch {

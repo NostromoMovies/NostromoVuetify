@@ -3,12 +3,12 @@
     <div v-if="loading" class="loading">Loading movies...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="movie-grid">
-      <MovieContainer 
-        v-for="movie in filteredMovies" 
-        :key="movie.order" 
+      <MovieContainer
+        v-for="movie in filteredMovies"
+        :key="movie.order"
         :to="`/movies/${movie.movieID}`"
-        :movieId="movie.movieID"
-        :title="movie.title" 
+        :mediaId="movie.movieID"
+        :title="movie.title"
       />
     </div>
   </div>
@@ -31,7 +31,7 @@
   const props = defineProps({
     selectedGenres: Array as PropType<string[]>,
     selectedMedia: Array as PropType<string[]>,
-    yearRange: Array as PropType<number[]>,  
+    yearRange: Array as PropType<number[]>,
     runtime: Number,
     search: String,
     filterOrder: Number
@@ -52,11 +52,11 @@
       loading.value = true;
       await movieStore.fetchFilterMovies(
         false,
-        props.search ?? "", 
+        props.search ?? "",
         props.runtime ?? null,
-        props.filterOrder ?? null, 
-        props.yearRange?.length ? Number(props.yearRange[0]) : 1900, 
-        props.yearRange?.length ? Number(props.yearRange[1]) : 2100  
+        props.filterOrder ?? null,
+        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100
       );
     } catch (e) {
       error.value = `Failed to load movies: ${(e as Error).message}`;

@@ -10,10 +10,40 @@ export interface Movie {
   releaseDate?: string | null;
   runtime?: number | string | null;
   backdropPath?: string | null;
-  order: number; 
+  order: number;
 }
 
+export interface Tv {
+  tvShowID: number;
+  originalName: string;
+  posterPath?: string | null;
+  backdropPath?: string | null;
+  overview?: string | null;
+  firstAirDate?: string | null;
+  order: number;
+}
 
+export interface Season{
+  seasonID: number;
+  tvShowID: number;
+  seasonNumber: number;
+  overview?: string | null;
+  posterPath?: string | null;
+  episodeCount?: number | 0;
+  seasonName?: string | null;
+}
+
+export interface Episode{
+  episodeID: number;
+  episodeName: string;
+  episodeNumber: number;
+  overview?: string | null;
+  runtime: number;
+  seasonId: number;
+  stillPath?: string | null;
+  voteAverage: number;
+  voteCount: number;
+}
 
 export interface LoginForm {
   username: string;
@@ -81,4 +111,31 @@ export interface MovieStore {
     minYear?: number | null,
     maxYear?: number | null
   ) => Promise<Movie[]>;
+}
+
+export interface TvStore{
+  tvShows: Ref<Tv[]>;
+  filterTvShows: Ref<Tv[]>;
+  lastFetched: Ref<number | null>;
+  fetchTvShows: (force?: boolean) => Promise<Tv[]>;
+  getTvShowById: (id: string | number) => Tv | null;
+  getTvRecommendation: (id: string | number) => Promise<Tv[]>;
+  fetchFilterShows: (
+    force?: boolean,
+    query?: string,
+    minYear?: number | null,
+    maxYear?: number | null
+  ) => Promise<Tv[]>;
+}
+
+export interface SeasonStore{
+  seasons: Ref<Record<number,Season[]>>;
+  fetchSeasonsByTvShowId: (tvShowID: number) => Promise<Season[]>;
+  getSeasonByShowAndNum: (tvShowID: number, seasonNumber: number) => Promise<Season | null>;
+}
+
+export interface EpisodeStore{
+  episodes: Ref<Record<number,Episode[]>>;
+  fetchEpisodesBySeasonId: (seasonID: number) => Promise<Episode[]>;
+  getEpisodeBySeasonIdAndNum: (seasonID: number, episodeNumber: number) => Promise<Episode | null>;
 }
