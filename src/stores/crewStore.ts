@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import type { CrewMember } from "../types";
+import type { MediaTypes } from "@/enums/MediaTypeEnum";
 
 interface ApiCrewMember {
   adult?: boolean | null;
@@ -20,7 +21,7 @@ export const useCrewStore = () => {
   const lastFetched = ref<number | null>(null);
   const CACHE_DURATION = 60 * 1000;
 
-  const fetchCrewByMovieId = async (movieID: string | number, force = false): Promise<CrewMember[]> => {
+  const fetchCrewByMediaId = async (mediaID: string | number, mediaType: MediaTypes, force = false): Promise<CrewMember[]> => {
     if (
       !force &&
       crew.value.length &&
@@ -32,7 +33,7 @@ export const useCrewStore = () => {
     }
 
     try {
-      const response = await fetch(`/api/Credits/crew/${movieID}`);
+      const response = await fetch(`/api/Credits/crew/${mediaType}/${mediaID}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -71,9 +72,9 @@ export const useCrewStore = () => {
     return crew.value.length ? crew.value : null;
   };
 
-  return { 
-    crew, 
-    fetchCrewByMovieId, 
+  return {
+    crew,
+    fetchCrewByMediaId,
     lastFetched,
     getCrewByMovieId
   };

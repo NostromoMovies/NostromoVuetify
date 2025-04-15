@@ -2,15 +2,15 @@
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
     <div class="movie-title-box">
-      <h1>{{ selectedMovie?.title || "Loading..." }}</h1>
+      <h1>{{ selectedMedia?.title || "Loading..." }}</h1>
     </div>
 
     <v-container class="custom-container" fluid>
       <v-row>
         <v-col cols="12" md="4">
           <v-card outlined class="movie-poster">
-            <v-img v-if="selectedMovie?.posterPath"
-                   :src="`https://image.tmdb.org/t/p/w500${selectedMovie.posterPath}`"
+            <v-img v-if="selectedMedia?.posterPath"
+                   :src="`https://image.tmdb.org/t/p/w500${selectedMedia.posterPath}`"
                    alt="Movie Poster"
                    aspect-ratio="2/3" />
             <p v-else>No Poster Available</p>
@@ -80,16 +80,24 @@ import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 import { useCastStore } from "@/stores/castStore";
 import { useCrewStore } from "@/stores/crewStore";
+import { useTvStore } from "@/stores/tvStore";
+import { useSeasonStore } from "@/stores/seasonStore";
+import { useEpisodeStore } from "@/stores/episodeStore";
+import { MediaTypes } from "@/enums/MediaTypeEnum";
 
 export default {
   setup() {
     const route = useRoute();
     const movieStore = useMovieStore();
+    const tvStore = useTvStore();
+    const seasonStore = useSeasonStore();
+    const episodeStore = useEpisodeStore();
     const castStore = useCastStore();
     const crewStore = useCrewStore();
     const showCrews = ref(false);
 
-    const selectedMovie = ref(null);
+    const selectedMedia = ref(null);
+
     const selectedCast = ref([]);
     const selectedCrew = ref([]);
 
@@ -107,50 +115,86 @@ export default {
     };
 
     onMounted(async () => {
-      await movieStore.fetchMovies();
-      const movieId = route.params.id as string;
-      selectedMovie.value = movieStore.getMovieById?.(movieId) || null;
+      const mediaId = route.params.id as string;
+      const mediaType = route.params.mediaType as string;
 
-      try {
-        selectedCast.value = await castStore.fetchCastByMovieId(movieId);
-      } catch (error) {
-        console.error("Could not fetch cast for ID:", movieId, error);
+      if(mediaType === MediaTypes.Movie){
+        await movieStore.fetchMovies();
+        selectedMedia.value = movieStore.getMovieById?.(mediaId) || null;
+
+        try {
+          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType);
+        }
+        catch (error) {
+          console.error("Could not fetch cast for ID:", mediaId, error);
+        }
+
+        try {
+          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType);
+        }
+        catch (error) {
+          console.error("Could not fetch crew for ID:", mediaId, error);
+        }
+
+        try{
+          await movieStore.getMovieRecommendation(mediaId);
+        }
+        catch (error) {
+          console.error("Could not movie recommendations for ID:", mediaId, error);
+        }
+      }
+      else if(mediaType === MediaTypes.Tv){
+        await tvStore.fetchTvShows();
+        selectedMedia.value = tvStore.getTvShowById?.(mediaId) || null;
+
+        try {
+          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType);
+        }
+        catch (error) {
+          console.error("Could not fetch cast for ID:", mediaId, error);
+        }
+
+        try {
+          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType);
+        }
+        catch (error) {
+          console.error("Could not fetch crew for ID:", mediaId, error);
+        }
+
+        try{
+          await tvStore.getTvRecommendation(mediaId);
+        }
+        catch (error) {
+          console.error("Could not tv show recommendations for ID:", mediaId, error);
+        }
       }
 
-      try {
-        selectedCrew.value = await crewStore.fetchCrewByMovieId(movieId);
-      } catch (error) {
-        console.error("Could not fetch crew for ID:", movieId, error);
-      }
-      try{
-                        await movieStore.getMovieRecommendation(movieId);
-      }catch (error) {
-        console.error("Could not fetch crew for ID:", movieId, error);
-      }
-     
+
+
+
     });
 
     const metadataBoxes = computed(() => {
-      if (!selectedMovie.value) return "Loading movie details...";
+      if (!selectedMedia.value) return "Loading movie details...";
 
       return `
-         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
+         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMedia.value.overview ?? "N/A"} <br><br>
 
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMovie.value.releaseDate
-          ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMedia.value.releaseDate
+          ? new Date(selectedMedia.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
           : "Unknown"
         } <br><br>
 
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMovie.value.runtime
-          ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${Number(selectedMovie.value.runtime) % 60}m`
+        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMedia.value.runtime
+          ? `${Math.floor(Number(selectedMedia.value.runtime) / 60)}h ${Number(selectedMedia.value.runtime) % 60}m`
           : "Unknown"
         }
       `;
     });
 
     const backgroundStyle = computed(() => ({
-      backgroundImage: selectedMovie.value?.backdropPath
-        ? `url(https://image.tmdb.org/t/p/w1280${selectedMovie.value.backdropPath})`
+      backgroundImage: selectedMedia.value?.backdropPath
+        ? `url(https://image.tmdb.org/t/p/w1280${selectedMedia.value.backdropPath})`
         : "none"
     }));
 
@@ -173,7 +217,7 @@ export default {
     );
 
     return {
-      selectedMovie,
+      selectedMedia,
       metadataBoxes,
       backgroundStyle,
       actors,
@@ -203,7 +247,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px; 
+  padding: 20px;
 }
 
 .custom-container {
@@ -257,8 +301,8 @@ export default {
   padding: 10px;
   background-color: transparent !important;
   box-shadow: none !important;
-  min-height: 270px; 
-  width: 200px; 
+  min-height: 270px;
+  width: 200px;
   word-wrap: break-word;
   overflow: hidden;
 }

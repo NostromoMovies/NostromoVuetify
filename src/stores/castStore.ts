@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import type { CastMember } from "../types";
+import type { MediaTypes } from "@/enums/MediaTypeEnum";
 
 interface ApiCastMember {
   adult?: boolean | null;
@@ -21,7 +22,7 @@ export const useCastStore = () => {
   const lastFetched = ref<number | null>(null);
   const CACHE_DURATION = 60 * 1000;
 
-  const fetchCastByMovieId = async (movieID: string | number, force = false): Promise<CastMember[]> => {
+  const fetchCastByMediaId = async (movieID: string | number, mediaType: MediaTypes, force = false): Promise<CastMember[]> => {
     if (
       !force &&
       cast.value.length &&
@@ -33,7 +34,7 @@ export const useCastStore = () => {
     }
 
     try {
-      const response = await fetch(`/api/Credits/cast/${movieID}`);
+      const response = await fetch(`/api/Credits/cast/${mediaType}/${movieID}`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -72,9 +73,9 @@ export const useCastStore = () => {
     return cast.value.length ? cast.value : null;
   };
 
-  return { 
-    cast, 
-    fetchCastByMovieId, 
+  return {
+    cast,
+    fetchCastByMediaId,
     lastFetched,
     getCastByMovieId
   };

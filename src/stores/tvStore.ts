@@ -21,6 +21,7 @@ export const useTvStore = (): TvStore => {
   const fetchFilterShows = async(
     force = false,
     query = '',
+    searchTerm: number | null = null,
     minYear: number | null = null,
     maxYear: number | null = null
   ): Promise<Tv[]> => {
@@ -30,6 +31,7 @@ export const useTvStore = (): TvStore => {
     const params = new URLSearchParams();
 
     if(query) params.append('query', query);
+    if(searchTerm) params.append('searchTerm', String(searchTerm));
     if(minYear !== null) params.append('minYear', String(minYear));
     if(maxYear !== null) params.append('maxYear', String(maxYear));
 

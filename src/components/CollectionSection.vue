@@ -6,7 +6,7 @@
     />
     <div class="main-content">
       <!-- Pass filter data as props to MovieGrid -->
-      <MovieGrid 
+      <MovieGrid
         :selectedGenres="selectedGenres"
         :selectedMedia="selectedMedia"
         :yearRange="yearRange"
@@ -14,7 +14,7 @@
         :search = "search"
         :filterOrder="filterOrder"
       />
-      <FilterBox 
+      <FilterBox
         @genre-selected="updateGenres"
         @media-selected="updateMedia"
         @year-changed="updateYearRange"
@@ -47,7 +47,7 @@ export default defineComponent({
   setup() {
     // Define the reactive state with correct types
     const selectedGenres = ref<string[]>([]);
-    const selectedMedia = ref<string | null>(null);
+    const selectedMedia = ref<string[] | null>(null);
     const yearRange = ref<YearRange>({ startYear: null, endYear: null });
     const runtime = ref<number>(90);
     const search = ref<string>("");

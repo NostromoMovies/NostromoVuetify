@@ -33,8 +33,8 @@ const router = createRouter({
       meta: { requireAuth: true }, // Only logged-in users can access
     },
     {
-      path: "/movies/:id",
-      name: "MovieDetails",
+      path: "/:mediaType/:id",
+      name: "MediaDetails",
       component: () => import("@/components/MovieDetailComponent/MetadataLayout.vue"),
       props: true,
       meta: { requiresAuth: true },
@@ -58,7 +58,7 @@ const router = createRouter({
       component: ComprehensiveDashboard,
       meta: { requiresAuth: true }, // Adjust if needed
     },
- 
+
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',

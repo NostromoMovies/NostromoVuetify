@@ -15,10 +15,20 @@
     import Navbar from './components/NavBar.vue';
 
     import { useMovieStore } from './stores/movieStore';
+    import { useTvStore } from './stores/tvStore';
+    import { useSeasonStore } from './stores/seasonStore';
+    import { useEpisodeStore } from './stores/episodeStore';
     import { useRoute } from 'vue-router';
 
     const movieStore = useMovieStore();
+    const tvStore = useTvStore();
+    const seasonStore = useSeasonStore();
+    const episodeStore = useEpisodeStore();
+
     provide('movieStore', movieStore);
+    provide('tvStore', tvStore);
+    provide('seasonStore', seasonStore);
+    provide('episodeStore', episodeStore);
 
     const route = useRoute();
 

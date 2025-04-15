@@ -123,6 +123,7 @@ export interface TvStore{
   fetchFilterShows: (
     force?: boolean,
     query?: string,
+    searchTermTerm?: number | null,
     minYear?: number | null,
     maxYear?: number | null
   ) => Promise<Tv[]>;

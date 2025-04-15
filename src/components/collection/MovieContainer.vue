@@ -17,10 +17,14 @@
     to: { type: String, required: true },
     mediaId: { type: Number, required: true },
     title: { type: String, required: true },
-    //mediaType: { type: String, required: true}
+    mediaType: { type: String, required: true}
   });
 
-  const posterImage = ref(`/api/movies/${props.mediaId}/poster`);
+  const posterImage = ref(
+    props.mediaType === 'movie'
+      ? `/api/movies/${props.mediaId}/poster`
+      : `/api/tvshow/${props.mediaId}/poster`
+    );
 
   const fetchPoster = async () => {
     try {
@@ -28,9 +32,13 @@
       const response = await fetch(posterImage.value, { method: 'HEAD' });
 
       if (!response.ok) {
-        await getService.getPoster('movie', props.mediaId);
+        await getService.getPoster(props.mediaType, props.mediaId);
         setTimeout(() => {
-          posterImage.value = `/api/movies/${props.mediaId}/poster?reload=${Date.now()}`;
+          posterImage.value = (
+          props.mediaType === 'movie'
+            ? `/api/movies/${props.mediaId}/poster?reload=${Date.now()}`
+            : `/api/tvshow/${props.mediaId}/poster?reload=${Date.now()}`
+          );
         }, 2000);
       }
     } catch {

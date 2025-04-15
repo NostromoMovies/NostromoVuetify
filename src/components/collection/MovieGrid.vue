@@ -4,11 +4,12 @@
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="movie-grid">
       <MovieContainer
-        v-for="movie in filteredMovies"
-        :key="movie.order"
-        :to="`/movies/${movie.movieID}`"
-        :mediaId="movie.movieID"
-        :title="movie.title"
+        v-for="media in combinedMedia"
+        :key="`${media.mediaType}-${media.movieID ?? media.tvShowID}`"
+        :to="`/${media.mediaType}/${media.movieID ?? media.tvShowID}`"
+        :mediaId="media.mediaType === 'movie' ? media.movieID : media.tvShowID"
+        :title="media.title ?? media.originalName"
+        :mediaType="media.mediaType"
       />
     </div>
   </div>
@@ -19,12 +20,40 @@
   import type { PropType } from 'vue';
   import MovieContainer from './MovieContainer.vue';
   import type { MovieStore } from '@/types';
+  import type { TvStore } from '@/types';
+  import { MediaTypes } from '@/enums/MediaTypeEnum';
 
   const movieStore = inject<MovieStore | null>('movieStore', null);
+  const tvStore = inject<TvStore | null>('tvStore', null);
 
   // Ensure movieStore is defined before accessing properties
   const filteredMovies = computed(() => {
-    return [...(movieStore?.filterMovies?.value ?? [])].sort((a, b) => a.order - b.order);
+    return [...(movieStore?.filterMovies?.value ?? [])]
+      .map(movie => ({
+        ...movie,
+        mediaType: MediaTypes.Movie
+      }))
+      .sort((a, b) => a.order - b.order);
+  });
+
+  const filteredShows = computed(() => {
+    return [...(tvStore?.filterTvShows?.value ?? [])]
+      .map(show => ({
+        ...show,
+        mediaType: MediaTypes.Tv
+      }))
+      .sort((a, b) => a.order - b.order);
+  });
+
+  const combinedMedia = computed(() => {
+    const includeMovies = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('movie');
+    const includeShows = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('tv');
+
+    let results: any[] = [];
+    if(includeMovies) results = results.concat(filteredMovies.value);
+    if(includeShows) results = results.concat(filteredShows.value);
+
+    return results.sort((a, b) => a.order - b.order);
   });
 
   // Props passed from parent component
@@ -65,6 +94,31 @@
     }
   };
 
+  const loadShows = async () => {
+    if (!tvStore) {
+      console.error("TvStore is not provided.");
+      return;
+    }
+
+    try {
+      console.log(props.search,props.filterOrder,props.yearRange)
+      loading.value = true;
+      await tvStore.fetchFilterShows(
+        false,
+        props.search ?? "",
+        props.filterOrder ?? null,
+        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100
+      );
+    }
+    catch (e) {
+      error.value = `Failed to load Tv Shows: ${(e as Error).message}`;
+    }
+    finally {
+      loading.value = false;
+    }
+  };
+
   // Watch individual props
   watch(() => [
   props.selectedGenres,
@@ -73,9 +127,16 @@
   props.runtime,
   props.search,
   props.filterOrder
-], loadMovies, { deep: true });
+], () => {
+  loadMovies();
+  loadShows();
+ },
+ { deep: true });
 
-  onMounted(loadMovies);
+  onMounted(() => {
+    loadMovies();
+    loadShows();
+  });
 </script>
 
 <style scoped>
