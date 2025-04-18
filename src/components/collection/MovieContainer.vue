@@ -1,12 +1,18 @@
 <template>
-  <router-link :to="to" class="movie-card">
-    <div class="poster-container">
-      <img :src="posterImage" alt="Poster" class="poster-image" @error="handleImageError" />
-      <div class="overlay">
-        <div class="movie-title">{{ title }}</div>
+  <div class="movie-card">
+    <router-link :to="to" class="poster-link">
+      <div class="poster-container">
+        <img :src="posterImage" alt="Poster" class="poster-image" @error="handleImageError" />
+        <div class="overlay">
+          <div class="movie-title">{{ title }}</div>
+        </div>
       </div>
+    </router-link>
+    <div class="button-stack">
+      <button class="action-button play">▶ Play</button>
+      <button class="action-button add">＋ Add</button>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -45,6 +51,16 @@
 </script>
 
 <style scoped>
+  .movie-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .poster-link {
+    display: block;
+    text-decoration: none;
+  }
+
   .poster-container {
     position: relative;
     width: 100%;
@@ -59,5 +75,29 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .button-stack {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .action-button {
+    width: 100%;
+    background-color: #1f1f1f;
+    color: white;
+    border: none;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .action-button:hover {
+    background-color: #333;
   }
 </style>

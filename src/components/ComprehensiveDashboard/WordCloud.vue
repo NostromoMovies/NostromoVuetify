@@ -75,7 +75,7 @@
   
   <style scoped>
   canvas {
-    border: 1px solid #ddd;
+    border: 1px solid black;
     margin-bottom: 20px;
   }
   

@@ -9,6 +9,7 @@
 
       <div class="rectangle">
         <UnrecognizedMovies />
+        <CreateList></CreateList>
       </div>
 
       <div class="rectangle">
@@ -22,6 +23,7 @@
 import UnrecognizedFileBox from './HomeVue/ImportFolderBox.vue';
 import UnrecognizedMovies from './HomeVue/UnrecognizedMovies.vue';
 import DownloadProgress from './HomeVue/DownloadProgress.vue';
+import CreateList from './HomeVue/CreateList.vue';
 </script>
 
 <style scoped>
