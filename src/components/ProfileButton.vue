@@ -8,7 +8,8 @@
     </template>
 
     <!-- Dropdown Menu -->
-    <v-list>
+    <v-theme-provider :theme="darkMode ? 'dark' : 'light'">
+    <v-list >
       <v-list-item @click="goToSettings">
         <v-list-item-title>Settings</v-list-item-title>
       </v-list-item>
@@ -16,37 +17,44 @@
         <v-list-item-title>Logout</v-list-item-title>
       </v-list-item>
     </v-list>
+    </v-theme-provider>
   </v-menu>
+  
 </template>
 
 <script lang="ts">
 import { ref } from "vue";
-import { useRouter } from "vue-router"; // Import the Vue Router
-import { useAuthStore } from "@/services/authStore"; // Import the auth store
+import { useRouter } from "vue-router";
+import { useAuthStore } from "@/services/authStore";
 
 export default {
   setup() {
     const isDropdownVisible = ref(false);
-    const router = useRouter(); // Access the Vue Router
-    const authStore = useAuthStore(); // Access the authentication store
+    const darkMode = ref(true); // ✅ You need this
+
+    const router = useRouter();
+    const authStore = useAuthStore();
 
     const goToSettings = () => {
       console.log("Navigating to Settings...");
-      router.push("/settings"); // Navigate to the settings page
+      router.push("/settings");
     };
 
     const logout = () => {
       console.log("Logging out...");
+      authStore.logout();
+      router.push("/");
       window.location.reload();
-      authStore.logout(); // Call the logout method from the auth store
-      router.push("/"); // Redirect to the login or home page
     };
 
     return {
       isDropdownVisible,
+      darkMode, 
       goToSettings,
       logout,
     };
   },
 };
 </script>
+
+

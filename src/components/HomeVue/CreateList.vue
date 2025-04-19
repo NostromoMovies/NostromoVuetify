@@ -6,7 +6,7 @@
       </v-btn>
     </template>
 
-    <v-card dark>
+    <v-card :theme="darkMode ? 'dark' : 'light'">
       <v-card-title class="dark-header">Create a Watchlist</v-card-title>
 
       <v-card-text class="dark-body">
@@ -31,68 +31,61 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { getService } from '@/api/GetService';
 
-const dialog = ref(false);
-const watchlistName = ref('');
+// Dark mode (can be static or injected from a store/context)
+const darkMode = ref(true);
+
+// Props definition
+const props = defineProps({
+  modelValue: Boolean,
+  initialName: {
+    type: String,
+    default: '',
+  },
+});
+
+const emit = defineEmits(['update:modelValue', 'create']);
+
+const dialog = ref(props.modelValue);
+const watchlistName = ref(props.initialName);
+
+// Sync dialog with parent v-model
+watch(() => props.modelValue, (val) => {
+  dialog.value = val;
+});
+
+watch(dialog, (val) => {
+  emit('update:modelValue', val);
+});
+
+// Format and validate watchlist name
+const formatWatchlistName = (name) => {
+  return String(name || '').trim();
+};
+
+// Create watchlist handler
+const createWatchlist = async () => {
+  try {
+    const formattedName = formatWatchlistName(watchlistName.value);
+    if (!formattedName) {
+      throw new Error('Watchlist name cannot be empty');
+    }
+
+    const response = await getService.createWatchList(formattedName);
+
+    if (!response.ok) {
+      throw new Error('Failed to create watchlist');
+    }
+
+    console.log("Watchlist created successfully");
+    emit('create', formattedName);
+    dialog.value = false;
+    watchlistName.value = ''; // Reset
+  } catch (error) {
+    console.error("Error creating watchlist:", error);
+    alert(error.message);
+  }
+};
 </script>
-
-<style scoped>
-/* Dark mode colors */
-.v-card.dark {
-  background-color: #1e1e1e;
-  color: #e0e0e0;
-}
-
-.dark-header {
-  background-color: #121212;
-  color: #ffffff;
-  padding: 16px;
-  border-bottom: 1px solid #333;
-}
-
-.dark-body {
-  background-color: #1e1e1e;
-  padding: 16px;
-}
-
-.dark-input {
-  background-color: #2d2d2d;
-}
-
-.dark-input :deep(.v-input__control) {
-  color: #ffffff;
-}
-
-.dark-input :deep(.v-label) {
-  color: #9e9e9e !important;
-}
-
-.dark-input :deep(.v-input__slot) {
-  background-color: #2d2d2d !important;
-  border-color: #444 !important;
-}
-
-.dark-actions {
-  background-color: #121212;
-  padding: 8px 16px;
-  border-top: 1px solid #333;
-}
-
-.dark-cancel {
-  color: #9e9e9e !important;
-}
-
-.dark-cancel:hover {
-  background-color: rgba(255, 255, 255, 0.08) !important;
-}
-
-.dark-confirm {
-  color: #ffffff !important;
-  background-color: #1976d2 !important;
-}
-
-.dark-confirm:hover {
-  background-color: #1565c0 !important;
-}
-</style>

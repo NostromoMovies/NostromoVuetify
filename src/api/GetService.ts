@@ -31,6 +31,15 @@ export const getService = {
   },
   getGenre(){
     return axiosInstance.get('api/MediaDisplay/getGenres')
+  },
+  createWatchList(){
+    return axiosInstance.get('api/WatchList/createWatchList')
+  },
+  addToWatchlist(watchListID:number,movieID:number){
+    return axiosInstance.post('api/WatchList/{watchListID}/add/{movieID}')
+  },
+  getWatchlists(userID:number){
+    return axiosInstance.get('api/WatchList/{userID}/getAllWatchList')
   }
 
 }

@@ -7,57 +7,63 @@
         </v-btn>
       </template>
 
-      <v-list>
-        <v-list-item class="custom-list"
-                     v-for="item in items"
-                     :key="item.id"
-                     @click="handleItemClick(item)">
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-      </v-list>
+      <v-theme-provider :theme="darkMode ? 'dark' : 'light'">
+        <v-list>
+          <v-list-item
+            class="custom-list"
+            v-for="item in items"
+            :key="item.id"
+            @click="handleItemClick(item)"
+          >
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-theme-provider>
     </v-menu>
   </div>
 </template>
 
+
 <script lang="ts">
-  import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
 
-  // ✅ Move the interface outside of setup
-  export interface FilterItem {
-    id: number;
-    title: string;
-  }
+export interface FilterItem {
+  id: number;
+  title: string;
+}
 
-  export default defineComponent({
-    emits: ["filter-selected"],
-    setup(_, { emit }) {
-      const items = ref<FilterItem[]>([
-        { id: 0, title: "Most Popular" },
-        { id: 2, title: "Highest Rated" },
-        { id: 3, title: "Recently Added" },
-        { id: 1, title: "Alphabetical" },
-      ]);
+export default defineComponent({
+  emits: ["filter-selected"],
+  setup(_, { emit }) {
+    const items = ref<FilterItem[]>([
+      { id: 0, title: "Most Popular" },
+      { id: 2, title: "Highest Rated" },
+      { id: 3, title: "Recently Added" },
+      { id: 1, title: "Alphabetical" },
+    ]);
 
-      const selectedButtonLabel = ref<string>("Most Popular");
+    const selectedButtonLabel = ref<string>("Most Popular");
+    const darkMode = ref(true); // Toggle this as needed
 
-      const handleItemClick = (item: FilterItem) => {
-        selectedButtonLabel.value = item.title;
-        emit("filter-selected", item.id); 
-      };
+    const handleItemClick = (item: FilterItem) => {
+      selectedButtonLabel.value = item.title;
+      emit("filter-selected", item.id);
+    };
 
-      
-      onMounted(() => {
-        emit("filter-selected", 0);
-      });
+    onMounted(() => {
+      emit("filter-selected", 0);
+    });
 
-      return {
-        items,
-        selectedButtonLabel,
-        handleItemClick,
-      };
-    },
-  });
+    return {
+      items,
+      selectedButtonLabel,
+      handleItemClick,
+      darkMode,
+    };
+  },
+});
 </script>
+
 
 <style scoped>
   .text-center {
