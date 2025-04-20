@@ -2,7 +2,7 @@
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
     <div class="movie-title-box">
-      <h1>{{ selectedMedia?.title || "Loading..." }}</h1>
+      <h1>{{ selectedMedia?.title || selectedMedia?.originalName || selectedMedia?.episodeName|| "Loading..." }}</h1>
     </div>
 
     <v-container class="custom-container" fluid>
@@ -17,6 +17,7 @@
           </v-card>
         </v-col>
 
+
         <v-col cols="12" md="6">
           <v-card outlined class="metadata-card">
             <v-card-text v-html="metadataBoxes"></v-card-text>
@@ -24,7 +25,67 @@
         </v-col>
       </v-row>
 
-      <v-row class="actor-container">
+      <v-select
+            v-if="isTv"
+            v-model="selectedSeason"
+            :items="seasonDropdown"
+            item-title="name"
+            item-value="id"
+            label="Select a Season"
+            outlined
+            dense
+            class="w-33 mt-4"
+
+          />
+
+      <v-container class="episode-container" fluid
+        v-if="isTv">
+        <v-row>
+          <v-col cols="12" md="12" lg="12" class="mt-4">
+            <v-card outlined class="Episode-card pa-4 rounded-lg"
+              style="height: 513px; background-color: rgb(34,34,34);">
+              <div :class="episodes.length > 3 ? 'episode-scroll-snap' : 'episode-no-scroll'" >
+                <v-card
+                v-for="episode in episodes"
+                :key="episode.id"
+                :to="`/season/${selectedSeason}/episode/${episode.id}`"
+                outlined class="Episode-card pa-2 d-flex align-start rounded-lg mb-4 snap-card"
+                style="height: 150px; background-color: #4f4f4f;">
+
+                    <v-img
+                      :src="episode.stillPath"
+                      height = 160px
+                      max-width = 200px
+                      min-width= 200px
+                      class="mr-4 rounded"
+                      cover
+                    />
+
+                    <v-col class="flex-grow-1 pa-0 text-left" style="min-width: 0;">
+                      <v-card-title class="text-white text-h6 font-weight-bold py-1">
+                        {{episode.name}}
+                      </v-card-title>
+
+                      <v-card-subtitle
+                        class="text-white text-caption py-0"
+                        style="height: 7em; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">
+                        {{ episode.description }}
+                      </v-card-subtitle>
+                    </v-col>
+
+                    <v-col class="shrink mt-4 d-flex justify-end" cols="auto">
+                      <v-btn icon variant="elevated">
+                        <v-icon>mdi-play</v-icon>
+                      </v-btn>
+                    </v-col>
+                  <!-- </v-list-item> -->
+                </v-card>
+              </div>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+      <v-row class="actor-container"  >
         <v-col cols="12">
           <div class="actor-row">
             <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
@@ -75,7 +136,7 @@
 </template>
 
 <script lang="ts">
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 import { useCastStore } from "@/stores/castStore";
@@ -84,10 +145,14 @@ import { useTvStore } from "@/stores/tvStore";
 import { useSeasonStore } from "@/stores/seasonStore";
 import { useEpisodeStore } from "@/stores/episodeStore";
 import { MediaTypes } from "@/enums/MediaTypeEnum";
+import { ro } from "vuetify/locale";
 
 export default {
   setup() {
     const route = useRoute();
+    const mediaType = ref("");
+    const seasonId = ref("");
+    const episodeId = ref("");
     const movieStore = useMovieStore();
     const tvStore = useTvStore();
     const seasonStore = useSeasonStore();
@@ -100,6 +165,9 @@ export default {
 
     const selectedCast = ref([]);
     const selectedCrew = ref([]);
+    const seasonDropdown = ref<{id: number; name: string; number: number}[]>([]);
+    const selectedSeason = ref<number | null>(null);
+    const episodes = ref<{id: number; name: string; description: string; number: number; stillPath: string }[]>([]);
 
     const jobPriority = {
       "Director": 1,
@@ -115,22 +183,29 @@ export default {
     };
 
     onMounted(async () => {
-      const mediaId = route.params.id as string;
-      const mediaType = route.params.mediaType as string;
 
-      if(mediaType === MediaTypes.Movie){
+      console.log("Fetched season names: ", seasonDropdown.value);
+      const mediaId = route.params.id as string;
+      mediaType.value = route.params.mediaType as string;
+
+      if(mediaType.value === MediaTypes.Tv){
+
+      }
+
+
+      if(mediaType.value === MediaTypes.Movie){
         await movieStore.fetchMovies();
         selectedMedia.value = movieStore.getMovieById?.(mediaId) || null;
 
         try {
-          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType);
+          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value);
         }
         catch (error) {
           console.error("Could not fetch cast for ID:", mediaId, error);
         }
 
         try {
-          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType);
+          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
         }
         catch (error) {
           console.error("Could not fetch crew for ID:", mediaId, error);
@@ -143,19 +218,31 @@ export default {
           console.error("Could not movie recommendations for ID:", mediaId, error);
         }
       }
-      else if(mediaType === MediaTypes.Tv){
+      else if(mediaType.value === MediaTypes.Tv){
+        const seasonArr = await seasonStore.fetchSeasonsByTvShowId(Number(mediaId));
+        seasonDropdown.value = seasonArr.sort((a, b) => a.seasonNumber - b.seasonNumber)
+                                    .map(season => ({
+                                      id: season.seasonID,
+                                      name: season.seasonName ?? `Season ${season.seasonNumber}`,
+                                      number: season.seasonNumber
+                                    }));
+
+        if(selectedSeason.value){
+          fetchEpisodes(selectedSeason.value);
+        }
+
         await tvStore.fetchTvShows();
         selectedMedia.value = tvStore.getTvShowById?.(mediaId) || null;
 
         try {
-          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType);
+          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value);
         }
         catch (error) {
           console.error("Could not fetch cast for ID:", mediaId, error);
         }
 
         try {
-          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType);
+          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
         }
         catch (error) {
           console.error("Could not fetch crew for ID:", mediaId, error);
@@ -168,12 +255,55 @@ export default {
           console.error("Could not tv show recommendations for ID:", mediaId, error);
         }
       }
+      else if(mediaType.value === MediaTypes.Episode){
+        seasonId.value = route.params.seasonID as string;
+        episodeId.value = route.params.episodeID as string;
+
+        await episodeStore.fetchEpisodesBySeasonId(Number(seasonId.value));
+        selectedMedia.value = episodeStore.getEpisodeById?.(Number(seasonId.value), Number(episodeId.value)) || null;
+
+        try {
+          selectedCast.value = await castStore.fetchCastByMediaId(Number(episodeId.value), mediaType.value);
+        }
+        catch (error) {
+          console.error("Could not fetch cast for ID:", mediaId, error);
+        }
+
+        try {
+          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
+        }
+        catch (error) {
+          console.error("Could not fetch crew for ID:", mediaId, error);
+        }
+      }
 
 
 
 
     });
 
+    watch(seasonDropdown, (newValue) => {
+      if(newValue.length && !selectedSeason.value){
+        selectedSeason.value = newValue.find(season => season.number == 1)?.id || null;
+      }
+    });
+
+    watch(selectedSeason, (newValue) => {
+      if(newValue){
+        fetchEpisodes(newValue);
+      }
+    });
+
+    async function fetchEpisodes(seasonID:number) {
+      const episodeArr = await episodeStore.fetchEpisodesBySeasonId(seasonID);
+      episodes.value = episodeArr.sort((a, b) => a.episodeNumber - b.episodeNumber)
+                          .map(episode => ({
+                            id: episode.episodeID,
+                            name: `${episode.episodeNumber}: ${episode.episodeName}`,
+                            description: episode.overview ?? "",
+                            stillPath: episode.stillPath ? `https://image.tmdb.org/t/p/w500${episode.stillPath}` : null
+                          }))
+    }
     const metadataBoxes = computed(() => {
       if (!selectedMedia.value) return "Loading movie details...";
 
@@ -205,6 +335,8 @@ export default {
       character: c.character || ""
     })));
 
+    const isTv = computed(() => mediaType.value === MediaTypes.Tv);
+
     const crewMembers = computed(() => selectedCrew.value
       .filter(c => c.profilePath && jobPriority.hasOwnProperty(c.job))
       .sort((a, b) => (jobPriority[a.job] || 999) - (jobPriority[b.job] || 999))
@@ -222,7 +354,14 @@ export default {
       backgroundStyle,
       actors,
       crewMembers,
-      showCrews
+      showCrews,
+      seasonDropdown,
+      selectedSeason,
+      mediaType,
+      isTv,
+      episodes,
+      seasonId,
+      episodeId
     };
   }
 };
@@ -331,4 +470,17 @@ export default {
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.episode-scroll-snap {
+  height: 486px;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 0;
+  padding-right: 6px;
+}
+
+.snap-card {
+  scroll-snap-align: start;
+}
+
 </style>

@@ -40,6 +40,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/season/:seasonId/:mediaType/:episodeId",
+      name: "EpisodeDetails",
+      component: () => import("@/components/MovieDetailComponent/MetadataLayout.vue"),
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: '/test',
       name: 'MovieDetailsTest',
       component: MovieDetail,

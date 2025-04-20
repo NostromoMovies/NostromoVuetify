@@ -138,5 +138,5 @@ export interface SeasonStore{
 export interface EpisodeStore{
   episodes: Ref<Record<number,Episode[]>>;
   fetchEpisodesBySeasonId: (seasonID: number) => Promise<Episode[]>;
-  getEpisodeBySeasonIdAndNum: (seasonID: number, episodeNumber: number) => Promise<Episode | null>;
+  getEpisodeById: (seasonID: number, episodeID: number) => Episode | null;
 }

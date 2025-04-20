@@ -15,7 +15,7 @@ export const useSeasonStore = (): SeasonStore => {
   const seasons = ref<Record<number,Season[]>>({});
 
   const fetchSeasonsByTvShowId = async (tvShowID: number) => {
-    if(!seasons.value[tvShowID]){ 
+    if(!seasons.value[tvShowID]){
       try{
         const response = await fetch(`/api/tvshow/season/${tvShowID}`);
         if(!response.ok) throw new Error(`HTTP error!! Status: ${response.status}`);
@@ -59,6 +59,6 @@ export const useSeasonStore = (): SeasonStore => {
   return{
     seasons,
     fetchSeasonsByTvShowId,
-    getSeasonByShowAndNum
+    getSeasonByShowAndNum,
   };
 };

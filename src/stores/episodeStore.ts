@@ -55,14 +55,14 @@ export const useEpisodeStore = (): EpisodeStore => {
     return episodes.value[seasonID]
   };
 
-  const getEpisodeBySeasonIdAndNum = async (seasonID: number, episodeNumber: number) => {
+  const getEpisodeById = async (seasonID: number, episodeID: number) => {
     const episodeArr = await fetchEpisodesBySeasonId(seasonID);
-    return episodeArr.find(episode => episode.episodeNumber == episodeNumber) || null;
+    return episodeArr.find(episode => episode.episodeID == episodeID) || null;
   };
 
   return{
     episodes,
     fetchEpisodesBySeasonId,
-    getEpisodeBySeasonIdAndNum
+    getEpisodeById
   };
 };
