@@ -3,12 +3,15 @@
     <div class="grid-container">
       <div class="rectangle">
         <div class="content-wrapper">
-          <UnrecognizedFileBox />
+          <WordCloud></WordCloud>
         </div>
       </div>
 
       <div class="rectangle">
-        <UnrecognizedMovies />
+        <div> 
+            <h1>Watchlist</h1>
+
+        </div>
         <CreateList></CreateList>
       </div>
 
@@ -23,7 +26,9 @@
 import UnrecognizedFileBox from './HomeVue/ImportFolderBox.vue';
 import UnrecognizedMovies from './HomeVue/UnrecognizedMovies.vue';
 import DownloadProgress from './HomeVue/DownloadProgress.vue';
+import WordCloud from './ComprehensiveDashboard/WordCloud.vue';
 import CreateList from './HomeVue/CreateList.vue';
+
 </script>
 
 <style scoped>

@@ -4,7 +4,9 @@
 
   
         <div class="rectangle">
-
+            <UnrecognizedMovies></UnrecognizedMovies>
+            <UnrecognizedFileBox></UnrecognizedFileBox>
+           
         </div>
   
 
@@ -13,6 +15,9 @@
   </template>
   
   <script setup lang="ts">
+import UnrecognizedMovies from '../HomeVue/UnrecognizedMovies.vue';
+import UnrecognizedFileBox from '../HomeVue/ImportFolderBox.vue';
+
 
   </script>
   

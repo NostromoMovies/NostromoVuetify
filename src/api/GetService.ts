@@ -40,6 +40,9 @@ export const getService = {
   },
   getWatchlists(userID:number){
     return axiosInstance.get('api/WatchList/{userID}/getAllWatchList')
-  }
+  },
+  getGenreCount(){
+    return axiosInstance.get('/api/MediaDisplay/getMovieCountGenre')
+  },
 
 }

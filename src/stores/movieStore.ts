@@ -19,22 +19,28 @@ export const useMovieStore = (): MovieStore => {
   const CACHE_DURATION = 60 * 1000;
 
   const fetchFilterMovies = async (
-    force = false, 
-    query = '', 
-    runtime: number | null = null, 
-    searchTerm: number | null = null, 
-    minYear: number | null = null, 
-    maxYear: number | null = null
+    force = false,
+    query = '',
+    runtime: number | null = null,
+    searchTerm: number | null = null,
+    minYear: number | null = null,
+    maxYear: number | null = null,
+    genre: (string | number)[] | null = null // Allow numbers or strings
   ): Promise<Movie[]> => {
-    console.log(query, runtime, searchTerm, minYear, maxYear);
+    console.log("Filter params:", { query, runtime, searchTerm, minYear, maxYear, genre });
   
-    // Construct query parameters
     const params = new URLSearchParams();
+  
     if (query) params.append('query', query);
     if (runtime !== null) params.append('runtime', String(runtime));
-    if (searchTerm) params.append('searchTerm', String(searchTerm));
+    if (searchTerm !== null) params.append('searchTerm', String(searchTerm));
     if (minYear !== null) params.append('minYear', String(minYear));
     if (maxYear !== null) params.append('maxYear', String(maxYear));
+    if (genre && genre.length > 0) {
+      genre.map(String).forEach(g => params.append('filterGenre', g));
+    }
+  
+    console.log("Query Params:", params.toString());
   
     try {
       const response = await fetch(`/api/MediaDisplay/getMovies?${params.toString()}`);
@@ -47,8 +53,8 @@ export const useMovieStore = (): MovieStore => {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
   
-      filterMovies.value = [...jsonResponse.data.items.map((movie: ApiMovie, index: number) => ({
-        order: index, // Preserve original order
+      filterMovies.value = jsonResponse.data.items.map((movie: ApiMovie, index: number) => ({
+        order: index,
         movieID: movie.movieID || movie.tmdbid || null,
         title: movie.title,
         posterPath: movie.posterPath ?? null,
@@ -56,7 +62,7 @@ export const useMovieStore = (): MovieStore => {
         releaseDate: movie.releaseDate ?? null,
         runtime: movie.runtime ?? null,
         backdropPath: movie.backdropPath ?? null,
-      }))]; // Ensure order is explicitly preserved in a new array
+      }));
   
       lastFetched.value = Date.now();
       console.log("Filtered Movies successfully fetched:", filterMovies.value);

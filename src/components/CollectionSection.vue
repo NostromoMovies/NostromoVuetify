@@ -46,7 +46,8 @@ export default defineComponent({
   },
   setup() {
     // Define the reactive state with correct types
-    const selectedGenres = ref<string[]>([]);
+    const selectedGenres = ref<number[]>([]);
+
     const selectedMedia = ref<string | null>(null);
     const yearRange = ref<YearRange>({ startYear: null, endYear: null });
     const runtime = ref<number>(90);
@@ -54,8 +55,8 @@ export default defineComponent({
     const filterOrder = ref<number>(1);
 
     // Methods to update the state
-    const updateGenres = (genres: string[]) => {
-      selectedGenres.value = genres;
+    const updateGenres = (genres: number[]) => {
+    selectedGenres.value = genres;
     };
 
     const updateMedia = (media: string | null) => {

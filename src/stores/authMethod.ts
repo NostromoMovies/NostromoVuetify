@@ -2,10 +2,7 @@ import { ref, onMounted } from 'vue';
 import type { LoginForm } from '@/types/index';
 import { useRouter } from 'vue-router';
 import { authService } from '@/api/AuthService';
-import { useAuthStore} from '@/stores/authStore'
-
-
-
+import { useAuthStore } from '@/stores/authStore';
 
 export const useLoginStore = () => {
   const router = useRouter();
@@ -17,34 +14,32 @@ export const useLoginStore = () => {
   });
 
   const message = ref<string>('');
-
   const user = ref(null);
+
   onMounted(() => {
     if (authStore.isAuthenticated) {
-
-      console.log('Token found:', authStore.apikey);
+      console.log('Token found in auth store:', authStore.apikey);
+    } else {
+      console.log('No token found in auth store.');
     }
   });
-
 
   const login = async () => {
     try {
       const response = await authService.login(form.value);
-      if (response.status === 200) {
-        const result = await response.data;
+      const token = response.data.data?.token;
 
-
-        console.log('Logged in successfully:', result);
-
-        message.value = 'Login successful!';
-        authStore.setApiKey(result.token);
-        message.value = 'Login sucessful';
-        router.push('/dashboard');
-      } else {
-        message.value = 'Invalid credentials';
-        throw new Error('Failed to login');
-
+      if (!token) {
+        console.error("No token in response.data:", response.data);
+        message.value = 'Login failed. No token returned.';
+        return;
       }
+
+      authStore.setApiKey(token);
+      console.log("Token stored in authStore and localStorage:", token);
+
+      message.value = 'Login successful!';
+      router.push('/dashboard');
     } catch (error: unknown) {
       console.error('Login error:', error);
 
@@ -54,15 +49,11 @@ export const useLoginStore = () => {
         message.value = 'An unknown error occurred.';
       }
     }
-
-
-
-
   };
+
   const logout = () => {
     authStore.logout();
     router.push('/register');
-    
   };
 
   return {

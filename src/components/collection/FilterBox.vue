@@ -6,7 +6,8 @@
          :key="`genre-${index}`"
          cols="auto"
          class="genre-item">
-    <FilterTag :label="genre.name" @click="toggleGenre(genre)" />
+         <FilterTag :label="genre.name" :id="genre.genreID" @toggle="toggleGenre" />
+
   </v-col>
 </v-row>
 
@@ -79,7 +80,7 @@ import { getService } from "@/api/GetService";
 
   const medias = ref<string[]>(["Tv", "Movie"]);
 
-const selectedGenres = ref<string[]>([]);
+const selectedGenres = ref<number[]>([]);
 const selectedMedia = ref<string | null>(null);
 const startYear = ref<number | null>(null);
 const endYear = ref<number | null>(null);
@@ -133,14 +134,17 @@ const getGenre = async () => {
 };
 
   // Emit selected genres
-  const toggleGenre = (genre: string) => {
-    if (selectedGenres.value.includes(genre)) {
-      selectedGenres.value = selectedGenres.value.filter(g => g !== genre);
-    } else {
-      selectedGenres.value.push(genre);
+  const toggleGenre = (payload: { id: number; selected: boolean }) => {
+  if (payload.selected) {
+    if (!selectedGenres.value.includes(payload.id)) {
+      selectedGenres.value.push(payload.id);
     }
-    emit("genre-selected", selectedGenres.value);
-  };
+  } else {
+    selectedGenres.value = selectedGenres.value.filter(g => g !== payload.id);
+  }
+
+  emit("genre-selected", selectedGenres.value);
+};
 
   // Emit selected media type
   const selectMedia = (media: string) => {

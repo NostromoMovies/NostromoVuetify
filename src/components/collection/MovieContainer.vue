@@ -34,7 +34,7 @@
       </v-btn>
       
       <!-- Add to Watchlist Dialog -->
-      <v-dialog v-model="showDialog" max-width="500">
+      <v-dialog v-model="showDialog" max-wid  ="500">
         <v-card v-card :theme="darkMode ? 'dark' : 'light'">
           <v-card-title class="text-h5">
             Add to Watchlist
