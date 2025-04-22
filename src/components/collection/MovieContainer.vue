@@ -17,6 +17,7 @@
         block
         class="action-button"
         prepend-icon="mdi-play"
+        @click="playVideo"
       >
         Play
       </v-btn>
@@ -34,7 +35,7 @@
       </v-btn>
       
       <!-- Add to Watchlist Dialog -->
-      <v-dialog v-model="showDialog" max-wid  ="500">
+      <v-dialog v-model="showDialog" max-width  ="500">
         <v-card v-card :theme="darkMode ? 'dark' : 'light'">
           <v-card-title class="text-h5">
             Add to Watchlist
@@ -77,6 +78,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { getService } from '@/api/GetService';
+
 const darkMode = ref(true);
 const props = defineProps({
   to: { type: String, required: true },
@@ -99,6 +101,30 @@ const handleAddButton = async () => {
   }
 };
 
+const playVideo = async () => {
+  try {
+    // Ensure movieId is a valid number
+    if (typeof props.movieId !== 'number' || isNaN(props.movieId)) {
+      throw new Error("Invalid movie ID");
+    }
+
+    console.log("Requesting video for movie ID:", props.movieId);
+    
+    const response = await getService.getVideoID(Number(props.movieId));
+    const videoId = response.data;
+
+    if (!videoId || videoId < 0) {
+      throw new Error("Invalid video ID received");
+    }
+
+    const streamUrl = await getService.getVideoStream(videoId);
+    // Do something with streamUrl
+    
+  } catch (err) {
+    console.error("Failed to play video:", err);
+    
+  }
+};
 const addToWatchlist = async () => {
   if (!selectedWatchlist.value) return;
   
@@ -178,4 +204,5 @@ const handleImageError = (e: Event) => {
 .action-button {
   margin: 0 !important;
 }
+
 </style>

@@ -13,7 +13,11 @@ export interface Movie {
   order: number; 
 }
 
-
+export interface GenreCount {
+  GenreID: number;
+  name: string;
+  count: number;
+}
 
 export interface LoginForm {
   username: string;

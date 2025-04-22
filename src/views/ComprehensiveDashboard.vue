@@ -1,10 +1,13 @@
 <script setup lang="ts">
 
+import WordCloud from '@/components/ComprehensiveDashboard/WordCloud.vue';
+
+
 </script>
 
 <template>
   <main class="main-container">
-    
+    <WordCloud></WordCloud>
   </main>
 </template>
 

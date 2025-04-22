@@ -23,6 +23,13 @@
           </v-card>
         </v-col>
       </v-row>
+      
+      <!-- Combined Cast header and See More button -->
+      <v-row  class="cast-header-row">
+        <v-col cols="auto">
+          <h2>Cast</h2>
+        </v-col>
+      </v-row>
 
       <v-row class="actor-container">
         <v-col cols="12">
@@ -30,10 +37,10 @@
             <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
               <v-card outlined class="actor-card">
                 <v-img width="120"
-                       height="120"
-                       :src="actor.image"
-                       alt="Actor Image"
-                       aspect-ratio="1" />
+                      height="120"
+                      :src="actor.image"
+                      alt="Actor Image"
+                      aspect-ratio="1" />
                 <v-card-title class="text-center">
                   {{ actor.name }}
                 </v-card-title>
@@ -45,26 +52,49 @@
           </div>
         </v-col>
       </v-row>
-      <v-btn class="see-more-btn" @click="showCrews = !showCrews">
-        {{ showCrews ? "See Less" : "See More" }}
-      </v-btn>
 
-      <v-row class="crew-container " v-if="showCrews">
+      <v-row class="crew-container" v-if="showCrews">
         <v-col cols="12">
           <div class="crew-row">
             <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
               <v-card outlined class="crew-card">
                 <v-img width="120"
-                       height="120"
-                       :src="crew.image"
-                       alt="Crew Image"
-                       aspect-ratio="1" />
+                      height="120"
+                      :src="crew.image"
+                      alt="Crew Image"
+                      aspect-ratio="1" />
                 <v-card-title class="text-center">
                   {{ crew.name }}
                 </v-card-title>
                 <v-card-subtitle class="text-center" v-if="crew.job">
                   {{ crew.job }}
                 </v-card-subtitle>
+              </v-card>
+            </div>
+          </div>
+        </v-col>
+      </v-row>
+
+
+      <v-row  class="cast-header-row">
+        <v-col cols="auto">
+          <h2>Recommendations</h2>
+        </v-col>
+      </v-row>
+ 
+      <v-row class="movie-recommendation-container">
+        <v-col cols="12">
+          <div class="recommendation-row">
+            <div class="recommendation-col" v-for="movie in movieRecommendation" :key="movie.id">
+              <v-card outlined class="recommendation-card">
+                <v-img width="120"
+                      height="120"
+                      :src="movie.image"
+                      alt="Movie Poster"
+                      aspect-ratio="1" />
+                <v-card-title class="text-center">
+                  {{ movie.name }}
+                </v-card-title>
               </v-card>
             </div>
           </div>
@@ -92,6 +122,7 @@ export default {
     const selectedMovie = ref(null);
     const selectedCast = ref([]);
     const selectedCrew = ref([]);
+    const selectedMovieRecommendation = ref([]);
 
     const jobPriority = {
       "Director": 1,
@@ -122,25 +153,25 @@ export default {
       } catch (error) {
         console.error("Could not fetch crew for ID:", movieId, error);
       }
-      try{
-                        await movieStore.getMovieRecommendation(movieId);
-      }catch (error) {
-        console.error("Could not fetch crew for ID:", movieId, error);
+
+      try {
+        selectedMovieRecommendation.value = await movieStore.getMovieRecommendation(movieId);
+
+        console.log("Recommendations loaded:", selectedMovieRecommendation.value);
+      } catch(error) {
+        console.error("Could not fetch movie recommendations for ID:", movieId, error);
       }
-     
     });
 
     const metadataBoxes = computed(() => {
       if (!selectedMovie.value) return "Loading movie details...";
 
       return `
-         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
-
+        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMovie.value.releaseDate
           ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
           : "Unknown"
         } <br><br>
-
         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMovie.value.runtime
           ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${Number(selectedMovie.value.runtime) % 60}m`
           : "Unknown"
@@ -172,13 +203,27 @@ export default {
       }))
     );
 
+    const movieRecommendation = computed(() => {
+      if (!selectedMovieRecommendation.value || selectedMovieRecommendation.value.length === 0) {
+        return [];
+      }
+      return selectedMovieRecommendation.value.map(movie => ({
+        id: movie.id,
+        image: movie.posterPath 
+          ? `https://image.tmdb.org/t/p/w500${movie.posterPath}` 
+          : "https://via.placeholder.com/500x750?text=No+Poster",
+        name: movie.title
+      }));
+    });
+
     return {
       selectedMovie,
       metadataBoxes,
       backgroundStyle,
       actors,
       crewMembers,
-      showCrews
+      showCrews,
+      movieRecommendation
     };
   }
 };
@@ -197,13 +242,6 @@ export default {
   flex-direction: column;
   align-items: center;
   padding: 20px;
-}
-
-.title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px; 
 }
 
 .custom-container {
@@ -230,45 +268,52 @@ export default {
   margin: 40px auto 20px;
 }
 
-.crew-container, .actor-container {
+.crew-container, 
+.actor-container,
+.movie-recommendation-container {
   display: flex;
   justify-content: center;
   width: 100%;
   overflow-x: auto;
   white-space: nowrap;
   padding-top: 10px;
-  word-wrap: break-word;
+  margin-top: 20px;
 }
 
-.crew-row, .actor-row {
+.actor-row,
+.crew-row,
+.recommendation-row {
   display: flex;
   flex-wrap: nowrap;
   gap: 15px;
+  padding-bottom: 10px;
 }
 
-.crew-card, .actor-card {
+.actor-card,
+.crew-card,
+.recommendation-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: rgb(44, 44, 44);
   color: #fff;
   text-align: center;
   padding: 10px;
   background-color: transparent !important;
   box-shadow: none !important;
-  min-height: 270px; 
-  width: 200px; 
+  min-height: 270px;
+  width: 200px;
   word-wrap: break-word;
   overflow: hidden;
 }
 
-.text-center{
-  word-wrap: break-word;
+.recommendation-card {
+  min-height: 300px;
 }
 
-.title-row{
-  padding: 20px;
+.text-center {
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .see-more-btn {
@@ -287,4 +332,39 @@ export default {
   border-radius: 10px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+h2 {
+  color: white;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+
+.cast-header-row {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  align-items: center;
+}
+
+.see-more-btn {
+  margin-left: 16px;
+  background-color: rgb(34,34,34);
+  color: white;
+}
+
+/* Rest of your existing styles... */
+.background-container {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
 </style>

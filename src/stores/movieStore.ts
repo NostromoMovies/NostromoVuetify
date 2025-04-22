@@ -121,7 +121,7 @@ export const useMovieStore = (): MovieStore => {
 
   const getMovieRecommendation = async (id: string | number) => {
     try {
-      const response = await fetch(`/api/Tmdb/getMovieRecommendation/${id}`);
+      const response = await fetch(`/api/MediaDisplay/movie/${id}/recommendations`);
       if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
       const jsonResponse = await response.json();
@@ -148,6 +148,8 @@ export const useMovieStore = (): MovieStore => {
       throw error;
     }
   };
+  
+
 
   return { 
     movies,

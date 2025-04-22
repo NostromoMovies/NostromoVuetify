@@ -26,14 +26,23 @@
         </div>
       </v-card-text>
     </v-card>
-    <v-btn block color="primary" @click="togglePopup(true)">Add Folder</v-btn>
+    
+    <div class="text-center mt-4">
+  <v-btn 
+    color="primary" 
+    @click="togglePopup(true)"
+    class="px-6 py-3"  
+  >
+    Add Folder
+  </v-btn>
+</div>
+    
     <FolderCreationPopup
       :show="showPopup"
       @toggle-visibility="togglePopup"
-   />
+    />
 
     <!-- Confirmation Dialog -->
-<!-- Confirmation Dialog -->
     <v-dialog v-model="dialog" max-width="400px">
       <v-card>
         <v-card-title class="headline">
@@ -48,7 +57,7 @@
       </v-card>
     </v-dialog>
   </v-container>
- </template>
+</template>
 
 
  <script setup lang="ts">

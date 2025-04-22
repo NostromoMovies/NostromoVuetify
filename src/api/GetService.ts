@@ -35,14 +35,27 @@ export const getService = {
   createWatchList(){
     return axiosInstance.get('api/WatchList/createWatchList')
   },
-  addToWatchlist(watchListID:number,movieID:number){
-    return axiosInstance.post('api/WatchList/{watchListID}/add/{movieID}')
+  addToWatchlist(watchListID: number, movieID: number) {
+    return axiosInstance.post(`api/WatchList/${watchListID}/add/${movieID}`);
   },
-  getWatchlists(userID:number){
-    return axiosInstance.get('api/WatchList/{userID}/getAllWatchList')
+
+  getWatchlists(userID: number) {
+    return axiosInstance.get(`api/WatchList/${userID}/getAllWatchList`);
   },
-  getGenreCount(){
-    return axiosInstance.get('/api/MediaDisplay/getMovieCountGenre')
+
+  getGenreCount() {
+    return axiosInstance.get('/api/MediaDisplay/getMovieCountGenre');
+  },
+
+  getVideoID(movieId: number) {
+    return axiosInstance.get(`/api/MediaDisplay/${movieId}/getVideoID`);
+  },
+
+  getVideoStream(videoId: number) {
+    return axiosInstance.get(`/api/media/stream/${videoId}`);
+  },
+  getMovieCount(){
+    return axiosInstance.get('/api/MediaDisplay/getMovieCount');
   },
 
 }
