@@ -34,9 +34,16 @@ const router = createRouter({
       meta: { requireAuth: true }, // Only logged-in users can access
     },
     {
-      path: "/movies/:id",
+      path: "/movie/:id",
       name: "MovieDetails",
       component: () => import("@/components/MovieDetailComponent/MetadataLayout.vue"),
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
+      path: "/tv/:id",
+      name: "TvDetails",
+      component: () => import("@/components/MovieDetailComponent/TvMetadataLayout.vue"),
       props: true,
       meta: { requiresAuth: true },
     },
@@ -66,7 +73,7 @@ const router = createRouter({
       meta: { requiresAuth: true }, // Adjust if needed
 
     },
- 
+
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',

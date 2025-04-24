@@ -8,7 +8,7 @@
         </div>
       </div>
     </router-link>
-    
+
     <div class="button-stack">
       <!-- Play Button -->
       <v-btn
@@ -21,7 +21,7 @@
       >
         Play
       </v-btn>
-      
+
       <!-- Add Button -->
       <v-btn
         color="secondary"
@@ -33,14 +33,14 @@
       >
         Add
       </v-btn>
-      
+
       <!-- Add to Watchlist Dialog -->
       <v-dialog v-model="showDialog" max-width  ="500">
         <v-card v-card :theme="darkMode ? 'dark' : 'light'">
           <v-card-title class="text-h5">
             Add to Watchlist
           </v-card-title>
-          
+
           <v-card-text>
             <v-select
               v-model="selectedWatchlist"
@@ -51,7 +51,7 @@
               variant="outlined"
             ></v-select>
           </v-card-text>
-          
+
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -76,74 +76,118 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { getService } from '@/api/GetService';
+  import { onMounted, ref, watch} from 'vue';
+  import { getService } from '@/api/GetService';
 
-const darkMode = ref(true);
-const props = defineProps({
-  to: { type: String, required: true },
-  movieId: { type: Number, required: true },
-  title: { type: String, required: true }
-});
+  const darkMode = ref(true);
+  const props = defineProps({
+    to: { type: String, required: true },
+    mediaId: { type: Number, required: true },
+    title: { type: String, required: true },
+    mediaType: { type: String, required: true}
+  });
 
-const posterImage = ref(`/api/movies/${props.movieId}/poster`);
-const showDialog = ref(false);
-const watchlists = ref([]);
-const selectedWatchlist = ref(null);
+  console.log(`Id: ${props.mediaId}   and    Type: ${props.mediaType}`)
 
-const handleAddButton = async () => {
-  try {
-    const response = await getService.getWatchlists();
-    watchlists.value = response.data;
-    showDialog.value = true;
-  } catch (error) {
-    console.error("Error fetching watchlists:", error);
-  }
-};
 
-const playVideo = async () => {
-  try {
-    // Ensure movieId is a valid number
-    if (typeof props.movieId !== 'number' || isNaN(props.movieId)) {
-      throw new Error("Invalid movie ID");
+
+  const posterImage = ref(
+      props.mediaType === 'movie'
+        ? `/api/movies/${props.mediaId}/poster`
+        : `/api/tvshow/${props.mediaId}/poster`
+      );
+
+  const fetchPoster = async () => {
+    try {
+      console.log("Ran")
+      const response = await fetch(posterImage.value, { method: 'HEAD' });
+
+      if (!response.ok) {
+        await getService.getPoster(props.mediaType, props.mediaId);
+        setTimeout(() => {
+          posterImage.value = (
+          props.mediaType === 'movie'
+            ? `/api/movies/${props.mediaId}/poster?reload=${Date.now()}`
+            : `/api/tvshow/${props.mediaId}/poster?reload=${Date.now()}`
+          );
+        }, 2000);
+      }
+    } catch {
+      posterImage.value = 'https://placehold.co/300x450?text=No+Poster';
     }
+  };
 
-    console.log("Requesting video for movie ID:", props.movieId);
-    
-    const response = await getService.getVideoID(Number(props.movieId));
-    const videoId = response.data;
+  watch(
+    () => [props.mediaId, props.mediaType],
+    () => {
+      //console.log('watch triggered with:', { mediaId, mediaType });
 
-    if (!videoId || videoId < 0) {
-      throw new Error("Invalid video ID received");
+      fetchPoster();
+
+    },
+    { immediate: true }
+  );
+
+  const showDialog = ref(false);
+  const watchlists = ref([]);
+  const selectedWatchlist = ref(null);
+
+  const handleAddButton = async () => {
+    try {
+      const response = await getService.getWatchlists();
+      watchlists.value = response.data;
+      showDialog.value = true;
+    } catch (error) {
+      console.error("Error fetching watchlists:", error);
     }
+  };
 
-    const streamUrl = await getService.getVideoStream(videoId);
-    // Do something with streamUrl
-    
-  } catch (err) {
-    console.error("Failed to play video:", err);
-    
-  }
-};
-const addToWatchlist = async () => {
-  if (!selectedWatchlist.value) return;
-  
-  try {
-    await getService.addMovieToWatchlist(
-      selectedWatchlist.value,
-      props.movieId
-    );
-    showDialog.value = false;
-    
-  } catch (error) {
-    console.error("Error adding to watchlist:", error);
-   
-  }
-};
+  const playVideo = async () => {
+    try {
+      // Ensure mediaId is a valid number
+      if (typeof props.mediaId !== 'number' || isNaN(props.mediaId)) {
+        throw new Error("Invalid movie ID");
+      }
 
-const handleImageError = (e: Event) => {
-  (e.target as HTMLImageElement).src = 'https://placehold.co/300x450?text=No+Poster';
-};
+      console.log("Requesting video for movie ID:", props.mediaId);
+
+      const response = await getService.getVideoID(Number(props.mediaId));
+      const videoId = response.data;
+
+      if (!videoId || videoId < 0) {
+        throw new Error("Invalid video ID received");
+      }
+
+      const streamUrl = await getService.getVideoStream(videoId);
+      // Do something with streamUrl
+
+    } catch (err) {
+      console.error("Failed to play video:", err);
+
+    }
+  };
+  const addToWatchlist = async () => {
+    if (!selectedWatchlist.value) return;
+
+    try {
+      await getService.addMovieToWatchlist(
+        selectedWatchlist.value,
+        props.mediaId
+      );
+      showDialog.value = false;
+
+    } catch (error) {
+      console.error("Error adding to watchlist:", error);
+
+    }
+  };
+
+  const handleImageError = (e: Event) => {
+    (e.target as HTMLImageElement).src = 'https://placehold.co/300x450?text=No+Poster';
+  };
+
+
+
 </script>
 
 <style scoped>

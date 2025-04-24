@@ -3,94 +3,155 @@
     <div v-if="loading" class="loading">Loading movies...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else class="movie-grid">
-      <MovieContainer 
-        v-for="movie in filteredMovies" 
-        :key="movie.order" 
-        :to="`/movies/${movie.movieID}`"
-        :movieId="movie.movieID"
-        :title="movie.title" 
+      <MovieContainer
+        v-for="media in combinedMedia"
+        :key="`${media.mediaType}-${media.movieID ?? media.tvShowID}`"
+        :to="`/${media.mediaType}/${media.movieID ?? media.tvShowID}`"
+        :mediaId="media.mediaType === 'movie' ? media.movieID : media.tvShowID"
+        :title="media.title ?? media.originalName"
+        :mediaType="media.mediaType"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch, inject } from 'vue';
-import type { PropType } from 'vue';
-import MovieContainer from './MovieContainer.vue';
-import type { MovieStore } from '@/types';
+  import { ref, computed, onMounted, watch, inject } from 'vue';
+  import type { PropType } from 'vue';
+  import MovieContainer from './MovieContainer.vue';
+  import type { MovieStore } from '@/types';
+  import type { TvStore } from '@/types';
+  import { MediaTypes } from '@/enums/MediaTypeEnum';
 
-// Props passed from parent component
-const props = defineProps({
-  selectedGenres: {
-    type: Array as PropType<number[]>, 
-    default: () => []
-  },
-  selectedMedia: {
-    type: Array as PropType<string[]>,
-    default: () => []
-  },
-  yearRange: {
-    type: Array as PropType<number[]>,
-    default: () => [1900, 2100]
-  },
-  runtime: Number,
-  search: String,
-  filterOrder: Number
-});
+  // Props passed from parent component
+  const props = defineProps({
+    selectedGenres: {
+      type: Array as PropType<number[]>,
+      default: () => []
+    },
+    selectedMedia: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
+    yearRange: {
+      type: Array as PropType<number[]>,
+      default: () => [1900, 2100]
+    },
+    runtime: Number,
+    search: String,
+    filterOrder: Number
+  });
 
-const loading = ref(true);
-const error = ref<string | null>(null);
+  const loading = ref(true);
+  const error = ref<string | null>(null);
 
-const movieStore = inject<MovieStore | null>('movieStore', null);
+  const movieStore = inject<MovieStore | null>('movieStore', null);
+  const tvStore = inject<TvStore | null>('tvStore', null);
 
-const filteredMovies = computed(() => {
-  return [...(movieStore?.filterMovies?.value ?? [])].sort((a, b) => a.order - b.order);
-});
+  const filteredMovies = computed(() => {
+    return [...(movieStore?.filterMovies?.value ?? [])]
+      .map(movie => ({
+        ...movie,
+        mediaType: MediaTypes.Movie
+      }))
+      .sort((a, b) => a.order - b.order);
+  });
 
-const loadMovies = async () => {
-  if (!movieStore) {
-    console.error("MovieStore is not provided.");
-    return;
-  }
-
-  try {
-    loading.value = true;
-    console.log("Filter params:", {
-      search: props.search,
-      runtime: props.runtime,
-      filterOrder: props.filterOrder,
-      yearRange: props.yearRange,
-      genres: props.selectedGenres // No need for `toRaw` here
+  const filteredShows = computed(() => {
+      return [...(tvStore?.filterTvShows?.value ?? [])]
+        .map(show => ({
+          ...show,
+          mediaType: MediaTypes.Tv
+        }))
+        .sort((a, b) => a.order - b.order);
     });
 
-    await movieStore.fetchFilterMovies(
-  false,
-  props.search ?? "",                        // query
-  props.runtime ?? null,                     // runtime
-  props.filterOrder ?? null,                 // searchTerm
-  props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
-  props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
-  props.selectedGenres.map(String) ?? null   // genre as string[]
-);
-  } catch (e) {
-    error.value = `Failed to load movies: ${(e as Error).message}`;
-  } finally {
-    loading.value = false;
-  }
-};
+  const combinedMedia = computed(() => {
+    const includeMovies = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('movie');
+    const includeShows = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('tv');
 
-// Re-fetch when any filter prop changes
-watch(() => [
-  props.selectedGenres,
-  props.selectedMedia,
-  props.yearRange,
-  props.runtime,
-  props.search,
-  props.filterOrder
-], loadMovies, { deep: true });
+    let results: any[] = [];
+    if(includeMovies) results = results.concat(filteredMovies.value);
+    if(includeShows) results = results.concat(filteredShows.value);
 
-onMounted(loadMovies);
+    return results.sort((a, b) => a.order - b.order);
+  });
+
+  const loadMovies = async () => {
+    if (!movieStore) {
+      console.error("MovieStore is not provided.");
+      return;
+    }
+
+    try {
+      loading.value = true;
+      console.log("Filter params:", {
+        search: props.search,
+        runtime: props.runtime,
+        filterOrder: props.filterOrder,
+        yearRange: props.yearRange,
+        genres: props.selectedGenres // No need for `toRaw` here
+      });
+
+      await movieStore.fetchFilterMovies(
+    false,
+    props.search ?? "",                        // query
+    props.runtime ?? null,                     // runtime
+    props.filterOrder ?? null,                 // searchTerm
+    props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+    props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
+    props.selectedGenres.map(String) ?? null   // genre as string[]
+  );
+    } catch (e) {
+      error.value = `Failed to load movies: ${(e as Error).message}`;
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  const loadShows = async () => {
+    if (!tvStore) {
+      console.error("TvStore is not provided.");
+      return;
+    }
+
+    try {
+      console.log(props.search,props.filterOrder,props.yearRange)
+      loading.value = true;
+      await tvStore.fetchFilterShows(
+        false,
+        props.search ?? "",
+        props.filterOrder ?? null,
+        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100
+      );
+    }
+    catch (e) {
+      error.value = `Failed to load Tv Shows: ${(e as Error).message}`;
+    }
+    finally {
+      loading.value = false;
+    }
+  };
+
+  // Re-fetch when any filter prop changes
+  watch(() => [
+    props.selectedGenres,
+    props.selectedMedia,
+    props.yearRange,
+    props.runtime,
+    props.search,
+    props.filterOrder
+  ], () => {
+    loadMovies();
+    loadShows();
+ },
+ { deep: true });
+
+ onMounted(() => {
+    loadMovies();
+    loadShows();
+  });
 </script>
 
 <style scoped>
