@@ -42,7 +42,7 @@ const router = createRouter({
     },
     {
       path: "/tv/:id",
-      name: "MovieDetails",
+      name: "TvDetails",
       component: () => import("@/components/MovieDetailComponent/TvMetadataLayout.vue"),
       props: true,
       meta: { requiresAuth: true },

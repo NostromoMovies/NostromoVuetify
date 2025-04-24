@@ -139,8 +139,8 @@
 import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
-import { useCastStore } from "@/stores/castStore";
-import { useCrewStore } from "@/stores/crewStore";
+import { useTvCastStore } from "@/stores/tvCastStore";
+import { useTvCrewStore } from "@/stores/tvCrewStore";
 import { useTvStore } from "@/stores/tvStore";
 import { useSeasonStore } from "@/stores/seasonStore";
 import { useEpisodeStore } from "@/stores/episodeStore";
@@ -157,8 +157,8 @@ export default {
     const tvStore = useTvStore();
     const seasonStore = useSeasonStore();
     const episodeStore = useEpisodeStore();
-    const castStore = useCastStore();
-    const crewStore = useCrewStore();
+    const castStore = useTvCastStore();
+    const crewStore = useTvCrewStore();
     const showCrews = ref(false);
 
     const selectedMedia = ref(null);
@@ -188,37 +188,7 @@ export default {
       const mediaId = route.params.id as string;
       mediaType.value = MediaTypes.Tv;
 
-      if(mediaType.value === MediaTypes.Tv){
-
-      }
-
-
-      if(mediaType.value === MediaTypes.Movie){
-        await movieStore.fetchMovies();
-        selectedMedia.value = movieStore.getMovieById?.(mediaId) || null;
-
-        try {
-          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch cast for ID:", mediaId, error);
-        }
-
-        try {
-          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch crew for ID:", mediaId, error);
-        }
-
-        try{
-          await movieStore.getMovieRecommendation(mediaId);
-        }
-        catch (error) {
-          console.error("Could not movie recommendations for ID:", mediaId, error);
-        }
-      }
-      else if(mediaType.value === MediaTypes.Tv){
+     if(mediaType.value === MediaTypes.Tv){
         const seasonArr = await seasonStore.fetchSeasonsByTvShowId(Number(mediaId));
         seasonDropdown.value = seasonArr.sort((a, b) => a.seasonNumber - b.seasonNumber)
                                     .map(season => ({

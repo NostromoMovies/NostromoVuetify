@@ -76,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref } from 'vue';
+  import { onMounted, ref, watch} from 'vue';
   import { getService } from '@/api/GetService';
 
   const darkMode = ref(true);
@@ -87,7 +87,9 @@
     mediaType: { type: String, required: true}
   });
 
-  console.log(`Id: ${props.mediaId}   and    Type: ${props.mediaType}`);
+  console.log(`Id: ${props.mediaId}   and    Type: ${props.mediaType}`)
+
+
 
   const posterImage = ref(
       props.mediaType === 'movie'
@@ -95,7 +97,7 @@
         : `/api/tvshow/${props.mediaId}/poster`
       );
 
-      const fetchPoster = async () => {
+  const fetchPoster = async () => {
     try {
       console.log("Ran")
       const response = await fetch(posterImage.value, { method: 'HEAD' });
@@ -114,6 +116,17 @@
       posterImage.value = 'https://placehold.co/300x450?text=No+Poster';
     }
   };
+
+  watch(
+    () => [props.mediaId, props.mediaType],
+    () => {
+      //console.log('watch triggered with:', { mediaId, mediaType });
+
+      fetchPoster();
+
+    },
+    { immediate: true }
+  );
 
   const showDialog = ref(false);
   const watchlists = ref([]);
@@ -175,7 +188,6 @@
 
 
 
-  onMounted(fetchPoster);
 </script>
 
 <style scoped>
