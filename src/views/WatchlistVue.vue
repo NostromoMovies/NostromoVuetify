@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import CollectionSectionVue from '../components/CollectionSection.vue'
+import Watchlist from '@/components/Watchlist.vue';
+
 
 </script>
 
 <template>
   <main class="main-container">
-    <!-- NavBar Section -->
+    
     <section class="navbar-section">
       <!-- <NavBar /> -->
     </section>
 
     <!-- Collection Section -->
     <section class="collection-section">
-      <CollectionSectionVue />
+      <Watchlist />
     </section>
   </main>
 </template>
 
 <style scoped>
+
 .main-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
   height: 100vh;
   width: 100vw;
-  
   margin: 0;
   padding: 20px;
-  position: fixed;
-  top: 50;
-  left: 0;
+  position: relative; /* Use relative unless you specifically need fixed */
 }
 
 .navbar-section {
@@ -37,7 +37,11 @@ import CollectionSectionVue from '../components/CollectionSection.vue'
 }
 
 .collection-section {
-  width: 100%; /* Ensure DashboardSection takes the full width */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
   overflow-y: auto;
 }
 </style>

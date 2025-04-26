@@ -34,6 +34,9 @@
         Add
       </v-btn>
 
+
+      
+
       <!-- Add to Watchlist Dialog -->
       <v-dialog v-model="showDialog" max-width  ="500">
         <v-card v-card :theme="darkMode ? 'dark' : 'light'">
@@ -47,7 +50,7 @@
               :items="watchlists"
               label="Select watchlist"
               item-title="name"
-              item-value="id"
+              item-value="watchListID"
               variant="outlined"
             ></v-select>
           </v-card-text>
@@ -76,20 +79,69 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref, watch} from 'vue';
-  import { getService } from '@/api/GetService';
-
-  const darkMode = ref(true);
-  const props = defineProps({
-    to: { type: String, required: true },
-    mediaId: { type: Number, required: true },
-    title: { type: String, required: true },
-    mediaType: { type: String, required: true}
-  });
-
-  console.log(`Id: ${props.mediaId}   and    Type: ${props.mediaType}`)
 
 
+
+import { onMounted, ref, watch } from 'vue';
+import { getService } from '@/api/GetService';
+
+
+const darkMode = ref(true);
+const showDialog = ref(false);
+const selectedWatchlist = ref(null);
+
+const props = defineProps({
+  to: { type: String, required: true },
+  mediaId: { type: Number, required: true },
+  title: { type: String, required: true },
+  mediaType: { type: String, required: true }
+});
+interface Watchlist {
+  watchListID: number
+  name: string
+  userID: number
+
+}
+
+const watchlists = ref<Watchlist[]>([])
+
+// Load watchlists 
+const loadWatchlists = async () => {
+  try {
+    const response = await fetch("/api/watchlist/all", {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${localStorage.getItem("apikey")}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch watchlists');
+    
+    const fetched = await response.json();
+    watchlists.value = fetched || [];
+    console.log("Loaded watchlists:", watchlists.value);
+  } catch (error) {
+    console.error("Failed to fetch user watchlists:", error);
+  }
+};
+
+const addToWatchlist = async () => {
+  if (!selectedWatchlist.value) return;
+
+  try {
+    console.log(`Adding media ${props.mediaId} to watchlist ${selectedWatchlist.value}`);
+    await getService.addMovieToWatchlist(
+      selectedWatchlist.value, 
+      props.mediaId           
+    );
+    showDialog.value = false;
+
+  } catch (error) {
+    console.error("Error adding to watchlist:", error);
+
+  }
+};;
 
   const posterImage = ref(
       props.mediaType === 'movie'
@@ -128,19 +180,7 @@
     { immediate: true }
   );
 
-  const showDialog = ref(false);
-  const watchlists = ref([]);
-  const selectedWatchlist = ref(null);
 
-  const handleAddButton = async () => {
-    try {
-      const response = await getService.getWatchlists();
-      watchlists.value = response.data;
-      showDialog.value = true;
-    } catch (error) {
-      console.error("Error fetching watchlists:", error);
-    }
-  };
 
   const playVideo = async () => {
     try {
@@ -166,28 +206,16 @@
 
     }
   };
-  const addToWatchlist = async () => {
-    if (!selectedWatchlist.value) return;
 
-    try {
-      await getService.addMovieToWatchlist(
-        selectedWatchlist.value,
-        props.mediaId
-      );
-      showDialog.value = false;
-
-    } catch (error) {
-      console.error("Error adding to watchlist:", error);
-
-    }
-  };
 
   const handleImageError = (e: Event) => {
     (e.target as HTMLImageElement).src = 'https://placehold.co/300x450?text=No+Poster';
   };
 
 
-
+  onMounted(() => {
+  loadWatchlists();
+});
 </script>
 
 <style scoped>

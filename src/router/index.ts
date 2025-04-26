@@ -12,6 +12,7 @@ const AboutUs = () => import('@/views/AboutUsVue.vue');
 const MatchUnrecognizedMovies = () => import('@/views/MatchUnrecognizedMovies.vue');
 const ComprehensiveDashboard = () => import('@/views/ComprehensiveDashboard.vue');
 const Settings = () =>import('@/views/SettingsVue.vue')
+const Watchlist = () => import('@/views/WatchlistVue.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,6 +73,11 @@ const router = createRouter({
       component: Settings,
       meta: { requiresAuth: true }, // Adjust if needed
 
+    },
+    {
+      path: '/watchlist/:id',
+      component: () => import('@/views/WatchlistVue.vue'),
+      props: true
     },
 
     {

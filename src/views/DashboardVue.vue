@@ -26,6 +26,7 @@ import Dashboard from '@/components/DashboardSection.vue';
   position: fixed;
   top: 50;
   left: 0;
+  overflow-y: auto;
 }
 
 

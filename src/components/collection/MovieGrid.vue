@@ -2,15 +2,49 @@
   <div class="container">
     <div v-if="loading" class="loading">Loading movies...</div>
     <div v-else-if="error" class="error">{{ error }}</div>
-    <div v-else class="movie-grid">
-      <MovieContainer
-        v-for="media in combinedMedia"
-        :key="`${media.mediaType}-${media.movieID ?? media.tvShowID}`"
-        :to="`/${media.mediaType}/${media.movieID ?? media.tvShowID}`"
-        :mediaId="media.mediaType === 'movie' ? media.movieID : media.tvShowID"
-        :title="media.title ?? media.originalName"
-        :mediaType="media.mediaType"
-      />
+    <div v-else>
+      <div class="movie-grid">
+        <MovieContainer
+          v-for="media in paginatedMedia"
+          :key="`${media.mediaType}-${media.movieID ?? media.tvShowID}`"
+          :to="`/${media.mediaType}/${media.movieID ?? media.tvShowID}`"
+          :mediaId="media.mediaType === 'movie' ? media.movieID : media.tvShowID"
+          :title="media.title ?? media.originalName"
+          :mediaType="media.mediaType"
+        />
+      </div>
+      
+      <!-- Pagination Controls -->
+      <div class="pagination-controls">
+        <button 
+          @click="prevPage" 
+          :disabled="currentPage === 1"
+          class="page-button"
+        >
+          Previous
+        </button>
+        
+        <button 
+          v-for="page in visiblePages" 
+          :key="page"
+          @click="goToPage(page)"
+          :class="{ active: currentPage === page }"
+          class="page-button"
+        >
+          {{ page }}
+        </button>
+        
+        <button 
+          @click="nextPage" 
+          :disabled="currentPage === totalPages"
+          class="page-button"
+        >
+          Next
+        </button>
+      </div>
+      
+      <!-- Infinite scroll observer -->
+      <div v-if="infiniteScrollEnabled" ref="observerElement" class="observer-element"></div>
     </div>
   </div>
 </template>
@@ -18,6 +52,7 @@
 <script setup lang="ts">
   import { ref, computed, onMounted, watch, inject } from 'vue';
   import type { PropType } from 'vue';
+  import { useIntersectionObserver } from '@vueuse/core';
   import MovieContainer from './MovieContainer.vue';
   import type { MovieStore } from '@/types';
   import type { TvStore } from '@/types';
@@ -44,9 +79,24 @@
 
   const loading = ref(true);
   const error = ref<string | null>(null);
+  const currentPage = ref(1);
+  const itemsPerPage = 32;
+  const observerElement = ref<HTMLElement | null>(null);
+  const infiniteScrollEnabled = ref(false);
 
   const movieStore = inject<MovieStore | null>('movieStore', null);
   const tvStore = inject<TvStore | null>('tvStore', null);
+
+  // Setup intersection observer for infinite scroll
+  useIntersectionObserver(
+    observerElement,
+    ([{ isIntersecting }]) => {
+      if (isIntersecting && infiniteScrollEnabled.value && currentPage.value < totalPages.value) {
+        currentPage.value += 1;
+      }
+    },
+    { threshold: 0.1 }
+  );
 
   const filteredMovies = computed(() => {
     return [...(movieStore?.filterMovies?.value ?? [])]
@@ -58,13 +108,13 @@
   });
 
   const filteredShows = computed(() => {
-      return [...(tvStore?.filterTvShows?.value ?? [])]
-        .map(show => ({
-          ...show,
-          mediaType: MediaTypes.Tv
-        }))
-        .sort((a, b) => a.order - b.order);
-    });
+    return [...(tvStore?.filterTvShows?.value ?? [])]
+      .map(show => ({
+        ...show,
+        mediaType: MediaTypes.Tv
+      }))
+      .sort((a, b) => a.order - b.order);
+  });
 
   const combinedMedia = computed(() => {
     const includeMovies = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('movie');
@@ -77,6 +127,35 @@
     return results.sort((a, b) => a.order - b.order);
   });
 
+  // Paginated media
+  const paginatedMedia = computed(() => {
+    const start = (currentPage.value - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    return combinedMedia.value.slice(0, end);
+  });
+
+  const totalPages = computed(() => {
+    return Math.ceil(combinedMedia.value.length / itemsPerPage);
+  });
+
+  const visiblePages = computed(() => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    let start = Math.max(1, currentPage.value - Math.floor(maxVisiblePages / 2));
+    let end = Math.min(totalPages.value, start + maxVisiblePages - 1);
+    
+    // Adjust if we're at the beginning or end
+    if (end - start + 1 < maxVisiblePages) {
+      start = Math.max(1, end - maxVisiblePages + 1);
+    }
+    
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    
+    return pages;
+  });
+
   const loadMovies = async () => {
     if (!movieStore) {
       console.error("MovieStore is not provided.");
@@ -85,23 +164,17 @@
 
     try {
       loading.value = true;
-      console.log("Filter params:", {
-        search: props.search,
-        runtime: props.runtime,
-        filterOrder: props.filterOrder,
-        yearRange: props.yearRange,
-        genres: props.selectedGenres // No need for `toRaw` here
-      });
-
+      currentPage.value = 1; // Reset to first page when filters change
+      
       await movieStore.fetchFilterMovies(
-    false,
-    props.search ?? "",                        // query
-    props.runtime ?? null,                     // runtime
-    props.filterOrder ?? null,                 // searchTerm
-    props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
-    props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
-    props.selectedGenres.map(String) ?? null   // genre as string[]
-  );
+        false,
+        props.search ?? "",
+        props.runtime ?? null,
+        props.filterOrder ?? null,
+        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
+        props.selectedGenres.map(String) ?? null
+      );
     } catch (e) {
       error.value = `Failed to load movies: ${(e as Error).message}`;
     } finally {
@@ -116,8 +189,9 @@
     }
 
     try {
-      console.log(props.search,props.filterOrder,props.yearRange)
       loading.value = true;
+      currentPage.value = 1; // Reset to first page when filters change
+      
       await tvStore.fetchFilterShows(
         false,
         props.search ?? "",
@@ -125,14 +199,42 @@
         props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
         props.yearRange?.length ? Number(props.yearRange[1]) : 2100
       );
-    }
-    catch (e) {
+    } catch (e) {
       error.value = `Failed to load Tv Shows: ${(e as Error).message}`;
-    }
-    finally {
+    } finally {
       loading.value = false;
     }
   };
+
+  // Navigation methods
+  const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value += 1;
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value -= 1;
+    }
+  };
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages.value) {
+      currentPage.value = page;
+    }
+  };
+
+  // Toggle infinite scroll
+  const toggleInfiniteScroll = () => {
+    infiniteScrollEnabled.value = !infiniteScrollEnabled.value;
+    if (!infiniteScrollEnabled.value) {
+      currentPage.value = 1; // Reset to first page when disabling infinite scroll
+    }
+  };
+
+  
+
 
   // Re-fetch when any filter prop changes
   watch(() => [
@@ -145,12 +247,12 @@
   ], () => {
     loadMovies();
     loadShows();
- },
- { deep: true });
+  }, { deep: true });
 
- onMounted(() => {
+  onMounted(() => {
     loadMovies();
     loadShows();
+
   });
 </script>
 
@@ -164,17 +266,67 @@
   margin-top: 50px;
   padding: 1rem;
   overflow: auto;
+  overflow-y: auto;
 }
 
 .movie-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 200px));
   gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .loading,
 .error {
   text-align: center;
   font-size: 1.5rem;
+  margin: 2rem 0;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.page-button {
+  padding: 0.5rem 1rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.page-button:hover:not(:disabled) {
+  background-color: #555;
+}
+
+.page-button.active {
+  background-color: #007bff;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.observer-element {
+  height: 20px;
+  width: 100%;
+}
+
+.infinite-scroll-toggle {
+  display: block;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 </style>
