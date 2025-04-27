@@ -16,10 +16,10 @@
     <v-btn
       v-if="isAuthenticated"
       variant="text"
-      :active="$route.path === '/collection'"
-      to="/collection"
+      :active="$route.path === '/library'"
+      to="/library"
     >
-      Collection
+      Library
     </v-btn>
 
  <!-- Home GitHub Button  -->

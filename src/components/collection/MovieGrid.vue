@@ -4,45 +4,39 @@
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else>
       <div class="movie-grid">
-        <MovieContainer
-          v-for="media in paginatedMedia"
-          :key="`${media.mediaType}-${media.movieID ?? media.tvShowID}`"
-          :to="`/${media.mediaType}/${media.movieID ?? media.tvShowID}`"
-          :mediaId="media.mediaType === 'movie' ? media.movieID : media.tvShowID"
-          :title="media.title ?? media.originalName"
-          :mediaType="media.mediaType"
-        />
+        <MovieContainer v-for="media in paginatedMedia"
+                        :key="`${media.mediaType}-${getMediaId(media)}`"
+                        :to="`/${media.mediaType}/${getMediaId(media)}`"
+                        :mediaId="getMediaId(media)"
+                        :title="media.title"
+                        :posterPath="media.posterPath ?? null"
+                        :mediaType="media.mediaType"
+                        :isInCollection="media.isInCollection || false" />
       </div>
-      
+
       <!-- Pagination Controls -->
       <div class="pagination-controls">
-        <button 
-          @click="prevPage" 
-          :disabled="currentPage === 1"
-          class="page-button"
-        >
+        <button @click="prevPage"
+                :disabled="currentPage === 1"
+                class="page-button">
           Previous
         </button>
-        
-        <button 
-          v-for="page in visiblePages" 
-          :key="page"
-          @click="goToPage(page)"
-          :class="{ active: currentPage === page }"
-          class="page-button"
-        >
+
+        <button v-for="page in visiblePages"
+                :key="page"
+                @click="goToPage(page)"
+                :class="{ active: currentPage === page }"
+                class="page-button">
           {{ page }}
         </button>
-        
-        <button 
-          @click="nextPage" 
-          :disabled="currentPage === totalPages"
-          class="page-button"
-        >
+
+        <button @click="nextPage"
+                :disabled="currentPage === totalPages"
+                class="page-button">
           Next
         </button>
       </div>
-      
+
       <!-- Infinite scroll observer -->
       <div v-if="infiniteScrollEnabled" ref="observerElement" class="observer-element"></div>
     </div>
@@ -56,6 +50,7 @@
   import MovieContainer from './MovieContainer.vue';
   import type { MovieStore } from '@/types';
   import type { TvStore } from '@/types';
+  import type { CollectionStore } from '@/types';
   import { MediaTypes } from '@/enums/MediaTypeEnum';
 
   // Props passed from parent component
@@ -86,6 +81,11 @@
 
   const movieStore = inject<MovieStore | null>('movieStore', null);
   const tvStore = inject<TvStore | null>('tvStore', null);
+  const collectionStore = inject<CollectionStore | null>('collectionStore', null);
+
+  const getMediaId = (media: any) => {
+    return media.id ?? media.movieID ?? media.tvShowID ?? null;
+  };
 
   // Setup intersection observer for infinite scroll
   useIntersectionObserver(
@@ -102,7 +102,8 @@
     return [...(movieStore?.filterMovies?.value ?? [])]
       .map(movie => ({
         ...movie,
-        mediaType: MediaTypes.Movie
+        mediaType: MediaTypes.Movie,
+        isInCollection: movie.isInCollection ?? false
       }))
       .sort((a, b) => a.order - b.order);
   });
@@ -116,13 +117,28 @@
       .sort((a, b) => a.order - b.order);
   });
 
+  const filteredCollections = computed(() => {
+    return [...(collectionStore?.collections?.value ?? [])]
+      .filter(collection => collection.items && collection.items.length > 0)
+      .map(collection => ({
+        id: collection.collectionID,
+        title: collection.name,
+        posterPath: collection.posterPath,
+        order: collection.order,
+        mediaType: MediaTypes.Collection,
+      }))
+      .sort((a, b) => a.order - b.order);
+  });
+
   const combinedMedia = computed(() => {
     const includeMovies = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('movie');
     const includeShows = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('tv');
+    const includeCollections = true;
 
     let results: any[] = [];
-    if(includeMovies) results = results.concat(filteredMovies.value);
-    if(includeShows) results = results.concat(filteredShows.value);
+    if (includeMovies) results = results.concat(filteredMovies.value);
+    if (includeShows) results = results.concat(filteredShows.value);
+    if (includeCollections) results = results.concat(filteredCollections.value);
 
     return results.sort((a, b) => a.order - b.order);
   });
@@ -249,10 +265,20 @@
     loadShows();
   }, { deep: true });
 
-  onMounted(() => {
-    loadMovies();
-    loadShows();
+  onMounted(async () => {
+    loading.value = true;
 
+    const promises = [loadMovies(), loadShows()];
+
+    if (collectionStore) {
+      promises.push(collectionStore.fetchCollections());
+    }
+
+    await Promise.all(promises);
+
+    console.log('Collections:', collectionStore?.collections.value);
+
+    loading.value = false;
   });
 </script>
 

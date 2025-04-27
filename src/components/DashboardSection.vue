@@ -8,11 +8,12 @@
       </div>
 
       <div class="rectangle">
-        <div> 
-            <h1>Watchlist</h1>
+        <div>
+          <h1>Organizer</h1>
 
         </div>
         <CreateList></CreateList>
+        <CreateCollection></CreateCollection>
       </div>
 
       <div class="rectangle">
@@ -28,6 +29,7 @@ import UnrecognizedMovies from './HomeVue/UnrecognizedMovies.vue';
 import DownloadProgress from './HomeVue/DownloadProgress.vue';
 import WordCloud from './ComprehensiveDashboard/WordCloud.vue';
 import CreateList from './HomeVue/CreateList.vue';
+import CreateCollection from './HomeVue/CreateCollection.vue'
 
 </script>
 

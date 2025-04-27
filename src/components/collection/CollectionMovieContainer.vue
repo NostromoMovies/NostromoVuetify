@@ -36,10 +36,6 @@
           <v-list-item @click="startAdd('watchlist')">
             <v-list-item-title>Add to Watchlist</v-list-item-title>
           </v-list-item>
-
-          <v-list-item @click="handleCollectionAdd">
-            <v-list-item-title>Add to Collection</v-list-item-title>
-          </v-list-item>
         </v-list>
       </v-menu>
 
@@ -69,8 +65,7 @@
   </div>
 </template>
 
-<script setup lang="ts">
-  import { onMounted, ref, watch } from 'vue';
+<script setup lang="ts">import { onMounted, ref, watch } from 'vue';
   import { getService } from '@/api/GetService';
   import { useMovieStore } from '@/stores/movieStore';
   const { fetchMovies } = useMovieStore();
@@ -218,8 +213,7 @@
     setPosterImage();
     if (!props.posterPath) fetchPoster();
     loadWatchlists();
-  });
-</script>
+  });</script>
 
 <style scoped>
   .movie-card {

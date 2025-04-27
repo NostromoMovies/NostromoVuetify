@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\components",
-    "\\src\\components\\HomeVue",
+    "\\src\\components\\collection",
     "\\src\\components\\MovieDetailComponent",
-    "\\src\\components\\Navbar",
     "\\src\\router",
     "\\src\\services",
     "\\src\\stores",
+    "\\src\\types",
     "\\src\\views"
   ],
-  "SelectedNode": "\\index.html",
+  "SelectedNode": "\\src\\stores\\collectionStore.ts",
   "PreviewInSolutionExplorer": false
 }

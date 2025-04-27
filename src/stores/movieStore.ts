@@ -10,6 +10,7 @@ interface ApiMovie {
   releaseDate?: string | null;
   runtime?: string | null;
   backdropPath?: string | null;
+  isInCollection?: boolean;
 }
 
 export const useMovieStore = (): MovieStore => {
@@ -53,16 +54,19 @@ export const useMovieStore = (): MovieStore => {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
   
-      filterMovies.value = jsonResponse.data.items.map((movie: ApiMovie, index: number) => ({
-        order: index,
-        movieID: movie.movieID || movie.tmdbid || null,
-        title: movie.title,
-        posterPath: movie.posterPath ?? null,
-        overview: movie.overview ?? null,
-        releaseDate: movie.releaseDate ?? null,
-        runtime: movie.runtime ?? null,
-        backdropPath: movie.backdropPath ?? null,
-      }));
+      filterMovies.value = jsonResponse.data.items
+        .filter((movie: any) => !movie.isInCollection)
+        .map((movie: ApiMovie, index: number) => ({
+          order: index,
+          movieID: movie.movieID || movie.tmdbid || null,
+          title: movie.title,
+          posterPath: movie.posterPath ?? null,
+          overview: movie.overview ?? null,
+          releaseDate: movie.releaseDate ?? null,
+          runtime: movie.runtime ?? null,
+          backdropPath: movie.backdropPath ?? null,
+        }));
+
   
       lastFetched.value = Date.now();
       console.log("Filtered Movies successfully fetched:", filterMovies.value);
@@ -96,15 +100,17 @@ export const useMovieStore = (): MovieStore => {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
 
-      movies.value = jsonResponse.data.items.map((movie: ApiMovie) => ({
-        movieID: movie.movieID || movie.tmdbid || null,
-        title: movie.title,
-        posterPath: movie.posterPath ?? null,
-        overview: movie.overview ?? null,
-        releaseDate: movie.releaseDate ?? null,
-        runtime: movie.runtime ?? null,
-        backdropPath: movie.backdropPath ?? null,
-      }));
+      movies.value = jsonResponse.data.items
+        .filter((movie: ApiMovie) => !movie.isInCollection)
+        .map((movie: ApiMovie) => ({
+          movieID: movie.movieID || movie.tmdbid || null,
+          title: movie.title,
+          posterPath: movie.posterPath ?? null,
+          overview: movie.overview ?? null,
+          releaseDate: movie.releaseDate ?? null,
+          runtime: movie.runtime ?? null,
+          backdropPath: movie.backdropPath ?? null,
+        }));
 
       lastFetched.value = Date.now();
       console.log("Movies successfully fetched:", movies.value);
@@ -149,8 +155,6 @@ export const useMovieStore = (): MovieStore => {
     }
   };
   
-
-
   return { 
     movies,
     filterMovies,  

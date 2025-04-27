@@ -13,6 +13,7 @@ const MatchUnrecognizedMovies = () => import('@/views/MatchUnrecognizedMovies.vu
 const ComprehensiveDashboard = () => import('@/views/ComprehensiveDashboard.vue');
 const Settings = () =>import('@/views/SettingsVue.vue')
 const Watchlist = () => import('@/views/WatchlistVue.vue')
+const CollectionDetail = () => import('@/views/CollectionDetail.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,7 +30,7 @@ const router = createRouter({
       meta: { requiresAuth: true }, // Only logged-in users can access
     },
     {
-      path: '/collection',
+      path: '/library',
       name: 'collection',
       component: Collection,
       meta: { requireAuth: true }, // Only logged-in users can access
@@ -76,10 +77,14 @@ const router = createRouter({
     },
     {
       path: '/watchlist/:id',
-      component: () => import('@/views/WatchlistVue.vue'),
+      component: () => Watchlist,
       props: true
     },
-
+    {
+      path: '/collection/:id',
+      name: 'CollectionDetail',
+      component: () => CollectionDetail
+    },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',

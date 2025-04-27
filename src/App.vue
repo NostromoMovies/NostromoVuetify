@@ -18,17 +18,20 @@
     import { useTvStore } from './stores/tvStore';
     import { useSeasonStore } from './stores/seasonStore';
     import { useEpisodeStore } from './stores/episodeStore';
+    import { useCollectionStore } from './stores/collectionStore';
     import { useRoute } from 'vue-router';
 
     const movieStore = useMovieStore();
     const tvStore = useTvStore();
     const seasonStore = useSeasonStore();
     const episodeStore = useEpisodeStore();
+    const collectionStore = useCollectionStore();
 
     provide('movieStore', movieStore);
     provide('tvStore', tvStore);
     provide('seasonStore', seasonStore);
     provide('episodeStore', episodeStore);
+    provide('collectionStore', collectionStore);
 
     const route = useRoute();
 

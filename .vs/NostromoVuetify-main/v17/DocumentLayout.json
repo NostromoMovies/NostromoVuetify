@@ -1,69 +1,117 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\",
+  "WorkspaceRootPath": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\",
   "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\collectionStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\stores\\collectionStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieGrid.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\MovieGrid.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieContainer.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\MovieContainer.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionDetail.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\views\\CollectionDetail.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\CollectionMovieContainer.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\CollectionMovieContainer.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\NavBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\NavBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\CollectionSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\CollectionSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\App.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\App.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\router\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\router\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\types\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\types\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\movieStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\stores\\movieStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionVue.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\views\\CollectionVue.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\enums\\MediaTypeEnum.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\enums\\MediaTypeEnum.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\DashboardSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\DashboardSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\CreateCollection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\CreateCollection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\api\\GetService.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\api\\GetService.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
+    },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Videos\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\signupMethod.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\signupMethod.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\stores\\signupMethod.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\Navbar\\SignupPop.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\authStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\authStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\stores\\authStore.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\NavBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\NavBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\router\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\router\\index.ts||{0F2454B1-A556-402D-A7D0-1FDE7F99DEE0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\LoginButton.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\views\\DashboardVue.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\DashboardVue.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\views\\DashboardVue.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\DashboardSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\DashboardSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\HomeVue\\DownloadProgress.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\Searchbar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\GenericFiltering.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\FilterBox.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\collection\\DashboardTaskBar.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\CollectionSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\components\\CollectionSection.vue||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -73,219 +121,350 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\n5980\\Videos\\appsettings.json",
-              "RelativeDocumentMoniker": "..\\..\\Videos\\appsettings.json",
-              "ToolTip": "C:\\Users\\n5980\\Videos\\appsettings.json",
-              "RelativeToolTip": "..\\..\\Videos\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-04T02:16:58.666Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "index.html",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\index.html",
-              "RelativeDocumentMoniker": "index.html",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\index.html",
-              "RelativeToolTip": "index.html",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
-              "WhenOpened": "2025-03-04T01:38:39.026Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "signupMethod.ts",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\signupMethod.ts",
-              "RelativeDocumentMoniker": "src\\stores\\signupMethod.ts",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\signupMethod.ts",
-              "RelativeToolTip": "src\\stores\\signupMethod.ts",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-04T01:35:59.56Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "authStore.ts",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\authStore.ts",
-              "RelativeDocumentMoniker": "src\\stores\\authStore.ts",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\stores\\authStore.ts",
-              "RelativeToolTip": "src\\stores\\authStore.ts",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-04T01:32:29.68Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "NavBar.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\NavBar.vue",
-              "RelativeDocumentMoniker": "src\\components\\NavBar.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\NavBar.vue",
-              "RelativeToolTip": "src\\components\\NavBar.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAEwBwAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T01:28:33.353Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "index.ts",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\router\\index.ts",
-              "RelativeDocumentMoniker": "src\\router\\index.ts",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\router\\index.ts",
-              "RelativeToolTip": "src\\router\\index.ts",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAACsAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
-              "WhenOpened": "2025-03-04T01:24:47.879Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SignupPop.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue",
-              "RelativeDocumentMoniker": "src\\components\\Navbar\\SignupPop.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue",
-              "RelativeToolTip": "src\\components\\Navbar\\SignupPop.vue",
-              "ViewState": "AgIAAHMAAAAAAAAAAAAwwKEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T01:18:38.138Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "LoginButton.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue",
-              "RelativeDocumentMoniker": "src\\components\\HomeVue\\LoginButton.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue",
-              "RelativeToolTip": "src\\components\\HomeVue\\LoginButton.vue",
-              "ViewState": "AgIAADsAAAAAAAAAAAAAAJUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T01:17:08.085Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "DashboardVue.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\views\\DashboardVue.vue",
-              "RelativeDocumentMoniker": "src\\views\\DashboardVue.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\views\\DashboardVue.vue",
-              "RelativeToolTip": "src\\views\\DashboardVue.vue",
-              "ViewState": "AgIAAAcAAAAAAAAAAAAAABMAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:41:45.194Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "DownloadProgress.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
-              "RelativeDocumentMoniker": "src\\components\\HomeVue\\DownloadProgress.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
-              "RelativeToolTip": "src\\components\\HomeVue\\DownloadProgress.vue",
-              "ViewState": "AgIAAJIAAAAAAAAAAAAowLcAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:38:07.692Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "DashboardSection.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\DashboardSection.vue",
-              "RelativeDocumentMoniker": "src\\components\\DashboardSection.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\DashboardSection.vue",
-              "RelativeToolTip": "src\\components\\DashboardSection.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACMAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:38:02.703Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CollectionMovieContainer.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\CollectionMovieContainer.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\CollectionMovieContainer.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\CollectionMovieContainer.vue",
+              "RelativeToolTip": "src\\components\\collection\\CollectionMovieContainer.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-04-27T06:29:09.533Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "index.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\types\\index.ts",
+              "RelativeDocumentMoniker": "src\\types\\index.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\types\\index.ts",
+              "RelativeToolTip": "src\\types\\index.ts",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAuwLsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-04-27T01:13:59.746Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "collectionStore.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\collectionStore.ts",
+              "RelativeDocumentMoniker": "src\\stores\\collectionStore.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\collectionStore.ts",
+              "RelativeToolTip": "src\\stores\\collectionStore.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-04-27T01:12:38.344Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MovieGrid.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieGrid.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\MovieGrid.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieGrid.vue",
+              "RelativeToolTip": "src\\components\\collection\\MovieGrid.vue",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAqwIIAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-04-27T00:37:58.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "movieStore.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\movieStore.ts",
+              "RelativeDocumentMoniker": "src\\stores\\movieStore.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\movieStore.ts",
+              "RelativeToolTip": "src\\stores\\movieStore.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-04-27T00:12:07.274Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "App.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\App.vue",
+              "RelativeDocumentMoniker": "src\\App.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\App.vue",
+              "RelativeToolTip": "src\\App.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-04-27T00:11:47.966Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "Searchbar.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
-              "RelativeDocumentMoniker": "src\\components\\collection\\Searchbar.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
-              "RelativeToolTip": "src\\components\\collection\\Searchbar.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAswBwAAAADAAAAAAAAAA==",
+              "Title": "CollectionVue.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionVue.vue",
+              "RelativeDocumentMoniker": "src\\views\\CollectionVue.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionVue.vue",
+              "RelativeToolTip": "src\\views\\CollectionVue.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:36:43.321Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-27T00:11:34.319Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "GenericFiltering.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue",
-              "RelativeDocumentMoniker": "src\\components\\collection\\GenericFiltering.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue",
-              "RelativeToolTip": "src\\components\\collection\\GenericFiltering.vue",
-              "ViewState": "AgIAABAAAAAAAAAAAAAowEIAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "MovieContainer.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieContainer.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\MovieContainer.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\MovieContainer.vue",
+              "RelativeToolTip": "src\\components\\collection\\MovieContainer.vue",
+              "ViewState": "AgIAALkAAAAAAAAAAAAkwCQBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:35:42.16Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "FilterBox.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue",
-              "RelativeDocumentMoniker": "src\\components\\collection\\FilterBox.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue",
-              "RelativeToolTip": "src\\components\\collection\\FilterBox.vue",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHcAAAADAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:34:22.708Z",
+              "WhenOpened": "2025-04-26T23:30:25.29Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 14,
-              "Title": "DashboardTaskBar.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue",
-              "RelativeDocumentMoniker": "src\\components\\collection\\DashboardTaskBar.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue",
-              "RelativeToolTip": "src\\components\\collection\\DashboardTaskBar.vue",
-              "ViewState": "AgIAABUAAAAAAAAAAAAowEcAAAAAAAAAAAAAAA==",
+              "Title": "CreateCollection.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\CreateCollection.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\CreateCollection.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\CreateCollection.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\CreateCollection.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACAAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:33:01.373Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-26T23:23:13.036Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 15,
-              "Title": "CollectionSection.vue",
-              "DocumentMoniker": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\CollectionSection.vue",
-              "RelativeDocumentMoniker": "src\\components\\CollectionSection.vue",
-              "ToolTip": "C:\\Users\\n5980\\Downloads\\NostromoVuetify-main\\src\\components\\CollectionSection.vue",
-              "RelativeToolTip": "src\\components\\CollectionSection.vue",
-              "ViewState": "AgIAADkAAAAAAAAAAAAAABoAAAAQAAAAAAAAAA==",
+              "Title": "GetService.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\api\\GetService.ts",
+              "RelativeDocumentMoniker": "src\\api\\GetService.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\api\\GetService.ts",
+              "RelativeToolTip": "src\\api\\GetService.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC8AAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-04-26T23:22:31.75Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\n5980\\Videos\\appsettings.json",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\n5980\\Videos\\appsettings.json",
+              "ToolTip": "C:\\Users\\n5980\\Videos\\appsettings.json",
+              "RelativeToolTip": "..\\..\\..\\..\\n5980\\Videos\\appsettings.json",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-04T02:16:58.666Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NavBar.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\NavBar.vue",
+              "RelativeDocumentMoniker": "src\\components\\NavBar.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\NavBar.vue",
+              "RelativeToolTip": "src\\components\\NavBar.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
-              "WhenOpened": "2025-03-04T00:23:54.252Z",
+              "WhenOpened": "2025-03-04T01:28:33.353Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "LoginButton.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\LoginButton.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\LoginButton.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\LoginButton.vue",
+              "ViewState": "AgIAADsAAAAAAAAAAAAAAJUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T01:17:08.085Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "DashboardVue.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\DashboardVue.vue",
+              "RelativeDocumentMoniker": "src\\views\\DashboardVue.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\DashboardVue.vue",
+              "RelativeToolTip": "src\\views\\DashboardVue.vue",
+              "ViewState": "AgIAAAcAAAAAAAAAAAAAABMAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:41:45.194Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "DownloadProgress.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
+              "RelativeDocumentMoniker": "src\\components\\HomeVue\\DownloadProgress.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\HomeVue\\DownloadProgress.vue",
+              "RelativeToolTip": "src\\components\\HomeVue\\DownloadProgress.vue",
+              "ViewState": "AgIAAJIAAAAAAAAAAAAowLcAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:38:07.692Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CollectionDetail.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionDetail.vue",
+              "RelativeDocumentMoniker": "src\\views\\CollectionDetail.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\views\\CollectionDetail.vue",
+              "RelativeToolTip": "src\\views\\CollectionDetail.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-04-27T03:20:25.641Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "MediaTypeEnum.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\enums\\MediaTypeEnum.ts",
+              "RelativeDocumentMoniker": "src\\enums\\MediaTypeEnum.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\enums\\MediaTypeEnum.ts",
+              "RelativeToolTip": "src\\enums\\MediaTypeEnum.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAUAAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-04-27T03:16:12.28Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "index.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\router\\index.ts",
+              "RelativeDocumentMoniker": "src\\router\\index.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\router\\index.ts",
+              "RelativeToolTip": "src\\router\\index.ts",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-03-04T01:24:47.879Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "CollectionSection.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\CollectionSection.vue",
+              "RelativeDocumentMoniker": "src\\components\\CollectionSection.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\CollectionSection.vue",
+              "RelativeToolTip": "src\\components\\CollectionSection.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:23:54.252Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "SignupPop.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue",
+              "RelativeDocumentMoniker": "src\\components\\Navbar\\SignupPop.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\Navbar\\SignupPop.vue",
+              "RelativeToolTip": "src\\components\\Navbar\\SignupPop.vue",
+              "ViewState": "AgIAAHMAAAAAAAAAAAAwwKEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T01:18:38.138Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DashboardSection.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\DashboardSection.vue",
+              "RelativeDocumentMoniker": "src\\components\\DashboardSection.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\DashboardSection.vue",
+              "RelativeToolTip": "src\\components\\DashboardSection.vue",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAABwAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:38:02.703Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Searchbar.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\Searchbar.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\Searchbar.vue",
+              "RelativeToolTip": "src\\components\\collection\\Searchbar.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAswBwAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:36:43.321Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "GenericFiltering.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\GenericFiltering.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\GenericFiltering.vue",
+              "RelativeToolTip": "src\\components\\collection\\GenericFiltering.vue",
+              "ViewState": "AgIAABAAAAAAAAAAAAAowEIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:35:42.16Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "authStore.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\authStore.ts",
+              "RelativeDocumentMoniker": "src\\stores\\authStore.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\authStore.ts",
+              "RelativeToolTip": "src\\stores\\authStore.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-03-04T01:32:29.68Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "FilterBox.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\FilterBox.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\FilterBox.vue",
+              "RelativeToolTip": "src\\components\\collection\\FilterBox.vue",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:34:22.708Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "signupMethod.ts",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\signupMethod.ts",
+              "RelativeDocumentMoniker": "src\\stores\\signupMethod.ts",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\stores\\signupMethod.ts",
+              "RelativeToolTip": "src\\stores\\signupMethod.ts",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003213|",
+              "WhenOpened": "2025-03-04T01:35:59.56Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "index.html",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\index.html",
+              "RelativeDocumentMoniker": "index.html",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\index.html",
+              "RelativeToolTip": "index.html",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001512|",
+              "WhenOpened": "2025-03-04T01:38:39.026Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "DashboardTaskBar.vue",
+              "DocumentMoniker": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue",
+              "RelativeDocumentMoniker": "src\\components\\collection\\DashboardTaskBar.vue",
+              "ToolTip": "C:\\Users\\dmalo\\Pictures\\NostromoVuetify-main\\NostromoVuetify-main\\src\\components\\collection\\DashboardTaskBar.vue",
+              "RelativeToolTip": "src\\components\\collection\\DashboardTaskBar.vue",
+              "ViewState": "AgIAABUAAAAAAAAAAAAowEcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003491|",
+              "WhenOpened": "2025-03-04T00:33:01.373Z"
             }
           ]
         }

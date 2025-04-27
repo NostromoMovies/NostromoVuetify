@@ -39,10 +39,28 @@ export const getService = {
       },
     });
   },
+  createCollection(name) {
+    return axiosInstance.post('api/Collection/create', { name });
+  },
   addToWatchlist(watchListID: number, movieID: number) {
     return axiosInstance.post(`api/WatchList/${watchListID}/add/${movieID}`);
   },
+  addToCollection(collectionId: number, movieId?: number, tvId?: number) {
+    let url = `/api/Collection/${collectionId}/add-items?`;
 
+    if (movieId !== undefined) {
+      url += `movieIds=${movieId}`;
+    }
+
+    if (tvId !== undefined) {
+      if (movieId !== undefined) {
+        url += `&`;
+      }
+      url += `tvIds=${tvId}`;
+    }
+
+    return axiosInstance.post(url);
+  },
   getWatchlists(userID: number) {
     return axiosInstance.get(`api/WatchList/${userID}/getAllWatchList`);
   },

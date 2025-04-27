@@ -23,6 +23,12 @@ export interface Tv {
   order: number;
 }
 
+export interface Collection {
+  collectionID: number;
+  posterPath: string | null;
+  order: number;
+}
+
 export interface Season{
   seasonID: number;
   tvShowID: number;
@@ -175,3 +181,7 @@ export interface EpisodeStore{
   getEpisodeById: (seasonID: number, episodeID: number) => Episode | null;
 }
 
+export interface CollectionStore {
+  collections: Ref<Collection[]>;
+  fetchCollections: () => Promise<Collection[]>;
+}
