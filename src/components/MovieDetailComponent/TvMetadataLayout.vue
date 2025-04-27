@@ -50,7 +50,7 @@
                 :key="episode.id"
                 :to="`/season/${selectedSeason}/episode/${episode.id}`"
                 outlined class="Episode-card pa-2 d-flex align-start rounded-lg mb-4 snap-card"
-                style="height: 150px; background-color: #4f4f4f;">
+                style="height: 150px; background-color: #4f4f4f;" elevation="5">
 
                     <v-img
                       :src="episode.stillPath"
@@ -85,52 +85,81 @@
           </v-col>
         </v-row>
       </v-container>
-      <v-row class="actor-container"  >
-        <v-col cols="12">
-          <div class="actor-row">
-            <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
-              <v-card outlined class="actor-card">
-                <v-img width="120"
-                       height="120"
-                       :src="actor.image"
-                       alt="Actor Image"
-                       aspect-ratio="1" />
-                <v-card-title class="text-center">
-                  {{ actor.name }}
-                </v-card-title>
-                <v-card-subtitle class="text-center" v-if="actor.character">
-                  {{ actor.character }}
-                </v-card-subtitle>
-              </v-card>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
+
+      <v-container  fluid>
+        <v-row>
+          <v-col cols="12" md="12" lg="12" class="mt-4">
+            <v-card outlined class="pa-4 rounded-lg"
+            style="height: 300px; background-color: rgb(34,34,34);">
+              <v-row class="actor-container"  >
+                <v-col cols="12">
+                  <div class="actor-row">
+                    <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
+                      <v-card outlined class="actor-card">
+                        <v-img width="120"
+                              height="120"
+                              :src="actor.image"
+                              class="mr-4 rounded"
+                              alt="Actor Image"
+                              aspect-ratio="1" />
+                        <v-card-title class="text-center">
+                          {{ actor.name }}
+                        </v-card-title>
+                        <v-card-subtitle class="text-center" v-if="actor.character">
+                          {{ actor.character }}
+                        </v-card-subtitle>
+                      </v-card>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+
+
       <v-btn class="see-more-btn" @click="showCrews = !showCrews">
         {{ showCrews ? "See Less" : "See More" }}
       </v-btn>
 
-      <v-row class="crew-container " v-if="showCrews">
-        <v-col cols="12">
-          <div class="crew-row">
-            <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
-              <v-card outlined class="crew-card">
-                <v-img width="120"
-                       height="120"
-                       :src="crew.image"
-                       alt="Crew Image"
-                       aspect-ratio="1" />
-                <v-card-title class="text-center">
-                  {{ crew.name }}
-                </v-card-title>
-                <v-card-subtitle class="text-center" v-if="crew.job">
-                  {{ crew.job }}
-                </v-card-subtitle>
-              </v-card>
-            </div>
-          </div>
-        </v-col>
-      </v-row>
+      <v-container  fluid>
+        <v-row>
+          <v-col cols="12" md="12" lg="12" class="mt-4">
+            <v-card outlined class="pa-4 rounded-lg"
+            style="height: 300px; background-color: rgb(34,34,34);">
+            <v-card-title style="color: white; font-size: x-large; font-weight: bold; text-align: left;">
+              Crew
+            </v-card-title>
+
+
+              <v-row class="crew-container " v-if="showCrews">
+                <v-col cols="12">
+                  <div class="crew-row">
+                    <div class="crew-col" v-for="crew in crewMembers" :key="crew.id">
+                      <v-card outlined class="crew-card">
+                        <v-img width="120"
+                              height="120"
+                              :src="crew.image"
+                              class="mr-4 rounded"
+                              alt="Crew Image"
+                              aspect-ratio="1" />
+                        <v-card-title class="text-center">
+                          {{ crew.name }}
+                        </v-card-title>
+                        <v-card-subtitle class="text-center" v-if="crew.job">
+                          {{ crew.job }}
+                        </v-card-subtitle>
+                      </v-card>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+        </v-row>
+      </v-container>
+
     </v-container>
   </div>
 </template>
