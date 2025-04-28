@@ -11,7 +11,8 @@
                         :title="media.title"
                         :posterPath="media.posterPath ?? null"
                         :mediaType="media.mediaType"
-                        :isInCollection="media.isInCollection || false" />
+                        :isInCollection="media.isInCollection || false"
+                        :collectionId="media.collectionId" />
       </div>
 
       <!-- Pagination Controls -->
@@ -83,11 +84,15 @@
   const tvStore = inject<TvStore | null>('tvStore', null);
   const collectionStore = inject<CollectionStore | null>('collectionStore', null);
 
-  const getMediaId = (media: any) => {
-    return media.id ?? media.movieID ?? media.tvShowID ?? null;
-  };
+  const getMediaId = (m: any) =>
+    m.mediaId
+    ?? m.TmdbTvID
+    ?? m.TmdbMovieID
+    ?? m.tvShowID
+    ?? m.movieID
+    ?? m.id
+    ?? null;
 
-  // Setup intersection observer for infinite scroll
   useIntersectionObserver(
     observerElement,
     ([{ isIntersecting }]) => {
@@ -112,7 +117,11 @@
     return [...(tvStore?.filterTvShows?.value ?? [])]
       .map(show => ({
         ...show,
-        mediaType: MediaTypes.Tv
+        mediaType: MediaTypes.Tv,
+
+        id: show.tvShowID ?? show.id,
+        collectionId: show.collectionId ?? show.collectionID ?? null,
+        isInCollection: show.isInCollection ?? false
       }))
       .sort((a, b) => a.order - b.order);
   });
@@ -131,19 +140,30 @@
   });
 
   const combinedMedia = computed(() => {
-    const includeMovies = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('movie');
-    const includeShows = !props.selectedMedia || props.selectedMedia.length === 0 || props.selectedMedia.includes('tv');
+    const includeMovies = !props.selectedMedia || props.selectedMedia.includes('movie');
+    const includeShows = !props.selectedMedia || props.selectedMedia.includes('tv');
     const includeCollections = true;
 
     let results: any[] = [];
-    if (includeMovies) results = results.concat(filteredMovies.value);
-    if (includeShows) results = results.concat(filteredShows.value);
-    if (includeCollections) results = results.concat(filteredCollections.value);
+
+    if (includeMovies) {
+      results = results.concat(filteredMovies.value);
+    }
+
+    if (includeShows) {
+      results = results.concat(filteredShows.value);
+    }
+
+    if (includeCollections) {
+      results = results.filter(m =>
+        m.mediaType === 'collection' ? true : !m.isInCollection
+      );
+      results = results.concat(filteredCollections.value);
+    }
 
     return results.sort((a, b) => a.order - b.order);
   });
 
-  // Paginated media
   const paginatedMedia = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
@@ -160,7 +180,6 @@
     let start = Math.max(1, currentPage.value - Math.floor(maxVisiblePages / 2));
     let end = Math.min(totalPages.value, start + maxVisiblePages - 1);
     
-    // Adjust if we're at the beginning or end
     if (end - start + 1 < maxVisiblePages) {
       start = Math.max(1, end - maxVisiblePages + 1);
     }
@@ -180,7 +199,7 @@
 
     try {
       loading.value = true;
-      currentPage.value = 1; // Reset to first page when filters change
+      currentPage.value = 1;
       
       await movieStore.fetchFilterMovies(
         false,
@@ -206,7 +225,7 @@
 
     try {
       loading.value = true;
-      currentPage.value = 1; // Reset to first page when filters change
+      currentPage.value = 1;
       
       await tvStore.fetchFilterShows(
         false,
@@ -222,7 +241,6 @@
     }
   };
 
-  // Navigation methods
   const nextPage = () => {
     if (currentPage.value < totalPages.value) {
       currentPage.value += 1;
@@ -241,18 +259,13 @@
     }
   };
 
-  // Toggle infinite scroll
   const toggleInfiniteScroll = () => {
     infiniteScrollEnabled.value = !infiniteScrollEnabled.value;
     if (!infiniteScrollEnabled.value) {
-      currentPage.value = 1; // Reset to first page when disabling infinite scroll
+      currentPage.value = 1;
     }
   };
 
-  
-
-
-  // Re-fetch when any filter prop changes
   watch(() => [
     props.selectedGenres,
     props.selectedMedia,

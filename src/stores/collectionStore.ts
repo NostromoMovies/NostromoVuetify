@@ -12,7 +12,7 @@ interface Collection {
   posterPath: string | null;
   order: number;
   name: string;
-  items: CollectionItem[]; // now it's real
+  items: CollectionItem[];
 }
 
 export const useCollectionStore = () => {
@@ -43,7 +43,7 @@ export const useCollectionStore = () => {
         posterPath: item.posterPath ?? null,
         order: item.order ?? 0,
         name: item.name ?? "",
-        items: item.items ?? [] // <- fix
+        items: item.items ?? []
       }));
 
     } catch (e) {

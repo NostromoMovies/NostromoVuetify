@@ -61,6 +61,15 @@ export const getService = {
 
     return axiosInstance.post(url);
   },
+  removeFromCollection(collectionId: number, mediaId: number, mediaType: string) {
+    return fetch(`/api/collection/${collectionId}/remove-item/${mediaId}/${mediaType}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('apikey')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+  },
   getWatchlists(userID: number) {
     return axiosInstance.get(`api/WatchList/${userID}/getAllWatchList`);
   },

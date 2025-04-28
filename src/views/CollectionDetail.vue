@@ -6,12 +6,14 @@
     <div v-else>
       <div class="movie-grid">
         <MovieContainer v-for="item in items"
-                        :key="item.movieID"
-                        :to="`/movie/${item.movieID}`"
-                        :mediaId="item.movieID"
+                        :key="item.tmdbMovieID || item.tmdbTvID"
+                        :to="`/${item.movieID ? 'movie' : 'tv'}/${item.movieID || item.tvShowID}`"
+                        :mediaId="item.movieID || item.tvShowID"
                         :title="item.title"
                         :posterPath="item.posterPath"
-                        mediaType="movie" />
+                        :mediaType="item.movieID ? 'movie' : 'tv'"
+                        :collectionId="item.collectionId"
+                        :isInCollection="item.isInCollection"/>
       </div>
     </div>
   </div>
@@ -26,27 +28,39 @@ const loading = ref(true);
 const error = ref<string | null>(null);
 const items = ref<any[]>([]);
 
-onMounted(async () => {
-  const collectionId = route.params.id;
+  onMounted(async () => {
+    const collectionId = route.params.id;
 
-  try {
-    const response = await fetch(`/api/collection/${collectionId}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('apikey')}`,
-        'Content-Type': 'application/json'
-      }
-    });
+    try {
+      const response = await fetch(`/api/collection/${collectionId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('apikey')}`,
+          'Content-Type': 'application/json'
+        }
+      });
 
-    if (!response.ok) throw new Error('Failed to fetch collection details');
+      if (!response.ok) throw new Error('Failed to fetch collection details');
 
-    const data = await response.json();
-    items.value = data.items ?? [];
-  } catch (e) {
-    error.value = (e as Error).message;
-  } finally {
-    loading.value = false;
-  }
-});</script>
+      const data = await response.json();
+
+      items.value = (data.items ?? []).map((item: any) => ({
+        movieID: item.movieID || item.tmdbMovieID || null,
+        tvShowID: item.tvShowID || item.tmdbTvID || null,
+        title: item.title,
+        posterPath: item.posterPath,
+        mediaType: item.movieID ? 'movie' : 'tv',
+        collectionId: item.collectionId,
+        isInCollection: item.isInCollection
+      }));
+
+    } catch (e) {
+      error.value = (e as Error).message;
+    } finally {
+      loading.value = false;
+    }
+  });
+
+</script>
 
 <style scoped>
   .container {

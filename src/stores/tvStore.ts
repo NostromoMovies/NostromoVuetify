@@ -8,6 +8,8 @@ interface ApiTvShow {
   backdropPath?: string | null;
   overview?: string | null;
   firstAirDate?: string | null;
+  isInCollection?: boolean;
+  collectionId: number | null;
 }
 
 export const useTvStore = (): TvStore => {
@@ -46,15 +48,19 @@ export const useTvStore = (): TvStore => {
         throw new Error("Invalid API response format: Missing `data.items`");
       }
 
-      filterTvShows.value = [...jsonResponse.data.items.map((show: ApiTvShow, index: number) => ({
-        order: index,
-        tvShowID: show.tvShowID,
-        originalName: show.originalName,
-        posterPath: show.posterPath ?? null,
-        backdropPath: show.backdropPath ?? null,
-        overview: show.overview ?? "No Overview Available",
-        firstAirDate: show.firstAirDate ?? null
-      }))];
+      filterTvShows.value = jsonResponse.data.items.map(
+        (show: ApiTvShow, index): Tv => ({
+          order: index,
+          tvShowID: show.tvShowID,
+          originalName: show.originalName,
+          posterPath: show.posterPath ?? null,
+          backdropPath: show.backdropPath ?? null,
+          overview: show.overview ?? "No Overview Available",
+          firstAirDate: show.firstAirDate ?? null,
+          isInCollection: show.isInCollection ?? show.isIncollection ?? show.IsInCollection ?? false,
+          collectionId: show.collectionId ?? (show as any).collectionID ?? null
+        })
+      );
 
       lastFetched.value = Date.now();
       console.log("Filtered Tv Shows successfully fetched: ", filterTvShows.value);
@@ -98,7 +104,9 @@ export const useTvStore = (): TvStore => {
         posterPath: show.posterPath ?? null,
         backdropPath: show.backdropPath ?? null,
         overview: show.overview ?? "No Overview Available",
-        firstAirDate: show.firstAirDate ?? null
+        firstAirDate: show.firstAirDate ?? null,
+        isInCollection: show.isInCollection ?? show.isIncollection ?? show.IsInCollection ?? false,
+        collectionId: show.collectionId ?? (show as any).collectionID ?? null
       }));
 
       lastFetched.value = Date.now();

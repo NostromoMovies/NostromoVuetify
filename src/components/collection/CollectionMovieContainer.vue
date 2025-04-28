@@ -19,22 +19,25 @@
         Play
       </v-btn>
 
-      <v-menu v-if="!props.isInCollection">
+      <v-menu>
         <template #activator="{ props: menuProps }">
           <v-btn v-bind="menuProps"
                  color="secondary"
                  variant="outlined"
                  block
                  class="action-button"
-                 prepend-icon="mdi-plus"
-                 :disabled="mediaType === 'collection'">
-            Add
+                 prepend-icon="mdi-plus">
+            Options
           </v-btn>
         </template>
 
         <v-list>
           <v-list-item @click="startAdd('watchlist')">
             <v-list-item-title>Add to Watchlist</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item @click="removeFromCollection">
+            <v-list-item-title>Remove from Collection</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -68,6 +71,7 @@
 <script setup lang="ts">import { onMounted, ref, watch } from 'vue';
   import { getService } from '@/api/GetService';
   import { useMovieStore } from '@/stores/movieStore';
+  import { useTvStore } from '@/stores/tvStore';
   const { fetchMovies } = useMovieStore();
 
   const darkMode = ref(true);
@@ -81,7 +85,8 @@
     title: { type: String, required: true },
     mediaType: { type: String, required: true },
     posterPath: { type: String, required: false },
-    isInCollection: { type: Boolean, required: true }
+    isInCollection: { type: Boolean, required: true },
+    collectionId: { type: Number, required: false }
   });
 
   const startAdd = async (mode: 'watchlist' | 'collection') => {
@@ -111,6 +116,30 @@
   const handleCollectionAdd = () => {
     if (props.isInCollection) return;
     startAdd('collection');
+  };
+
+  const removeFromCollection = async () => {
+    console.log('Attempting to remove:', {
+      collectionId: props.collectionId,
+      mediaId: props.mediaId,
+      mediaType: props.mediaType
+    });
+
+    if (!props.collectionId) {
+      console.error("No collectionId provided. Current props:", props);
+      return;
+    }
+
+    try {
+      if (props.mediaType === 'movie') {
+        await getService.removeFromCollection(props.collectionId, props.mediaId, props.mediaType);
+      } else if (props.mediaType === 'tv') {
+        await getService.removeFromCollection(props.collectionId, props.mediaId, props.mediaType);
+      }
+      await fetchMovies(true);
+    } catch (error) {
+      console.error('Failed to remove from collection:', error);
+    }
   };
 
   interface Watchlist {

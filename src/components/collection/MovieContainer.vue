@@ -28,7 +28,7 @@
                  class="action-button"
                  prepend-icon="mdi-plus"
                  :disabled="mediaType === 'collection'">
-            Add
+            Options
           </v-btn>
         </template>
 
@@ -141,12 +141,18 @@
   const addToSelectedTarget = async () => {
     if (!selectedWatchlist.value) return;
     if (addMode.value === 'collection' && props.isInCollection) return;
+
     try {
       if (addMode.value === 'watchlist') {
         await getService.addMovieToWatchlist(selectedWatchlist.value, props.mediaId);
       } else {
-        await getService.addToCollection(selectedWatchlist.value, props.mediaId);
+        if (props.mediaType === 'movie') {
+          await getService.addToCollection(selectedWatchlist.value, props.mediaId, undefined);
+        } else if (props.mediaType === 'tv') {
+          await getService.addToCollection(selectedWatchlist.value, undefined, props.mediaId);
+        }
       }
+
       showDialog.value = false;
       await fetchMovies(true);
     } catch (error) {

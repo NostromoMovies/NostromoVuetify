@@ -26,7 +26,7 @@ export const useMovieStore = (): MovieStore => {
     searchTerm: number | null = null,
     minYear: number | null = null,
     maxYear: number | null = null,
-    genre: (string | number)[] | null = null // Allow numbers or strings
+    genre: (string | number)[] | null = null
   ): Promise<Movie[]> => {
     console.log("Filter params:", { query, runtime, searchTerm, minYear, maxYear, genre });
   
@@ -122,7 +122,9 @@ export const useMovieStore = (): MovieStore => {
   };
 
   const getMovieById = (id: string | number) => {
-    return movies.value.find((movie) => movie.movieID == id) || null;
+    const found = movies.value.find((movie) => movie.movieID == id) || null;
+    console.log("[getMovieById] Found:", found);
+    return found;
   };
 
   const getMovieRecommendation = async (id: string | number) => {

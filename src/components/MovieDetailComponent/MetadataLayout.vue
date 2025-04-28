@@ -140,7 +140,38 @@ export default {
     onMounted(async () => {
       await movieStore.fetchMovies();
       const movieId = route.params.id as string;
-      selectedMovie.value = movieStore.getMovieById?.(movieId) || null;
+
+      selectedMovie.value = movieStore.getMovieById?.(movieId);
+
+      if (!selectedMovie.value) {
+        try {
+          const resp = await fetch(`/api/movies/id/${movieId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('apikey')}`,
+              'Content-Type': 'application/json'
+            }
+          });
+
+          if (!resp.ok) throw new Error('Failed to fetch single movie details');
+
+          const envelope = await resp.json();
+          const movie = envelope.data;
+
+          console.log('API response data 👉', movie);
+
+          selectedMovie.value = {
+            movieID: movie.tmdbMovieId,
+            title: movie.title,
+            overview: movie.overview,
+            releaseDate: movie.releaseDate,
+            runtime: movie.runtime,
+            posterPath: movie.posterPath,
+            backdropPath: movie.backdropPath
+          };
+        } catch (err) {
+          console.error('Failed to fetch movie metadata:', err);
+        }
+      }
 
       try {
         selectedCast.value = await castStore.fetchCastByMovieId(movieId);
@@ -156,9 +187,8 @@ export default {
 
       try {
         selectedMovieRecommendation.value = await movieStore.getMovieRecommendation(movieId);
-
         console.log("Recommendations loaded:", selectedMovieRecommendation.value);
-      } catch(error) {
+      } catch (error) {
         console.error("Could not fetch movie recommendations for ID:", movieId, error);
       }
     });
