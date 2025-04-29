@@ -57,6 +57,13 @@ export interface GenreCount {
   count: number;
 }
 
+export interface Profile {
+  id?: number | null;
+  name: string;
+  age: number;
+  posterPath?: string | null
+}
+
 export interface LoginForm {
   username: string;
   password: string;
@@ -184,4 +191,11 @@ export interface EpisodeStore{
 export interface CollectionStore {
   collections: Ref<Collection[]>;
   fetchCollections: () => Promise<Collection[]>;
+}
+
+export interface ProfileStore{
+  profiles: Ref<Profile[]>;
+  createProfile: (name: string, age: number) => Promise<Profile>;
+  fetchProfiles: () => Promise<Profile[]>
+  currentNumProfiles: number
 }
