@@ -61,13 +61,7 @@ const router = createRouter({
       name: 'MatchUnrecognizedMovies',
       component: MatchUnrecognizedMovies,
       meta: { requiresAuth: true }, // Adjust if needed
-    },
-    {
-      path: '/comp',
-      name: 'CompDashboard',
-      component: ComprehensiveDashboard,
-      meta: { requiresAuth: true }, // Adjust if needed
-    },
+    },  
     {
       path: '/settings',
       name: 'Settings',

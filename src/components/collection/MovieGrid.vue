@@ -45,33 +45,33 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, onMounted, watch, inject } from 'vue';
-  import type { PropType } from 'vue';
-  import { useIntersectionObserver } from '@vueuse/core';
-  import MovieContainer from './MovieContainer.vue';
-  import type { MovieStore } from '@/types';
-  import type { TvStore } from '@/types';
-  import type { CollectionStore } from '@/types';
-  import { MediaTypes } from '@/enums/MediaTypeEnum';
+import { ref, computed, onMounted, watch, inject } from 'vue';
+import type { PropType } from 'vue';
+import { useIntersectionObserver } from '@vueuse/core';
+import MovieContainer from './MovieContainer.vue';
+import type { MovieStore } from '@/types';
+import type { TvStore } from '@/types';
+import type { CollectionStore } from '@/types';
+import { MediaTypes } from '@/enums/MediaTypeEnum';
 
-  // Props passed from parent component
-  const props = defineProps({
-    selectedGenres: {
-      type: Array as PropType<number[]>,
-      default: () => []
-    },
-    selectedMedia: {
-      type: Array as PropType<string[]>,
-      default: () => []
-    },
-    yearRange: {
-      type: Array as PropType<number[]>,
-      default: () => [1900, 2100]
-    },
-    runtime: Number,
-    search: String,
-    filterOrder: Number
-  });
+// Props passed from parent component
+const props = defineProps({
+  selectedGenres: {
+    type: Array as PropType<number[]>,
+    default: () => []
+  },
+  selectedMedia: {
+    type: Array as PropType<string[]>,
+    default: () => ['movie', 'tv'] // Default to showing both
+  },
+  yearRange: {
+    type: Array as PropType<number[]>,
+    default: () => [1900, 2100]
+  },
+  runtime: Number,
+  search: String,
+  filterOrder: Number
+});
 
   const loading = ref(true);
   const error = ref<string | null>(null);
@@ -139,30 +139,40 @@
       .sort((a, b) => a.order - b.order);
   });
 
-  const combinedMedia = computed(() => {
-    const includeMovies = !props.selectedMedia || props.selectedMedia.includes('movie');
-    const includeShows = !props.selectedMedia || props.selectedMedia.includes('tv');
-    const includeCollections = true;
 
-    let results: any[] = [];
 
-    if (includeMovies) {
-      results = results.concat(filteredMovies.value);
-    }
 
-    if (includeShows) {
-      results = results.concat(filteredShows.value);
-    }
 
-    if (includeCollections) {
-      results = results.filter(m =>
-        m.mediaType === 'collection' ? true : !m.isInCollection
-      );
-      results = results.concat(filteredCollections.value);
-    }
+// ... (other reactive variables remain the same)
 
-    return results.sort((a, b) => a.order - b.order);
-  });
+const combinedMedia = computed(() => {
+  // Show both if none are selected or if both are selected
+  const showBoth = props.selectedMedia.length === 0 || 
+                  (props.selectedMedia.includes('movie') && props.selectedMedia.includes('tv'));
+  
+  const includeMovies = showBoth || props.selectedMedia.includes('movie');
+  const includeShows = showBoth || props.selectedMedia.includes('tv');
+  const includeCollections = true; // Always include collections
+
+  let results: any[] = [];
+
+  if (includeMovies) {
+    results = results.concat(filteredMovies.value);
+  }
+
+  if (includeShows) {
+    results = results.concat(filteredShows.value);
+  }
+
+  if (includeCollections) {
+    results = results.filter(m =>
+      m.mediaType === 'collection' ? true : !m.isInCollection
+    );
+    results = results.concat(filteredCollections.value);
+  }
+
+  return results.sort((a, b) => a.order - b.order);
+});
 
   const paginatedMedia = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage;
@@ -232,7 +242,8 @@
         props.search ?? "",
         props.filterOrder ?? null,
         props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
-        props.yearRange?.length ? Number(props.yearRange[1]) : 2100
+        props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
+        props.selectedGenres.map(String) ?? null
       );
     } catch (e) {
       error.value = `Failed to load Tv Shows: ${(e as Error).message}`;

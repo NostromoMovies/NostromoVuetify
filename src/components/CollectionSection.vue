@@ -11,7 +11,7 @@
         :selectedMedia="selectedMedia"
         :yearRange="yearRange"
         :runtime="runtime"
-        :search = "search"
+        :search="search"
         :filterOrder="filterOrder"
       />
       <FilterBox 
@@ -29,9 +29,7 @@ import { defineComponent, ref } from "vue";
 import DashboardTaskBar from "./collection/DashboardTaskBar.vue";
 import MovieGrid from "./collection/MovieGrid.vue";
 import FilterBox from "./collection/FilterBox.vue";
-import { ConsoleLogger } from "@microsoft/signalr/dist/esm/Utils";
 
-// Define the types for the props we will use
 interface YearRange {
   startYear: number | null;
   endYear: number | null;
@@ -47,8 +45,7 @@ export default defineComponent({
   setup() {
     // Define the reactive state with correct types
     const selectedGenres = ref<number[]>([]);
-
-    const selectedMedia = ref<string | null>(null);
+    const selectedMedia = ref<string[]>(['movie', 'tv']); // Default to both selected
     const yearRange = ref<YearRange>({ startYear: null, endYear: null });
     const runtime = ref<number>(90);
     const search = ref<string>("");
@@ -56,32 +53,33 @@ export default defineComponent({
 
     // Methods to update the state
     const updateGenres = (genres: number[]) => {
-    selectedGenres.value = genres;
+      selectedGenres.value = genres;
     };
 
-    const updateMedia = (media: string | null) => {
-      selectedMedia.value = media;
+    const updateMedia = (media: string[] | null) => {
+      // If null is passed (meaning all were deselected), default to both
+      selectedMedia.value = media || ['movie', 'tv'];
     };
 
-    const updateYearRange = (years: YearRange) => {
-      yearRange.value = years;
+    const updateYearRange = (years: [number | null, number | null]) => {
+      yearRange.value = {
+        startYear: years[0],
+        endYear: years[1]
+      };
     };
 
     const updateSearch = (newSearch: string) => {
       search.value = newSearch;
-      console.log(search.value)
     };
 
     const updateFilter = (newFilter: number) => {
       filterOrder.value = newFilter;
-      console.log(filterOrder.value)
     };
 
     const updateRuntime = (newRuntime: number) => {
       runtime.value = newRuntime;
     };
 
-    // Return all the variables and methods to the template
     return {
       selectedGenres,
       selectedMedia,
@@ -100,18 +98,17 @@ export default defineComponent({
 });
 </script>
 
-
 <style scoped>
-  .app-container {
-    width: 100%;
-    min-height: 100vh;
-    padding: 40px;
-    overflow-y: auto;
-  }
+.app-container {
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px;
+  overflow-y: auto;
+}
 
-  .main-content {
-    display: flex;
-    gap: 20px;
-    width: 100%;
-  }
+.main-content {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
 </style>

@@ -25,7 +25,8 @@ export const useTvStore = (): TvStore => {
     query = '',
     searchTerm: number | null = null,
     minYear: number | null = null,
-    maxYear: number | null = null
+    maxYear: number | null = null,
+    genre: (string | number)[] | null = null
   ): Promise<Tv[]> => {
 
     console.log(query, minYear, maxYear);
@@ -36,6 +37,9 @@ export const useTvStore = (): TvStore => {
     if(searchTerm) params.append('searchTerm', String(searchTerm));
     if(minYear !== null) params.append('minYear', String(minYear));
     if(maxYear !== null) params.append('maxYear', String(maxYear));
+    if (genre && genre.length > 0) {
+      genre.map(String).forEach(g => params.append('filterGenre', g));
+    }
 
     try{
       const response = await fetch(`/api/MediaDisplay/getShows?${params.toString()}`);
