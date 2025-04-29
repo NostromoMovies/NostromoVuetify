@@ -196,6 +196,9 @@ export interface CollectionStore {
 export interface ProfileStore{
   profiles: Ref<Profile[]>;
   createProfile: (name: string, age: number) => Promise<Profile>;
-  fetchProfiles: () => Promise<Profile[]>
+  fetchProfiles: () => Promise<Profile[]>;
+  selectProfile: (profileId: number) => Promise<boolean>;
+  deleteProfile: (profileId: number) => Promise<boolean>;
+  updateProfile: (profileId: number, name: string, age: number) => Promise<boolean>;
   currentNumProfiles: number
 }

@@ -17,7 +17,17 @@
                     <v-img :src="profile.posterPath ?? 'https://wallpapers.com/images/high/netflix-profile-pictures-1000-x-1000-dyrp6bw6adbulg5b.webp'" alt="Profile Avatar"/>
                   </v-avatar>
                   <v-card-title>{{ profile.name }}</v-card-title>
-                  <v-card-subtitle>Age: {{ profile.age }}</v-card-subtitle>
+                  <v-card-actions class="justify-center">
+                    <v-btn color="primary" variant="text" @click="editProfile(profile)">
+                      <v-icon start>mdi-pencil</v-icon>
+                      Edit
+                    </v-btn>
+                    <v-btn color="error" variant="text" @click="confirmDelete(profile.id)">
+                      <v-icon start>mdi-delete</v-icon>
+                      Delete
+                    </v-btn>
+                  </v-card-actions>
+
                 </v-card>
               </v-col>
               <v-col cols="12" class="text-center" v-if="profiles.length < 5">
@@ -70,18 +80,12 @@ const showSnackbar =ref(false)
 const profiles = ref<{id?: number | null; name: string; age: number; posterPath?: string | null}[]>([]);
 
 onMounted(async () => {
-  async function fetchProfiles(){
-    const profileArr = await profileStore.fetchProfiles();
-
-    profiles.value = profileArr.map(profile => ({
-      id: profile.id,
-      name: profile.name,
-      age: profile.age,
-      posterPath: profile.posterPath
-    }))
-  };
-
-  fetchProfiles();
+  try{
+    await profileStore.fetchProfiles();
+  }
+  catch (error){
+    console.error('Failed to fetch profiles.', error);
+  }
 });
 
 const submitProfile = async () => {
@@ -89,16 +93,35 @@ const submitProfile = async () => {
     alert('Please enter your name and age.');
     return
   }
+  try{
+    await profileStore.createProfile(newProfileName.value, newProfileAge.value);
 
-  const profile = await profileStore.createProfile(newProfileName.value, newProfileAge.value);
+    newProfileAge.value = null;
+    newProfileName.value = '';
 
-  profiles.value.push(profile);
+    dialog.value = false;
+    showSnackbar.value = true
+  }
+  catch (error){
+    console.error('Failed to create profile:', error);
+    alert('Failed to create profile.');
+  }
+}
 
-  newProfileAge.value = null;
-  newProfileName.value = '';
+const selectProfile = async (profileId: number) => {
+  try {
+    await profileStore.selectProfile(profileId);
+    router.push('/dashboard');
+  }
+  catch (error){
+    console.error('Failed to select profile:', error);
+  }
+};
 
-  dialog.value = false;
-  showSnackbar.value = true
+const editProfile = async (profile: Profile) => {
+  newProfileName.value = profile.name;
+  newProfileAge.value = profile.age;
+  
 }
 </script>
 
