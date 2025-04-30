@@ -52,6 +52,7 @@ export const useProfileStore = (): ProfileStore => {
     };
 
     profiles.value.push(newProfile);
+    fetchProfiles();
     return newProfile;
   }
 
@@ -113,6 +114,7 @@ export const useProfileStore = (): ProfileStore => {
     }
 
     profiles.value = profiles.value.filter(p => p.id !== profileId);
+    fetchProfiles();
   }
 
   const updateProfile = async (profileId: number, name: string, age: number): Promise<boolean> => {

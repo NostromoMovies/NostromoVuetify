@@ -57,6 +57,14 @@
             <v-snackbar v-model="showSnackbar" timeout="2000" color="success">
               Profile Successfully Created!
             </v-snackbar>
+
+            <v-snackbar v-model="deleteSnackbar" timeout="2000" color="success">
+              Profile Successfully Deleted!
+            </v-snackbar>
+
+            <v-snackbar v-model="editSnackbar" timeout="2000" color="success">
+              Profile Successfully Edited!
+            </v-snackbar>
         </v-card>
       </v-col>
     </v-row>
@@ -75,7 +83,9 @@
   const dialog = ref(false);
   const newProfileName = ref('');
   const newProfileAge = ref<number | null>(null);
-  const showSnackbar =ref(false)
+  const showSnackbar = ref(false);
+  const deleteSnackbar = ref(false);
+  const editSnackbar = ref(false)
   const editingProfileId = ref<number | null>(null);
 
   onMounted(async () => {
@@ -96,9 +106,11 @@
 
       if(editingProfileId.value !== null){
         await profileStore.updateProfile(editingProfileId.value, newProfileName.value, newProfileAge.value);
+        editSnackbar.value = true;
       }
       else{
         await profileStore.createProfile(newProfileName.value, newProfileAge.value);
+        showSnackbar.value = true;
       }
 
 
@@ -106,7 +118,7 @@
       newProfileName.value = '';
 
       dialog.value = false;
-      showSnackbar.value = true
+
       editingProfileId.value = null;
     }
     catch (error){
@@ -138,7 +150,7 @@
 
     try {
       await profileStore.deleteProfile(profileId);
-      showSnackbar.value = true;
+      deleteSnackbar.value = true;
     }
     catch (error) {
       console.error('Failed to delete profile:', error);

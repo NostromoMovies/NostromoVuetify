@@ -6,7 +6,7 @@
       color="primary"
       class="loading"
     ></v-progress-circular>
-    
+
     <v-alert
       v-else-if="error"
       type="error"
@@ -14,7 +14,7 @@
     >
       {{ error }}
     </v-alert>
-    
+
     <div v-else>
       <!-- Watchlist Name Header -->
       <v-row class="mb-6" align="center">
@@ -50,7 +50,7 @@
 />
         </v-col>
       </v-row>
-      
+
       <!-- Pagination -->
       <v-pagination
         v-model="currentPage"
@@ -69,6 +69,7 @@ import { useRoute } from 'vue-router';
 ;
 import WatchlistContainer from './collection/WatchlistContainer.vue';
 import type { Movie, MovieStore } from "../types";
+import type { Tv, TvStore } from "../types"
 
 interface ApiMovie {
   movieID?: string | number;
@@ -88,14 +89,33 @@ interface Movie {
   // Add other movie properties as needed
 }
 
+interface ApiTvShow {
+  tvShowID: number;
+  originalName: string;
+  posterPath?: string | null;
+  backdropPath?: string | null;
+  overview?: string | null;
+  firstAirDate?: string | null;
+  isInCollection?: boolean;
+  collectionId: number | null;
+}
+
+interface Tv {
+  id: number;
+  title: string;
+  posterPath: string
+}
+
 const route = useRoute();
 const loading = ref(true);
 const error = ref<string | null>(null);
 const watchlistName = ref('My Watchlist');
 const movies = ref<Movie[]>([]);
+const tvShows = ref<Tv[]>([]);
 const currentPage = ref(1);
 const itemsPerPage = ref(20);
 const watchlistMovies = ref<Movie[]>([]);
+const watchlistTvShows = ref<Tv[]>([]);
 
 
 const paginatedMovies = computed(() => {
@@ -166,7 +186,63 @@ const fetchWatchlistMovies = async () => {
   }
 };
 
+const fetchWatchlistTvShows = async () => {
+  try {
+    loading.value = true;
+    const watchlistId = route.params.id;
 
+    // Fetch watchlist details
+    const watchlistResponse = await fetch(`/api/WatchList/${watchlistId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("apikey")}`
+      }
+    });
+
+    if (!watchlistResponse.ok) {
+      throw new Error('Failed to fetch watchlist details');
+    }
+
+    const watchlistData = await watchlistResponse.json();
+    watchlistName.value = watchlistData.name;
+
+    // Fetch movies in the watchlist
+    const tvResponse = await fetch(`/api/WatchList/${watchlistId}/tv`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("apikey")}`
+      }
+    });
+
+    if (!tvResponse.ok) {
+      throw new Error(`HTTP error! Status: ${tvResponse.status}`);
+    }
+
+    const jsonResponse = await tvResponse.json();
+    console.log("Raw API Response:", jsonResponse);
+
+    if (!Array.isArray(jsonResponse)) {
+      throw new Error("Invalid API response format: Expected an array");
+    }
+
+    // Transform to match expected prop shape
+    tvShows.value = jsonResponse.map((tv, index) => ({
+      order: index,
+      id: tv.tvShowID,
+      title: tv.originalName,
+      poster_path: tv.posterPath,
+      overview: tv.Overview,
+      releaseDate: tv.firstAirDate,
+      runtime: tv.runtime ?? "Unknown",
+      backdropPath: tv.backdropPath,
+    }));
+
+    console.log("Transformed watchlist movies:", watchlistMovies.value);
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Failed to load watchlist movies';
+    console.error("Error fetching watchlist:", err);
+  } finally {
+    loading.value = false;
+  }
+};
 
 const removeFromWatchlist = async (movie: Movie) => {
   try {
@@ -177,17 +253,17 @@ const removeFromWatchlist = async (movie: Movie) => {
         "Authorization": `Bearer ${localStorage.getItem("apikey")}`
       }
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to remove movie from watchlist');
     }
-    
+
     // // Option 1: Just remove from local state (preferred)
     // movies.value = movies.value.filter(m => m.id !== movie.id);
-    
+
     // Option 2: Full refresh (if needed)
     await fetchWatchlistMovies(); // Re-fetch all data
-    
+
   } catch (err) {
     console.error('Error removing movie from watchlist:', err);
     error.value = err instanceof Error ? err.message : 'Failed to remove movie';
@@ -206,7 +282,7 @@ onMounted(() => {
   border-radius: 5px;
   padding: 2rem;
   width: 100%;
-  max-width: 1200px; 
+  max-width: 1200px;
   overflow-y: auto;
 
   /* Centering styles */
