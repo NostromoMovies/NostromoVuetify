@@ -11,6 +11,7 @@ interface ApiEpisode{
   stillPath?: string | null;
   voteAverage: number;
   voteCount: number;
+  airdate: string | null;
 }
 
 export const useEpisodeStore = (): EpisodeStore => {
@@ -38,7 +39,8 @@ export const useEpisodeStore = (): EpisodeStore => {
           seasonId: episode.seasonId,
           stillPath: episode.stillPath ?? null,
           voteAverage: episode.voteAverage,
-          voteCount: episode.voteCount
+          voteCount: episode.voteCount,
+          airdate: episode.airdate ?? null
         }));
 
         console.log(`Episodes successfully fetched for Season Id ${seasonID}:  `, episodes.value[seasonID]);
