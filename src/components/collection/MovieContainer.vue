@@ -205,14 +205,33 @@
     { immediate: true }
   );
 
-  const playVideo = async () => {
+    const playVideo = async () => {
     try {
+      // Ensure movieId is a valid number
+      if (typeof props.mediaId !== 'number' || isNaN(props.mediaId)) {
+        throw new Error("Invalid movie ID");
+      }
+      console.log("Requesting video for movie ID:", props.mediaId);
+
       const response = await getService.getVideoID(Number(props.mediaId));
       const videoId = response.data;
-      if (!videoId || videoId < 0) throw new Error('Invalid video ID received');
-      await getService.getVideoStream(videoId);
+      if (!videoId || videoId < 0) {
+        throw new Error("Invalid video ID received");
+      }
+
+      // Create iframe, use it to launch the protocol handler, then remove it
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      iframe.src = `nostromoshim://play/${videoId}`;
+
+      // Remove the iframe after a short delay
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+      }, 100);
+
     } catch (err) {
-      console.error('Failed to play video:', err);
+      console.error("Failed to play video:", err);
     }
   };
 
