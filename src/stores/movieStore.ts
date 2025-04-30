@@ -11,6 +11,7 @@ interface ApiMovie {
   runtime?: string | null;
   backdropPath?: string | null;
   isInCollection?: boolean;
+  certification?: string | null;
 }
 
 export const useMovieStore = (): MovieStore => {
@@ -65,6 +66,7 @@ export const useMovieStore = (): MovieStore => {
           releaseDate: movie.releaseDate ?? null,
           runtime: movie.runtime ?? null,
           backdropPath: movie.backdropPath ?? null,
+          certification: movie.certification ?? null
         }));
 
   
@@ -110,6 +112,7 @@ export const useMovieStore = (): MovieStore => {
           releaseDate: movie.releaseDate ?? null,
           runtime: movie.runtime ?? null,
           backdropPath: movie.backdropPath ?? null,
+          certification: movie.certification ?? null
         }));
 
       lastFetched.value = Date.now();
@@ -147,6 +150,7 @@ export const useMovieStore = (): MovieStore => {
         releaseDate: movie.releaseDate ?? "Unknown release date",
         runtime: movie.runtime ?? "Unknown runtime",
         backdropPath: movie.backdropPath ?? null,
+        certification: movie.certification ?? null
       }));
 
       console.log("Movies successfully fetched:", movies.value);
