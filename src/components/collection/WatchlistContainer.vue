@@ -2,7 +2,12 @@
   <div class="movie-card">
     <router-link :to="to" class="poster-link">
       <div class="poster-container">
-        <img :src="posterImage" alt="Poster" class="poster-image" @error="handleImageError" />
+        <img
+          :src="posterImage"
+          alt="Poster"
+          class="poster-image"
+          @error="handleImageError"
+        />
         <div class="overlay"></div>
       </div>
     </router-link>
@@ -40,9 +45,13 @@
             Are you sure you want to remove {{ title }} from {{ watchlistName }}?
           </v-card-text>
           <v-card-actions class="dark-actions">
-            <v-spacer></v-spacer>
-            <v-btn text @click="showDialog = false" class="dark-cancel">Cancel</v-btn>
-            <v-btn color="error" @click="removeFromWatchlist" class="dark-confirm">Delete</v-btn>
+            <v-spacer />
+            <v-btn text @click="showDialog = false" class="dark-cancel">
+              Cancel
+            </v-btn>
+            <v-btn color="error" @click="removeFromWatchlist" class="dark-confirm">
+              Delete
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -51,116 +60,115 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
-import { onMounted, ref, watch } from 'vue';
-import { getService } from '@/api/GetService';
+import { useRoute } from 'vue-router'
+import { onMounted, ref, watch } from 'vue'
+import { getService } from '@/api/GetService'
 
-const route = useRoute();
-const showDialog = ref(false);
-const darkMode = ref(true);
-const watchlistName = ref('My Watchlist');
+const emit = defineEmits<{
+  removed: void
+}>()
+
+const route = useRoute()
+const showDialog = ref(false)
+const darkMode = ref(true)
+const watchlistName = ref('My Watchlist')
 
 const props = defineProps({
   to: { type: String, required: true },
   mediaId: { type: Number, required: true },
   title: { type: String, required: true },
   mediaType: { type: String, required: true }
-});
+})
 
-const selectedWatchlist = ref<number | null>(null);
-const posterImage = ref('');
+const selectedWatchlist = ref<number | null>(null)
+const posterImage = ref('')
 
-const fetchWatchlistMovies = async () => {
+// Fetch the watchlist name
+async function fetchWatchlist() {
+  const id = Number(route.params.id)
+  if (isNaN(id)) return
+  selectedWatchlist.value = id
+  const res = await fetch(`/api/WatchList/${id}`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('apikey')}` }
+  })
+  if (res.ok) {
+    const data = await res.json()
+    watchlistName.value = data.name
+  }
+}
+
+// Remove either a movie or a TV show
+async function removeFromWatchlist() {
+  if (!selectedWatchlist.value) return
   try {
-    console.log("Received props:", props);
-    const watchlistId = Number(route.params.id);
-    if (isNaN(watchlistId)) return;
-
-    selectedWatchlist.value = watchlistId;
-
-    const res = await fetch(`/api/WatchList/${watchlistId}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('apikey')}`
-      }
-    });
-
-    if (!res.ok) throw new Error('Failed to fetch watchlist details');
-    const data = await res.json();
-    watchlistName.value = data.name;
+    if (props.mediaType === 'movie') {
+      await getService.removeMovieFromWatchlist(
+        selectedWatchlist.value,
+        props.mediaId
+      )
+    } else {
+      await getService.removeTvFromWatchlist(
+        selectedWatchlist.value,
+        props.mediaId
+      )
+    }
+    showDialog.value = false
+    emit('removed')
   } catch (err) {
-    console.error(err);
+    console.error('Error removing item from watchlist:', err)
   }
-};
+}
 
-const removeFromWatchlist = async () => {
-  if (!selectedWatchlist.value) return;
-  try {
-    console.log(props.mediaId)
-    await getService.removeFromWatchlist(selectedWatchlist.value, props.mediaId);
-    showDialog.value = false;
-  } catch (error) {
-    console.error('Error removing from watchlist:', error);
-  }
-};
-
-const fetchPoster = async () => {
-  posterImage.value =
+async function fetchPoster() {
+  let url =
     props.mediaType === 'movie'
       ? `/api/movies/${props.mediaId}/poster`
-      : `/api/tvshow/${props.mediaId}/poster`;
-
+      : `/api/tvshow/${props.mediaId}/poster`
+  posterImage.value = url
   try {
-    const response = await fetch(posterImage.value, { method: 'HEAD' });
-    if (!response.ok) {
-      await getService.getPoster(props.mediaType, props.mediaId);
+    const head = await fetch(url, { method: 'HEAD' })
+    if (!head.ok) {
+      // trigger reload via service
+      await getService.getPoster(props.mediaType, props.mediaId)
       setTimeout(() => {
-        posterImage.value =
-          (props.mediaType === 'movie'
-            ? `/api/movies/${props.mediaId}/poster?reload=`
-            : `/api/tvshow/${props.mediaId}/poster?reload=`) + Date.now();
-      }, 2000);
+        posterImage.value = url + '?reload=' + Date.now()
+      }, 2000)
     }
   } catch {
-    posterImage.value = 'https://placehold.co/300x450?text=No+Poster';
+    posterImage.value = 'https://placehold.co/300x450?text=No+Poster'
   }
-};
+}
+
+const playVideo = async () => {
+  try {
+    const res = await getService.getVideoID(props.mediaId)
+    const videoId = res.data
+    if (videoId == null || videoId < 0) throw new Error('Bad video ID')
+    const stream = await getService.getVideoStream(videoId)
+    console.log('Stream URL:', stream.data)
+    // … open player …
+  } catch (err) {
+    console.error('Failed to play video:', err)
+  }
+}
+
+const handleImageError = (e: Event) => {
+  ;(e.target as HTMLImageElement).src =
+    'https://placehold.co/300x450?text=No+Poster'
+}
+
+onMounted(() => {
+  fetchWatchlist()
+  fetchPoster()
+})
 
 watch(
   () => [props.mediaId, props.mediaType],
   () => {
-    fetchPoster();
+    fetchPoster()
   },
   { immediate: true }
-);
-
-const playVideo = async () => {
-  try {
-    if (typeof props.mediaId !== 'number' || isNaN(props.mediaId)) {
-      throw new Error('Invalid movie ID');
-    }
-
-    const response = await getService.getVideoID(props.mediaId);
-    const videoId = response.data;
-
-    if (!videoId || videoId < 0) {
-      throw new Error('Invalid video ID received');
-    }
-
-    const streamUrl = await getService.getVideoStream(videoId);
-    // Handle playing the video using streamUrl
-  } catch (err) {
-    console.error('Failed to play video:', err);
-  }
-};
-
-const handleImageError = (e: Event) => {
-  (e.target as HTMLImageElement).src = 'https://placehold.co/300x450?text=No+Poster';
-};
-
-onMounted(() => {
-  fetchWatchlistMovies();
-  fetchPoster();
-});
+)
 </script>
 
 <style scoped>
@@ -169,20 +177,17 @@ onMounted(() => {
   flex-direction: column;
   width: 100%;
 }
-
 .poster-link {
   display: block;
   text-decoration: none;
   position: relative;
 }
-
 .poster-container {
   position: relative;
   width: 100%;
   padding-top: 150%;
   overflow: hidden;
 }
-
 .poster-image {
   position: absolute;
   top: 0;
@@ -192,11 +197,9 @@ onMounted(() => {
   object-fit: cover;
   transition: transform 0.3s ease;
 }
-
 .poster-link:hover .poster-image {
   transform: scale(1.05);
 }
-
 .overlay {
   position: absolute;
   bottom: 0;
@@ -205,14 +208,12 @@ onMounted(() => {
   background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
   padding: 16px;
 }
-
 .button-stack {
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin-top: 8px;
 }
-
 .action-button {
   margin: 0 !important;
 }

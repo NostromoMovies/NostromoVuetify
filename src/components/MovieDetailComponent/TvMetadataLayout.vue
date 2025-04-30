@@ -2,15 +2,15 @@
   <div class="background-container" :style="backgroundStyle">
     <div class="overlay"></div>
     <div class="movie-title-box">
-      <h1>{{ selectedMedia?.title || selectedMedia?.originalName || selectedMedia?.episodeName|| "Loading..." }}</h1>
+      <h1>{{selectedMedia?.originalName || selectedMedia?.episodeName|| "Loading..." }}</h1>
     </div>
 
     <v-container class="custom-container" fluid>
       <v-row>
         <v-col cols="12" md="4">
           <v-card outlined class="movie-poster">
-            <v-img v-if="selectedMedia?.posterPath"
-                   :src="`https://image.tmdb.org/t/p/w500${selectedMedia.posterPath}`"
+            <v-img v-if="selectedMedia?.posterPath || selectedMedia?.stillPath"
+                   :src="`https://image.tmdb.org/t/p/w500${selectedMedia.posterPath ?? selectedMedia.stillPath}`"
                    alt="Movie Poster"
                    aspect-ratio="2/3" />
             <p v-else>No Poster Available</p>
@@ -151,7 +151,6 @@ export default {
     const mediaType = ref("");
     const seasonId = ref("");
     const episodeId = ref("");
-    const movieStore = useMovieStore();
     const tvStore = useTvStore();
     const seasonStore = useSeasonStore();
     const episodeStore = useEpisodeStore();
@@ -196,9 +195,10 @@ export default {
 
     onMounted(async () => {
       mediaType.value = route.params.episodeID ? MediaTypes.Episode : MediaTypes.Tv;
-      const mediaId = Number(route.params.id);
+
 
       if (mediaType.value === MediaTypes.Tv) {
+        const mediaId = Number(route.params.id);
         await tvStore.fetchTvShows();
         selectedMedia.value = tvStore.getTvShowById(mediaId) || null;
 
@@ -229,15 +229,17 @@ export default {
         try { selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value); } catch { }
         try { selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value); } catch { }
         try { await tvStore.getTvRecommendation(mediaId); } catch { }
-      } else {
+      }
+
+      else if (mediaType.value === MediaTypes.Episode){
         seasonId.value = route.params.seasonID as string;
         episodeId.value = route.params.episodeID as string;
-
+        //console.log(`Season: ${seasonId.value}    Episode: ${episodeId.value}`)
         await episodeStore.fetchEpisodesBySeasonId(Number(seasonId.value));
         selectedMedia.value = await episodeStore.getEpisodeById(Number(seasonId.value), Number(episodeId.value));
 
         try { selectedCast.value = await castStore.fetchCastByMediaId(Number(episodeId.value), mediaType.value); } catch { }
-        try { selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value); } catch { }
+        try { selectedCrew.value = await crewStore.fetchCrewByMediaId(Number(episodeId.value), mediaType.value); } catch { }
       }
     });
 
