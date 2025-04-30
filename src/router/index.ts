@@ -50,6 +50,13 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
+      path: "/season/:seasonID/episode/:episodeID",
+      name: "EpisodeDetails",
+      component: () => import("@/components/MovieDetailComponent/TvMetadataLayout.vue"),
+      props: true,
+      meta: { requiresAuth: true },
+    },
+    {
       path: "/profiles",
       name: "Profiles",
       component: () => import("@/components/profile/Profiles.vue"),
@@ -68,7 +75,7 @@ const router = createRouter({
       name: 'MatchUnrecognizedMovies',
       component: MatchUnrecognizedMovies,
       meta: { requiresAuth: true }, // Adjust if needed
-    },  
+    },
     {
       path: '/settings',
       name: 'Settings',

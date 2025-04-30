@@ -57,7 +57,7 @@ export const useEpisodeStore = (): EpisodeStore => {
     return episodes.value[seasonID]
   };
 
-  const getEpisodeById = async (seasonID: number, episodeID: number) => {
+  const getEpisodeById = async (seasonID: number, episodeID: number): Promise<Episode | null> => {
     const episodeArr = await fetchEpisodesBySeasonId(seasonID);
     return episodeArr.find(episode => episode.episodeID == episodeID) || null;
   };

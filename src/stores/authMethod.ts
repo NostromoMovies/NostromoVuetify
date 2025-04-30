@@ -39,7 +39,7 @@ export const useLoginStore = () => {
       console.log("Token stored in authStore and localStorage:", token);
 
       message.value = 'Login successful!';
-      router.push('/dashboard');
+      router.push('/profiles');
     } catch (error: unknown) {
       console.error('Login error:', error);
 
