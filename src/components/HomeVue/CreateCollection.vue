@@ -1,9 +1,13 @@
 <template>
+
   <v-dialog v-model="dialog" max-width="500">
     <template #activator="{ props }">
-      <v-btn v-bind="props" color="primary" class="ma-2">
-        Create Collection
-      </v-btn>
+      <div class="d-flex flex-column align-center mt-4">
+        <v-card-title >Create Collection</v-card-title>
+        <v-btn v-bind="props" color="primary" class="ma-2">
+          + Collection
+        </v-btn>
+      </div>
     </template>
 
     <v-card :theme="darkMode ? 'dark' : 'light'">

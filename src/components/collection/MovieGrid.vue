@@ -4,15 +4,18 @@
     <div v-else-if="error" class="error">{{ error }}</div>
     <div v-else>
       <div class="movie-grid">
-        <MovieContainer v-for="media in paginatedMedia"
-                        :key="`${media.mediaType}-${getMediaId(media)}`"
-                        :to="`/${media.mediaType}/${getMediaId(media)}`"
-                        :mediaId="getMediaId(media)"
-                        :title="media.title"
-                        :posterPath="media.posterPath ?? null"
-                        :mediaType="media.mediaType"
-                        :isInCollection="media.isInCollection || false"
-                        :collectionId="media.collectionId" />
+        <MovieContainer 
+  v-for="media in paginatedMedia"
+  :key="`${media.mediaType}-${getMediaId(media)}`"
+  :to="`/${media.mediaType}/${getMediaId(media)}`"
+  :mediaId="getMediaId(media)"
+  :title="media.title"
+  :posterPath="media.posterPath ?? null"
+  :mediaType="media.mediaType"
+  :isInCollection="media.isInCollection || false"
+  :collectionId="media.collectionId"
+  @refresh="handleRefresh" 
+/>
       </div>
 
       <!-- Pagination Controls -->
@@ -39,7 +42,7 @@
       </div>
 
       <!-- Infinite scroll observer -->
-      <div v-if="infiniteScrollEnabled" ref="observerElement" class="observer-element"></div>
+     
     </div>
   </div>
 </template>
@@ -76,7 +79,7 @@ const props = defineProps({
   const loading = ref(true);
   const error = ref<string | null>(null);
   const currentPage = ref(1);
-  const itemsPerPage = 32;
+  const itemsPerPage = 24;
   const observerElement = ref<HTMLElement | null>(null);
   const infiniteScrollEnabled = ref(false);
 
@@ -93,15 +96,23 @@ const props = defineProps({
     ?? m.id
     ?? null;
 
-  useIntersectionObserver(
-    observerElement,
-    ([{ isIntersecting }]) => {
-      if (isIntersecting && infiniteScrollEnabled.value && currentPage.value < totalPages.value) {
-        currentPage.value += 1;
-      }
-    },
-    { threshold: 0.1 }
-  );
+    const handleRefresh = async () => {
+  loading.value = true;
+  try {
+    // Refresh all relevant data
+    const promises = [loadMovies(), loadShows()];
+    
+    if (collectionStore) {
+      promises.push(collectionStore.fetchCollections());
+    }
+    
+    await Promise.all(promises);
+  } catch (e) {
+    error.value = `Failed to refresh data: ${(e as Error).message}`;
+  } finally {
+    loading.value = false;
+  }
+};
 
   const filteredMovies = computed(() => {
     return [...(movieStore?.filterMovies?.value ?? [])]
@@ -146,9 +157,8 @@ const props = defineProps({
 // ... (other reactive variables remain the same)
 
 const combinedMedia = computed(() => {
-  // Show both if none are selected or if both are selected
   const showBoth = props.selectedMedia.length === 0 || 
-                  (props.selectedMedia.includes('movie') && props.selectedMedia.includes('tv'));
+                 (props.selectedMedia.includes('movie') && props.selectedMedia.includes('tv'));
   
   const includeMovies = showBoth || props.selectedMedia.includes('movie');
   const includeShows = showBoth || props.selectedMedia.includes('tv');
@@ -165,20 +175,22 @@ const combinedMedia = computed(() => {
   }
 
   if (includeCollections) {
-    results = results.filter(m =>
+    // Filter out items that are already in collections
+    results = results.filter(m => 
       m.mediaType === 'collection' ? true : !m.isInCollection
     );
+    // Add collection items
     results = results.concat(filteredCollections.value);
   }
 
   return results.sort((a, b) => a.order - b.order);
 });
 
-  const paginatedMedia = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return combinedMedia.value.slice(0, end);
-  });
+const paginatedMedia = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return combinedMedia.value.slice(start, end);
+});
 
   const totalPages = computed(() => {
     return Math.ceil(combinedMedia.value.length / itemsPerPage);
@@ -202,55 +214,55 @@ const combinedMedia = computed(() => {
   });
 
   const loadMovies = async () => {
-    if (!movieStore) {
-      console.error("MovieStore is not provided.");
-      return;
-    }
+  if (!movieStore) {
+    console.error("MovieStore is not provided.");
+    return;
+  }
 
-    try {
-      loading.value = true;
-      currentPage.value = 1;
-      
-      await movieStore.fetchFilterMovies(
-        false,
-        props.search ?? "",
-        props.runtime ?? null,
-        props.filterOrder ?? null,
-        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
-        props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
-        props.selectedGenres.map(String) ?? null
-      );
-    } catch (e) {
-      error.value = `Failed to load movies: ${(e as Error).message}`;
-    } finally {
-      loading.value = false;
-    }
-  };
+  try {
+    loading.value = true;
+    currentPage.value = 1; // Reset to first page
+    
+    await movieStore.fetchFilterMovies(
+      false,
+      props.search ?? "",
+      props.runtime ?? null,
+      props.filterOrder ?? null,
+      props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+      props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
+      props.selectedGenres.map(String) ?? null
+    );
+  } catch (e) {
+    error.value = `Failed to load movies: ${(e as Error).message}`;
+  } finally {
+    loading.value = false;
+  }
+};
 
-  const loadShows = async () => {
-    if (!tvStore) {
-      console.error("TvStore is not provided.");
-      return;
-    }
+const loadShows = async () => {
+  if (!tvStore) {
+    console.error("TvStore is not provided.");
+    return;
+  }
 
-    try {
-      loading.value = true;
-      currentPage.value = 1;
-      
-      await tvStore.fetchFilterShows(
-        false,
-        props.search ?? "",
-        props.filterOrder ?? null,
-        props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
-        props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
-        props.selectedGenres.map(String) ?? null
-      );
-    } catch (e) {
-      error.value = `Failed to load Tv Shows: ${(e as Error).message}`;
-    } finally {
-      loading.value = false;
-    }
-  };
+  try {
+    loading.value = true;
+    currentPage.value = 1; // Reset to first page
+    
+    await tvStore.fetchFilterShows(
+      false,
+      props.search ?? "",
+      props.filterOrder ?? null,
+      props.yearRange?.length ? Number(props.yearRange[0]) : 1900,
+      props.yearRange?.length ? Number(props.yearRange[1]) : 2100,
+      props.selectedGenres.map(String) ?? null
+    );
+  } catch (e) {
+    error.value = `Failed to load Tv Shows: ${(e as Error).message}`;
+  } finally {
+    loading.value = false;
+  }
+};
 
   const nextPage = () => {
     if (currentPage.value < totalPages.value) {

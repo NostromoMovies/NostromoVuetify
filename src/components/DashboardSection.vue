@@ -9,11 +9,11 @@
 
       <div class="rectangle">
         <div>
-          <h1>Organizer</h1>
+          <h1>Watchlists</h1>
 
         </div>
         <CreateList></CreateList>
-        <CreateCollection></CreateCollection>
+
       </div>
 
       <div class="rectangle">
@@ -41,19 +41,21 @@ import CreateCollection from './HomeVue/CreateCollection.vue'
 .parent {
   margin-top: 50px;
   padding: 20px;
-  height: 100vh;
+  /* Remove height: 100vh - this was preventing bottom space */
+  min-height: 100vh; /* Allows content to expand beyond viewport */
   width: 100vw;
+  padding-bottom: 80px; /* Add your desired bottom gap */
 }
 
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-auto-rows: 600px;
+  grid-auto-rows: minmax(600px, auto); /* Allows rows to grow taller */
   padding-top: 15px;
-  padding-bottom: 15px;
   gap: 20px;
   max-width: 1600px;
   margin: 0 auto;
+  margin-bottom: 40px; /* Extra bottom space */
 }
 
 .rectangle {
@@ -62,10 +64,10 @@ import CreateCollection from './HomeVue/CreateCollection.vue'
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  height: 600px;
+  min-height: 600px; /* Changed from fixed height */
   position: relative;
   display: flex;
   flex-direction: column;
-  overflow-y: auto;
+  /* Remove overflow-y: auto if you want page to scroll instead */
 }
 </style>

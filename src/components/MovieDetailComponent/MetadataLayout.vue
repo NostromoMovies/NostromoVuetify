@@ -19,7 +19,48 @@
 
         <v-col cols="12" md="6">
           <v-card outlined class="metadata-card">
-            <v-card-text v-html="metadataBoxes"></v-card-text>
+            <v-card-text>
+              <div>
+                <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong>
+                <div>{{ selectedMovie?.overview ?? "N/A" }}</div><br>
+
+                <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong>
+                <div>
+                  {{
+        selectedMovie?.releaseDate
+          ? new Date(selectedMovie.releaseDate).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric"
+            })
+          : "Unknown"
+                  }}
+                </div><br>
+
+                <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong>
+                <div>
+                  {{
+        selectedMovie?.runtime
+          ? Math.floor(Number(selectedMovie.runtime) / 60) + "h " + (Number(selectedMovie.runtime) % 60) + "m"
+          : "Unknown"
+                  }}
+                </div><br>
+
+                <strong style="font-size: 20px; display: block; margin-bottom: 5px;"></strong>
+                <div class="mt-2">
+                  <v-chip v-if="selectedMovie?.certification"
+                          :color="getRatingColor(selectedMovie.certification)"
+                          text-color="white"
+                          small
+                          label>
+                    {{ selectedMovie.certification }}
+                  </v-chip>
+                  <v-chip v-else color="grey" text-color="white" small label>
+                    NR
+                  </v-chip>
+                </div>
+              </div>
+            </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -166,7 +207,8 @@ export default {
             releaseDate: movie.releaseDate,
             runtime: movie.runtime,
             posterPath: movie.posterPath,
-            backdropPath: movie.backdropPath
+            backdropPath: movie.backdropPath,
+            certification: movie.certification
           };
         } catch (err) {
           console.error('Failed to fetch movie metadata:', err);
@@ -197,16 +239,22 @@ export default {
       if (!selectedMovie.value) return "Loading movie details...";
 
       return `
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMovie.value.releaseDate
-          ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMovie.value.overview ?? "N/A"} <br><br>
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMovie.value.releaseDate
+          ? new Date(selectedMovie.value.releaseDate).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+          })
           : "Unknown"
         } <br><br>
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMovie.value.runtime
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMovie.value.runtime
           ? `${Math.floor(Number(selectedMovie.value.runtime) / 60)}h ${Number(selectedMovie.value.runtime) % 60}m`
           : "Unknown"
+        } <br><br>
+  ${selectedMovie.value.certification ?? "Not Rated"
         }
-      `;
+  `;
     });
 
     const backgroundStyle = computed(() => ({
@@ -246,6 +294,17 @@ export default {
       }));
     });
 
+    const getRatingColor = (cert: string) => {
+      switch (cert) {
+        case "G": return "green";
+        case "PG": return "blue";
+        case "PG-13": return "orange";
+        case "R": return "red";
+        case "NC-17": return "purple";
+        default: return "grey";
+      }
+    };
+
     return {
       selectedMovie,
       metadataBoxes,
@@ -253,13 +312,96 @@ export default {
       actors,
       crewMembers,
       showCrews,
-      movieRecommendation
+      movieRecommendation,
+      getRatingColor
     };
   }
 };
 </script>
 
+
+
 <style scoped>
+/* Full page coverage with no gaps */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.background-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0; /* Remove padding to eliminate gaps */
+}
+
+/* Dark overlay for better readability
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+} */
+
+.custom-container {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 50px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 20px 0; /* Adjust margin instead of padding */
+}
+
+/* Dark scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #1a1a1a;
+}
+
+/* Rest of your existing styles... */
+.movie-title-box {
+  position: relative;
+  z-index: 2;
+  background-color: rgb(34, 34, 34);
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: fit-content;
+  margin: 40px auto 20px;
+}
 .background-container {
   position: relative;
   width: 100vw;

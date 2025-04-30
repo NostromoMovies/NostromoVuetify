@@ -25,67 +25,62 @@
         </v-col>
       </v-row>
 
-      <v-select
-            v-if="isTv"
-            v-model="selectedSeason"
-            :items="seasonDropdown"
-            item-title="name"
-            item-value="id"
-            label="Select a Season"
-            outlined
-            dense
-            class="w-33 mt-4"
-
-          />
+      <v-select v-if="isTv"
+                v-model="selectedSeason"
+                :items="seasonDropdown"
+                item-title="name"
+                item-value="id"
+                label="Select a Season"
+                outlined
+                dense
+                class="w-33 mt-4" />
 
       <v-container class="episode-container" fluid
-        v-if="isTv">
+                   v-if="isTv">
         <v-row>
           <v-col cols="12" md="12" lg="12" class="mt-4">
             <v-card outlined class="Episode-card pa-4 rounded-lg"
-              style="height: 513px; background-color: rgb(34,34,34);">
-              <div :class="episodes.length > 3 ? 'episode-scroll-snap' : 'episode-no-scroll'" >
-                <v-card
-                v-for="episode in episodes"
-                :key="episode.id"
-                :to="`/season/${selectedSeason}/episode/${episode.id}`"
-                outlined class="Episode-card pa-2 d-flex align-start rounded-lg mb-4 snap-card"
-                style="height: 150px; background-color: #4f4f4f;">
+                    style="height: 513px; background-color: rgb(34,34,34);">
+              <div :class="episodes.length > 3 ? 'episode-scroll-snap' : 'episode-no-scroll'">
+                <v-card v-for="episode in episodes"
+                        :key="episode.id"
+                        :to="`/season/${selectedSeason}/episode/${episode.id}`"
+                        outlined class="Episode-card pa-2 d-flex align-start rounded-lg mb-4 snap-card"
+                        style="height: 150px; background-color: #4f4f4f;">
 
-                    <v-img
-                      :src="episode.stillPath"
-                      height = 160px
-                      max-width = 200px
-                      min-width= 200px
-                      class="mr-4 rounded"
-                      cover
-                    />
+                  <v-img :src="episode.stillPath"
+                         height=160px
+                         max-width=200px
+                         min-width=200px
+                         class="mr-4 rounded"
+                         cover />
 
-                    <v-col class="flex-grow-1 pa-0 text-left" style="min-width: 0;">
-                      <v-card-title class="text-white text-h6 font-weight-bold py-1">
-                        {{episode.name}}
-                      </v-card-title>
+                  <v-col class="flex-grow-1 pa-0 text-left" style="min-width: 0;">
+                    <v-card-title class="text-white text-h6 font-weight-bold py-1">
+                      {{episode.name}}
+                    </v-card-title>
 
-                      <v-card-subtitle
-                        class="text-white text-caption py-0"
-                        style="height: 7em; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">
-                        {{ episode.description }}
-                      </v-card-subtitle>
-                    </v-col>
+                    <v-card-subtitle class="text-white text-caption py-0"
+                                     style="height: 7em; overflow: hidden; text-overflow: ellipsis; white-space: normal; display: block;">
+                      <div>{{ episode.description }}</div>
+                      <div v-if="episode.runtime" style="font-size: 0.75rem; opacity: 0.7;">
+                        {{ episode.runtime }}m
+                      </div>
+                    </v-card-subtitle>
+                  </v-col>
 
-                    <v-col class="shrink mt-4 d-flex justify-end" cols="auto">
-                      <v-btn icon variant="elevated">
-                        <v-icon>mdi-play</v-icon>
-                      </v-btn>
-                    </v-col>
-                  <!-- </v-list-item> -->
+                  <v-col class="shrink mt-4 d-flex justify-end" cols="auto">
+                    <v-btn icon variant="elevated">
+                      <v-icon>mdi-play</v-icon>
+                    </v-btn>
+                  </v-col>
                 </v-card>
               </div>
             </v-card>
           </v-col>
         </v-row>
       </v-container>
-      <v-row class="actor-container"  >
+      <v-row class="actor-container">
         <v-col cols="12">
           <div class="actor-row">
             <div class="actor-col" v-for="(actor, index) in actors.slice(0, 10)" :key="actor.id">
@@ -182,75 +177,67 @@ export default {
       "Sound Designer": 10
     };
 
-    onMounted(async () => {
-
-      console.log("Fetched season names: ", seasonDropdown.value);
-      const mediaId = route.params.id as string;
-      mediaType.value = MediaTypes.Tv;
-
-     if(mediaType.value === MediaTypes.Tv){
-        const seasonArr = await seasonStore.fetchSeasonsByTvShowId(Number(mediaId));
-        seasonDropdown.value = seasonArr.sort((a, b) => a.seasonNumber - b.seasonNumber)
-                                    .map(season => ({
-                                      id: season.seasonID,
-                                      name: season.seasonName ?? `Season ${season.seasonNumber}`,
-                                      number: season.seasonNumber
-                                    }));
-
-        if(selectedSeason.value){
-          fetchEpisodes(selectedSeason.value);
-        }
-
-        await tvStore.fetchTvShows();
-        selectedMedia.value = tvStore.getTvShowById?.(mediaId) || null;
-
-        try {
-          selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch cast for ID:", mediaId, error);
-        }
-
-        try {
-          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch crew for ID:", mediaId, error);
-        }
-
-        try{
-          await tvStore.getTvRecommendation(mediaId);
-        }
-        catch (error) {
-          console.error("Could not tv show recommendations for ID:", mediaId, error);
+    watch(episodes, newEpisodes => {
+      if (
+        mediaType.value === MediaTypes.Tv &&
+        newEpisodes.length &&
+        selectedMedia.value &&
+        selectedMedia.value.runtime == null
+      ) {
+        const runtime = Number(newEpisodes[0].runtime) || 0;
+        if (runtime > 0) {
+          selectedMedia.value = { ...selectedMedia.value, runtime };
         }
       }
-      else if(mediaType.value === MediaTypes.Episode){
+    });
+
+    onMounted(async () => {
+      mediaType.value = route.params.episodeID ? MediaTypes.Episode : MediaTypes.Tv;
+      const mediaId = Number(route.params.id);
+
+      if (mediaType.value === MediaTypes.Tv) {
+        await tvStore.fetchTvShows();
+        selectedMedia.value = tvStore.getTvShowById(mediaId) || null;
+
+        const seasons = await seasonStore.fetchSeasonsByTvShowId(mediaId);
+        seasonDropdown.value = seasons
+          .sort((a, b) => a.seasonNumber - b.seasonNumber)
+          .map(s => ({
+            id: s.seasonID,
+            name: s.seasonName ?? `Season ${s.seasonNumber}`,
+            number: s.seasonNumber
+          }));
+
+        if (selectedMedia.value && seasons.length) {
+          const eps = await episodeStore.fetchEpisodesBySeasonId(seasons[0].seasonID);
+
+          const rawRuntime = eps[0]?.runtime;
+          const runtime = Number(rawRuntime);
+
+          console.log("episode runtime:", rawRuntime);
+
+          if (runtime > 0) {
+            selectedMedia.value = { ...selectedMedia.value, runtime };
+          }
+        }
+
+        if (selectedSeason.value) fetchEpisodes(selectedSeason.value);
+
+        try { selectedCast.value = await castStore.fetchCastByMediaId(mediaId, mediaType.value); } catch { }
+        try { selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value); } catch { }
+        try { await tvStore.getTvRecommendation(mediaId); } catch { }
+      } else {
         seasonId.value = route.params.seasonID as string;
         episodeId.value = route.params.episodeID as string;
 
         await episodeStore.fetchEpisodesBySeasonId(Number(seasonId.value));
-        selectedMedia.value = episodeStore.getEpisodeById?.(Number(seasonId.value), Number(episodeId.value)) || null;
+        selectedMedia.value = await episodeStore.getEpisodeById(Number(seasonId.value), Number(episodeId.value));
 
-        try {
-          selectedCast.value = await castStore.fetchCastByMediaId(Number(episodeId.value), mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch cast for ID:", mediaId, error);
-        }
-
-        try {
-          selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value);
-        }
-        catch (error) {
-          console.error("Could not fetch crew for ID:", mediaId, error);
-        }
+        try { selectedCast.value = await castStore.fetchCastByMediaId(Number(episodeId.value), mediaType.value); } catch { }
+        try { selectedCrew.value = await crewStore.fetchCrewByMediaId(mediaId, mediaType.value); } catch { }
       }
-
-
-
-
     });
+
 
     watch(seasonDropdown, (newValue) => {
       if(newValue.length && !selectedSeason.value){
@@ -271,25 +258,51 @@ export default {
                             id: episode.episodeID,
                             name: `${episode.episodeNumber}: ${episode.episodeName}`,
                             description: episode.overview ?? "",
-                            stillPath: episode.stillPath ? `https://image.tmdb.org/t/p/w500${episode.stillPath}` : null
+                            runtime: episode.runtime,
+                            stillPath: episode.stillPath ? `https://image.tmdb.org/t/p/w500${episode.stillPath}` : null,
+                            airdate: episode.airdate ?? null
                           }))
+      console.log("SelectedMedia:", selectedMedia.value);
     }
     const metadataBoxes = computed(() => {
-      if (!selectedMedia.value) return "Loading movie details...";
+      if (!selectedMedia.value) return "Loading details...";
+
+      const media = selectedMedia.value;
+      const isEpisode = media.episodeID !== undefined;
+
+      const runtimeMinutes = Number(media.runtime);
+      let runtimeString = "Unknown";
+
+      if (runtimeMinutes > 0) {
+        if (runtimeMinutes >= 60) {
+          const hours = Math.floor(runtimeMinutes / 60);
+          const minutes = runtimeMinutes % 60;
+          runtimeString = `${hours}h ${minutes}m`;
+        } else {
+          runtimeString = `${runtimeMinutes}m`;
+        }
+      }
+
+      const overview = media.overview ?? "N/A";
+
+      let firstAirYear = "Unknown";
+      if (episodes.value.length > 0 && episodes.value[0].airdate) {
+        const airDate = new Date(episodes.value[0].airdate);
+        if (!isNaN(airDate.getTime())) {
+          firstAirYear = airDate.getFullYear().toString();
+        }
+      }
 
       return `
-         <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong> ${selectedMedia.value.overview ?? "N/A"} <br><br>
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Overview:</strong>
+    ${overview} <br><br>
 
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Date:</strong> ${selectedMedia.value.releaseDate
-          ? new Date(selectedMedia.value.releaseDate).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
-          : "Unknown"
-        } <br><br>
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Release Year:</strong>
+    ${firstAirYear} <br><br>
 
-        <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong> ${selectedMedia.value.runtime
-          ? `${Math.floor(Number(selectedMedia.value.runtime) / 60)}h ${Number(selectedMedia.value.runtime) % 60}m`
-          : "Unknown"
-        }
-      `;
+    <strong style="font-size: 20px; display: block; margin-bottom: 5px;">Runtime:</strong>
+    ${runtimeString}
+  `;
     });
 
     const backgroundStyle = computed(() => ({
@@ -338,119 +351,118 @@ export default {
 </script>
 
 <style scoped>
-.background-container {
-  position: relative;
-  width: 100vw;
-  min-height: 100vh;
-  background-size: cover;
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
+  .background-container {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
 
-.title-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-}
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
 
-.custom-container {
-  position: relative;
-  z-index: 2;
-  background: rgba(0, 0, 0, 0.7);
-  padding: 50px;
-  padding-bottom: 80px;
-  border-radius: 10px;
-  height: 100%;
-  width: 100%;
-  max-width: 1400px;
-}
+  .custom-container {
+    position: relative;
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 50px;
+    padding-bottom: 80px;
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    max-width: 1400px;
+  }
 
-.movie-title-box {
-  position: relative;
-  z-index: 2;
-  background-color: rgb(34, 34, 34);
-  color: #fff;
-  padding: 15px 20px;
-  border-radius: 8px;
-  text-align: center;
-  width: fit-content;
-  margin: 40px auto 20px;
-}
+  .movie-title-box {
+    position: relative;
+    z-index: 2;
+    background-color: rgb(34, 34, 34);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+    margin: 40px auto 20px;
+  }
 
-.crew-container, .actor-container {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding-top: 10px;
-  word-wrap: break-word;
-}
+  .crew-container, .actor-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-top: 10px;
+    word-wrap: break-word;
+  }
 
-.crew-row, .actor-row {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
-}
+  .crew-row, .actor-row {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 15px;
+  }
 
-.crew-card, .actor-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  background-color: rgb(44, 44, 44);
-  color: #fff;
-  text-align: center;
-  padding: 10px;
-  background-color: transparent !important;
-  box-shadow: none !important;
-  min-height: 270px;
-  width: 200px;
-  word-wrap: break-word;
-  overflow: hidden;
-}
+  .crew-card, .actor-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(44, 44, 44);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    min-height: 270px;
+    width: 200px;
+    word-wrap: break-word;
+    overflow: hidden;
+  }
 
-.text-center{
-  word-wrap: break-word;
-}
+  .text-center {
+    word-wrap: break-word;
+  }
 
-.title-row{
-  padding: 20px;
-}
+  .title-row {
+    padding: 20px;
+  }
 
-.see-more-btn {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 3;
-  background-color: rgb(34,34,34);
-  color: white;
-}
+  .see-more-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 3;
+    background-color: rgb(34,34,34);
+    color: white;
+  }
 
-.metadata-card {
-  background-color: rgb(34,34,34);
-  color: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-}
+  .metadata-card {
+    background-color: rgb(34,34,34);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
-.episode-scroll-snap {
-  height: 486px;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scroll-padding-top: 0;
-  padding-right: 6px;
-}
+  .episode-scroll-snap {
+    height: 486px;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+    padding-right: 6px;
+  }
 
-.snap-card {
-  scroll-snap-align: start;
-}
-
+  .snap-card {
+    scroll-snap-align: start;
+  }
 </style>

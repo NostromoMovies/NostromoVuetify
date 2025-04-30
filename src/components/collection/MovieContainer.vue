@@ -19,29 +19,29 @@
         Play
       </v-btn>
 
-      <v-menu v-if="!props.isInCollection">
-        <template #activator="{ props: menuProps }">
-          <v-btn v-bind="menuProps"
-                 color="secondary"
-                 variant="outlined"
-                 block
-                 class="action-button"
-                 prepend-icon="mdi-plus"
-                 :disabled="mediaType === 'collection'">
-            Options
-          </v-btn>
-        </template>
+      <v-menu v-if="!props.isInCollection" dark>
+  <template #activator="{ props: menuProps }">
+    <v-btn v-bind="menuProps"
+           color="secondary"
+           variant="outlined"
+           block
+           class="action-button"
+           prepend-icon="mdi-plus"
+           :disabled="mediaType === 'collection'">
+      Options
+    </v-btn>
+  </template>
 
-        <v-list>
-          <v-list-item @click="startAdd('watchlist')">
-            <v-list-item-title>Add to Watchlist</v-list-item-title>
-          </v-list-item>
+  <v-list bg-color="grey-darken-4">
+    <v-list-item @click="startAdd('watchlist')" class="hover-item">
+      <v-list-item-title>Add to Watchlist</v-list-item-title>
+    </v-list-item>
 
-          <v-list-item @click="handleCollectionAdd">
-            <v-list-item-title>Add to Collection</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
+    <v-list-item @click="handleCollectionAdd" class="hover-item">
+      <v-list-item-title>Add to Collection</v-list-item-title>
+    </v-list-item>
+  </v-list>
+</v-menu>
 
       <v-dialog v-model="showDialog" max-width="500">
         <v-card :theme="darkMode ? 'dark' : 'light'">
@@ -74,7 +74,7 @@
   import { getService } from '@/api/GetService';
   import { useMovieStore } from '@/stores/movieStore';
   const { fetchMovies } = useMovieStore();
-
+  const emit = defineEmits(['refresh']);
   const darkMode = ref(true);
   const showDialog = ref(false);
   const selectedWatchlist = ref(null);
@@ -161,6 +161,9 @@
 
       showDialog.value = false;
       await fetchMovies(true);
+      
+     
+      emit('refresh');
     } catch (error) {
       console.error('Error adding to target:', error);
     }

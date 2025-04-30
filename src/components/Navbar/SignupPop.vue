@@ -45,24 +45,6 @@
                           @click:append-inner="toggleConfirmPasswordVisibility"
                           required></v-text-field>
 
-            <!-- Content Rating Checkboxes -->
-            <div class="mt-4">
-              <div class="d-flex justify-space-between align-center mb-2">
-                <span class="entry-font">Content Ratings</span>
-              </div>
-              
-              <v-checkbox
-                v-model="form.contentRatings"
-                label="content-age"
-                value="Are you over 18"
-                color="green"
-                hide-details
-                density="compact"
-              ></v-checkbox>
-              
-
-            </div>
-
             <v-alert v-if="passwordError" type="error" dense>
               {{ passwordError }}
             </v-alert>
