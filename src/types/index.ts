@@ -197,8 +197,8 @@ export interface ProfileStore{
   profiles: Ref<Profile[]>;
   createProfile: (name: string, age: number) => Promise<Profile>;
   fetchProfiles: () => Promise<Profile[]>;
-  selectProfile: (profileId: number) => Promise<boolean>;
-  deleteProfile: (profileId: number) => Promise<boolean>;
+  selectProfile: (profileId: number) => Promise<void>;
+  deleteProfile: (profileId: number) => Promise<void>;
   updateProfile: (profileId: number, name: string, age: number) => Promise<boolean>;
   currentNumProfiles: number
 }

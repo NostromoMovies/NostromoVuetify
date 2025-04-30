@@ -88,7 +88,10 @@
   const handleLogin = async () => {
     try {
       await login();
+      console.log("Navigating to Profiles...");
+      router.push("/profiles");
       closeModal(); // Close modal on successful login
+
     } catch {
       passwordError.value = 'Login failed. Please check your credentials.';
     }

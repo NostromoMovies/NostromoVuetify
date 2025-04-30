@@ -13,18 +13,16 @@
               >
                 <v-card outlined class="pa-2 text-center" color="#4f4f4f">
 
-                  <v-avatar size="100" rounded="0">
+                  <v-avatar size="100" rounded="0" @click="selectProfile(Number(profile.id))">
                     <v-img :src="profile.posterPath ?? 'https://wallpapers.com/images/high/netflix-profile-pictures-1000-x-1000-dyrp6bw6adbulg5b.webp'" alt="Profile Avatar"/>
                   </v-avatar>
                   <v-card-title>{{ profile.name }}</v-card-title>
                   <v-card-actions class="justify-center">
                     <v-btn color="primary" variant="text" @click="editProfile(profile)">
                       <v-icon start>mdi-pencil</v-icon>
-                      Edit
                     </v-btn>
-                    <v-btn color="error" variant="text" @click="confirmDelete(profile.id)">
+                    <v-btn color="error" variant="text" @click="confirmDelete(Number(profile.id))">
                       <v-icon start>mdi-delete</v-icon>
-                      Delete
                     </v-btn>
                   </v-card-actions>
 
@@ -66,71 +64,95 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-import { ref, onMounted } from 'vue';
-import { useProfileStore } from '@/stores/profileStore';
+  import { useRouter } from 'vue-router';
+  import { ref, onMounted } from 'vue';
+  import { useProfileStore } from '@/stores/profileStore';
+  import type { Profile } from '@/types';
 
-const router = useRouter();
-const profileStore = useProfileStore();
+  const router = useRouter();
+  const profileStore = useProfileStore();
+  const profiles = ref<Profile[]>([]);
+  const dialog = ref(false);
+  const newProfileName = ref('');
+  const newProfileAge = ref<number | null>(null);
+  const showSnackbar =ref(false)
+  const editingProfileId = ref<number | null>(null);
 
-const dialog = ref(false);
-const newProfileName = ref('');
-const newProfileAge = ref<number | null>(null);
-const showSnackbar =ref(false)
-const profiles = ref<{id?: number | null; name: string; age: number; posterPath?: string | null}[]>([]);
+  onMounted(async () => {
+    try{
+      profiles.value = await profileStore.fetchProfiles();
+    }
+    catch (error){
+      console.error('Failed to fetch profiles.', error);
+    }
+  });
 
-onMounted(async () => {
-  try{
-    await profileStore.fetchProfiles();
+  const submitProfile = async () => {
+    if (!newProfileName.value || !newProfileAge.value) {
+      alert('Please enter your name and age.');
+      return
+    }
+    try{
+
+      if(editingProfileId.value !== null){
+        await profileStore.updateProfile(editingProfileId.value, newProfileName.value, newProfileAge.value);
+      }
+      else{
+        await profileStore.createProfile(newProfileName.value, newProfileAge.value);
+      }
+
+
+      newProfileAge.value = null;
+      newProfileName.value = '';
+
+      dialog.value = false;
+      showSnackbar.value = true
+      editingProfileId.value = null;
+    }
+    catch (error){
+      console.error('Failed to create profile:', error);
+      alert('Failed to create profile.');
+    }
   }
-  catch (error){
-    console.error('Failed to fetch profiles.', error);
-  }
-});
 
-const submitProfile = async () => {
-  if (!newProfileName.value || !newProfileAge.value) {
-    alert('Please enter your name and age.');
-    return
-  }
-  try{
-    await profileStore.createProfile(newProfileName.value, newProfileAge.value);
+  const selectProfile = async (profileId: number) => {
+    try {
+      await profileStore.selectProfile(profileId);
+      router.push('/dashboard');
+    }
+    catch (error){
+      console.error('Failed to select profile:', error);
+    }
+  };
 
-    newProfileAge.value = null;
-    newProfileName.value = '';
+  const editProfile = async (profile: Profile) => {
+    newProfileName.value = profile.name;
+    newProfileAge.value = profile.age;
+    editingProfileId.value = profile.id!;
+    dialog.value = true
+  }
 
-    dialog.value = false;
-    showSnackbar.value = true
-  }
-  catch (error){
-    console.error('Failed to create profile:', error);
-    alert('Failed to create profile.');
-  }
-}
+  const confirmDelete = async (profileId: number) => {
+    const confirmed = confirm('Are you sure you want to delete this profile?');
+    if (!confirmed) return;
 
-const selectProfile = async (profileId: number) => {
-  try {
-    await profileStore.selectProfile(profileId);
-    router.push('/dashboard');
-  }
-  catch (error){
-    console.error('Failed to select profile:', error);
-  }
-};
-
-const editProfile = async (profile: Profile) => {
-  newProfileName.value = profile.name;
-  newProfileAge.value = profile.age;
-  
-}
+    try {
+      await profileStore.deleteProfile(profileId);
+      showSnackbar.value = true;
+    }
+    catch (error) {
+      console.error('Failed to delete profile:', error);
+      alert('Delete failed.');
+    }
+  };
 </script>
 
 <style scoped>
-.Profile-container {
-  height: 100vh;
-  margin-left: 50%;
-  margin-right: 20%;
-  align-content: center;
-  overflow: hidden;
-}
+  .Profile-container {
+    height: 100vh;
+    margin-left: 50%;
+    margin-right: 20%;
+    align-content: center;
+    overflow: hidden;
+  }
 </style>

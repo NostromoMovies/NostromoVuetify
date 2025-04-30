@@ -82,6 +82,8 @@
       await login();
       emit("login-success");
       close();
+      router.push("/profiles");
+
     } catch (error) {
       passwordError.value = "Login failed. Please check your credentials.";
     }

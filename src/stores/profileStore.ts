@@ -23,7 +23,6 @@ export const useProfileStore = (): ProfileStore => {
   };
 
   const createProfile = async (name: string, age: number): Promise<Profile> => {
-    currentNumProfiles += 1;
 
     const response = await fetch('/api/profiles/create', {
       method: 'POST',
@@ -34,7 +33,7 @@ export const useProfileStore = (): ProfileStore => {
       body: JSON.stringify({
         name,
         age,
-        posterPath: pictureDict[currentNumProfiles] ?? null
+        posterPath: pictureDict[profiles.value.length + 1] ?? null
       })
     });
 
@@ -69,60 +68,51 @@ export const useProfileStore = (): ProfileStore => {
 
     const data: ApiProfile[] = await response.json();
 
-    profiles.value = data.map(p => ({
-      id: p.id,
-      name: p.name,
-      age: p.age,
-      posterPath: p.posterPath
-    }));
+      const mappedProfiles: Profile[] = data.map(p => ({
+        id: p.id ?? null,
+        name: p.name,
+        age: p.age,
+        posterPath: p.posterPath ?? null
+      }));
 
-    return profiles.value;
+      profiles.value = mappedProfiles;
+
+      return mappedProfiles;
   };
 
-  const selectProfile = async (profileId: number): Promise<boolean> => {
-    const response = await fetch('/api/profiles/selectedProfile', {
+  const selectProfile = async (profileId: number): Promise<void> => {
+    const response = await fetch(`/api/profiles/selectedProfile/${profileId}`, {
       method: 'POST',
       headers: {
          'Authorization': `Bearer ${localStorage.getItem('apikey')}`,
          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        profileID: profileId
-      })
+      }
     });
 
     if (!response.ok){
       throw new Error("Failed to select profile");
-      return false;
     }
 
     const data = await response.json();
 
     console.log("Selected Profile: ", data);
-
-    return true;
   }
 
-  const deleteProfile = async (profileId: number): Promise<boolean> => {
-    const response = await fetch('/api/profiles/delete', {
+  const deleteProfile = async (profileId: number): Promise<void> => {
+    console.log("ProfilId is: ", profileId);
+    const response = await fetch(`/api/profiles/delete/${profileId}`, {
       method: 'DELETE',
       headers: {
          'Authorization': `Bearer ${localStorage.getItem('apikey')}`,
          'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        profileID: profileId
-      })
+      }
     });
 
     if(!response.ok){
       throw new Error("Failed to delete profile");
-      return false;
     }
 
     profiles.value = profiles.value.filter(p => p.id !== profileId);
-
-    return true;
   }
 
   const updateProfile = async (profileId: number, name: string, age: number): Promise<boolean> => {

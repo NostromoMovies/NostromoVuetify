@@ -13,13 +13,16 @@
       <v-list-item @click="goToSettings">
         <v-list-item-title>Settings</v-list-item-title>
       </v-list-item>
+      <v-list-item @click="profilePage">
+        <v-list-item-title>Profiles</v-list-item-title>
+      </v-list-item>
       <v-list-item @click="logout">
         <v-list-item-title>Logout</v-list-item-title>
       </v-list-item>
     </v-list>
     </v-theme-provider>
   </v-menu>
-  
+
 </template>
 
 <script lang="ts">
@@ -47,11 +50,17 @@ export default {
       window.location.reload();
     };
 
+    const profilePage = () => {
+      console.log("Navigating to Profiles...");
+      router.push("/profiles");
+    };
+
     return {
       isDropdownVisible,
-      darkMode, 
+      darkMode,
       goToSettings,
       logout,
+      profilePage
     };
   },
 };

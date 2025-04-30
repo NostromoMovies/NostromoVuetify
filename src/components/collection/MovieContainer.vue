@@ -144,7 +144,13 @@
 
     try {
       if (addMode.value === 'watchlist') {
-        await getService.addMovieToWatchlist(selectedWatchlist.value, props.mediaId);
+        if(props.mediaType === 'movie'){
+          await getService.addMovieToWatchlist(selectedWatchlist.value, props.mediaId);
+        }
+        else if(props.mediaType === 'tv'){
+          await getService.addTvToWatchlist(selectedWatchlist.value, props.mediaId);
+        }
+
       } else {
         if (props.mediaType === 'movie') {
           await getService.addToCollection(selectedWatchlist.value, props.mediaId, undefined);

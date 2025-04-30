@@ -91,8 +91,11 @@ export const getService = {
   addMovieToWatchlist(watchListID: number, movieId: number) {
     return axiosInstance.post(`/api/WatchList/${watchListID}/add/${movieId}`)
   },
+  addTvToWatchlist(watchListID: number, tvId: number) {
+    return axiosInstance.post(`/api/WatchList/tv/${watchListID}/add/${tvId}`)
+  },
   removeFromWatchlist(watchListID: number, movieID: number) {
     return axiosInstance.delete(`/api/WatchList/${watchListID}/remove/${movieID}`);
-  } 
+  }
 
 }
