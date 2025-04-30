@@ -13,7 +13,7 @@ const MatchUnrecognizedMovies = () => import('@/views/MatchUnrecognizedMovies.vu
 const ComprehensiveDashboard = () => import('@/views/ComprehensiveDashboard.vue');
 const Settings = () =>import('@/views/SettingsVue.vue')
 const Watchlist = () => import('@/views/WatchlistVue.vue')
-const CollectionDetail = () => import('@/views/CollectionDetail.vue')
+const CollectionDetail = () => import('@/views/CollectionVuetify.vue')
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -72,12 +72,15 @@ const router = createRouter({
     {
       path: '/watchlist/:id',
       component: () => Watchlist,
-      props: true
+      props: true,
+      meta: { requiresAuth: true }
     },
     {
       path: '/collection/:id',
       name: 'CollectionDetail',
-      component: () => CollectionDetail
+      props:true,
+      component: () => CollectionDetail,
+      meta: { requiresAuth: true }
     },
     {
       path: '/:pathMatch(.*)*',

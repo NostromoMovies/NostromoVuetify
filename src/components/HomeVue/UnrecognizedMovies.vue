@@ -20,13 +20,7 @@
     </v-snackbar>
 
     <!-- Notification for recognized movies -->
-    <v-snackbar v-model="showRecognizedNotification" color="success" :timeout="3000" location="top" @update:modelValue="handleSnackbarClose">
-      <v-icon start>mdi-check-circle</v-icon>
-      Movie recognized successfully!
-      <template v-slot:actions>
-        <v-btn variant="text" @click="showRecognizedNotification = false">Close</v-btn>
-      </template>
-    </v-snackbar>
+
   </v-container>
 </template>
 

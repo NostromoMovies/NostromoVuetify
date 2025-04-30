@@ -1,7 +1,7 @@
 <template>
   <v-container class="page-background d-flex " margin="100px" fluid>
     <v-card class="match-movies" width="90vw" max-width="1400px" margin="50px">
-      <v-card-title class="text-h4 text-center py-4">Unrecognized Movies</v-card-title>
+      <v-card-title class="text-h4 text-center py-4">Unrecognized Media Files</v-card-title>
       <v-divider class="mx-4 mb-4"></v-divider>
       <v-card-text>
         <v-table class="movie-table">

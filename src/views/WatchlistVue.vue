@@ -7,9 +7,6 @@ import Watchlist from '@/components/Watchlist.vue';
 <template>
   <main class="main-container">
     
-    <section class="navbar-section">
-      <!-- <NavBar /> -->
-    </section>
 
     <!-- Collection Section -->
     <section class="collection-section">
@@ -32,11 +29,10 @@ import Watchlist from '@/components/Watchlist.vue';
   position: relative; /* Use relative unless you specifically need fixed */
 }
 
-.navbar-section {
-  width: 100%; /* Ensure NavBar takes the full width */
-}
+
 
 .collection-section {
+  margin: 20px;
   width: 100%;
   display: flex;
   justify-content: center;
