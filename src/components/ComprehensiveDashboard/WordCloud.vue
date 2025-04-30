@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card dark>
     <v-card-title>Genre Word Cloud</v-card-title>
     <v-card-text>
       <div v-if="loading" class="text-center py-4">
@@ -30,7 +30,7 @@ export default defineComponent({
   props: {
     colors: {
       type: Array as () => string[],
-      default: () => ['#1867C0', '#5CBBF6', '#7E57C2', '#E53935', '#FB8C00']
+      default: () => ['#4FC3F7', '#7986CB', '#9575CD', '#E57373', '#FFB74D'] // Brighter colors for dark mode
     },
     minFontSize: {
       type: Number,
@@ -73,7 +73,6 @@ export default defineComponent({
       const minCount = Math.min(...counts);
       const maxCount = Math.max(...counts);
 
-    
       if (minCount === maxCount) {
         const sizeStep = (props.maxFontSize - props.minFontSize) / words.length;
         return words.map((word, i) => ({
@@ -82,7 +81,6 @@ export default defineComponent({
         }));
       }
 
- 
       const scale = d3.scaleLinear()
         .domain([minCount, maxCount])
         .range([props.minFontSize, props.maxFontSize])
@@ -100,10 +98,8 @@ export default defineComponent({
       const width = wordcloud.value.clientWidth;
       const height = 500;
 
-    
       d3.select(wordcloud.value).selectAll('*').remove();
 
-  
       const layout = cloud()
         .size([width, height])
         .words(words.value.map(w => ({ ...w }))) 
@@ -126,7 +122,8 @@ export default defineComponent({
         .append('svg')
         .attr('width', width)
         .attr('height', height)
-        .attr('viewBox', `0 0 ${width} ${height}`);
+        .attr('viewBox', `0 0 ${width} ${height}`)
+        .style('background-color', '#121212'); // Dark background
 
       const g = svg.append('g')
         .attr('transform', `translate(${width/2},${height/2})`);
@@ -143,7 +140,6 @@ export default defineComponent({
         .append('title')
         .text(d => `${d.text}: ${d.count} items`);
 
-     
       g.selectAll('text')
         .text(d => d.text);
     };
@@ -172,7 +168,12 @@ export default defineComponent({
   width: 100%;
   height: 500px;
   margin: 0 auto;
-  background-color: #f8f9fa;
+  background-color: #121212; /* Dark background */
   border-radius: 4px;
+}
+
+.v-card {
+  background-color: #1E1E1E !important; /* Dark card background */
+  color: #FFFFFF !important; /* White text */
 }
 </style>

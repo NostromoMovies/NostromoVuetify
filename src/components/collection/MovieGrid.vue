@@ -39,7 +39,7 @@
       </div>
 
       <!-- Infinite scroll observer -->
-      <div v-if="infiniteScrollEnabled" ref="observerElement" class="observer-element"></div>
+     
     </div>
   </div>
 </template>
@@ -76,7 +76,7 @@ const props = defineProps({
   const loading = ref(true);
   const error = ref<string | null>(null);
   const currentPage = ref(1);
-  const itemsPerPage = 32;
+  const itemsPerPage = 24;
   const observerElement = ref<HTMLElement | null>(null);
   const infiniteScrollEnabled = ref(false);
 
@@ -93,15 +93,7 @@ const props = defineProps({
     ?? m.id
     ?? null;
 
-  useIntersectionObserver(
-    observerElement,
-    ([{ isIntersecting }]) => {
-      if (isIntersecting && infiniteScrollEnabled.value && currentPage.value < totalPages.value) {
-        currentPage.value += 1;
-      }
-    },
-    { threshold: 0.1 }
-  );
+
 
   const filteredMovies = computed(() => {
     return [...(movieStore?.filterMovies?.value ?? [])]
@@ -174,11 +166,11 @@ const combinedMedia = computed(() => {
   return results.sort((a, b) => a.order - b.order);
 });
 
-  const paginatedMedia = computed(() => {
-    const start = (currentPage.value - 1) * itemsPerPage;
-    const end = start + itemsPerPage;
-    return combinedMedia.value.slice(0, end);
-  });
+const paginatedMedia = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return combinedMedia.value.slice(start, end);
+});
 
   const totalPages = computed(() => {
     return Math.ceil(combinedMedia.value.length / itemsPerPage);

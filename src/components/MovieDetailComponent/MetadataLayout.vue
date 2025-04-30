@@ -259,7 +259,89 @@ export default {
 };
 </script>
 
+
+
 <style scoped>
+/* Full page coverage with no gaps */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.background-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0; /* Remove padding to eliminate gaps */
+}
+
+/* Dark overlay for better readability
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+} */
+
+.custom-container {
+  position: relative;
+  z-index: 2;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 50px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 20px 0; /* Adjust margin instead of padding */
+}
+
+/* Dark scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #1a1a1a;
+}
+
+/* Rest of your existing styles... */
+.movie-title-box {
+  position: relative;
+  z-index: 2;
+  background-color: rgb(34, 34, 34);
+  color: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  text-align: center;
+  width: fit-content;
+  margin: 40px auto 20px;
+}
 .background-container {
   position: relative;
   width: 100vw;

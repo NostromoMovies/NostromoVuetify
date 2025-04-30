@@ -88,7 +88,29 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+
+
+
+    <!-- Success Snackbar -->
+    <v-snackbar 
+      v-model="showSuccessSnackbar" 
+      color="success" 
+      timeout="3000"
+      location="top"
+    >
+      Watchlist created successfully!
+      <template v-slot:actions>
+        <v-btn
+          variant="text"
+          @click="showSuccessSnackbar = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </div>
+
 </template>
 
 <script setup lang="ts">
@@ -105,6 +127,7 @@ interface Watchlist {
 
 // Dark mode
 const darkMode = ref(true);
+const showSuccessSnackbar = ref(false);
 
 // State
 const dialog = ref(false);
@@ -166,7 +189,6 @@ const loadWatchlists = async () => {
 
 const createWatchlist = async () => {
   try {
-   
     if (!watchlistName.value) {
       throw new Error('Watchlist name cannot be empty');
     }
@@ -186,12 +208,11 @@ const createWatchlist = async () => {
 
     console.log("Watchlist created successfully");
     await loadWatchlists();
-    // emit('create', watchlistName.value);
     dialog.value = false;
     watchlistName.value = '';
+    showSuccessSnackbar.value = true; 
   } catch (error) {
     console.error("Error creating watchlist:", error);
-
   }
 };
 
