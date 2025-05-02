@@ -5,6 +5,7 @@
   
         <div class="rectangle">
             <UnrecognizedMovies></UnrecognizedMovies>
+            <UnrecognizedTv></UnrecognizedTv>
             <UnrecognizedFileBox></UnrecognizedFileBox>
             
             <CreateCollection> </CreateCollection>
@@ -19,6 +20,7 @@
   <script setup lang="ts">
   
 import UnrecognizedMovies from '../HomeVue/UnrecognizedMovies.vue';
+import UnrecognizedTv from '../HomeVue/UnrecognizedTv.vue';
 import UnrecognizedFileBox from '../HomeVue/ImportFolderBox.vue';
 import CreateCollection from '../HomeVue/CreateCollection.vue'
 
@@ -69,4 +71,3 @@ import CreateCollection from '../HomeVue/CreateCollection.vue'
     font-size: 10px;
   }
   </style>
-  

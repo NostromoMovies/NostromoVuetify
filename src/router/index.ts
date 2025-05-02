@@ -10,6 +10,7 @@ const NotFound = () => import('@/views/NotFound.vue');
 // const Home = () => import('@/views/Homepage.vue');
 const AboutUs = () => import('@/views/AboutUsVue.vue');
 const MatchUnrecognizedMovies = () => import('@/views/MatchUnrecognizedMovies.vue');
+const MatchUnrecognizedTv = () => import('@/views/MatchUnrecognizedTv.vue');
 const ComprehensiveDashboard = () => import('@/views/ComprehensiveDashboard.vue');
 const Settings = () =>import('@/views/SettingsVue.vue')
 const Watchlist = () => import('@/views/WatchlistVue.vue')
@@ -62,6 +63,12 @@ const router = createRouter({
       component: () => import("@/components/profile/Profiles.vue"),
       props: true,
       meta: { requiresAuth: true },
+    },
+    {
+      path: '/unrecognized-tv/matching',
+      name: 'MatchUnrecognizedTv',
+      component: MatchUnrecognizedTv,
+      meta: { requiresAuth: true }
     },
     {
       path: '/test',

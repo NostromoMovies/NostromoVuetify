@@ -96,6 +96,8 @@ export const getService = {
   },
   removeFromWatchlist(watchListID: number, movieID: number) {
     return axiosInstance.delete(`/api/WatchList/${watchListID}/remove/${movieID}`);
+  },
+  linkTv(payload: { videoID: number, tmdbTvID: number, seasonNumber: number, episodeNumber: number }) {
+    return axiosInstance.post('/api/MediaDisplay/linkTv', payload);
   }
-
 }

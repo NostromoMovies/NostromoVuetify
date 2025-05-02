@@ -3,7 +3,7 @@
     "",
     "\\src",
     "\\src\\components",
-    "\\src\\components\\collection",
+    "\\src\\components\\HomeVue",
     "\\src\\components\\MovieDetailComponent",
     "\\src\\router",
     "\\src\\services",
@@ -11,5 +11,6 @@
     "\\src\\types",
     "\\src\\views"
   ],
+  "SelectedNode": "\\src\\views\\SettingsVue.vue",
   "PreviewInSolutionExplorer": false
 }
